@@ -23,10 +23,11 @@ using  Slong  = signed   _int64;
 using  SizeT  = std::pair<Ulong, Ulong>;
 
 
+//乗算時10^-6以下の誤差は無視する。
 constexpr auto _ERROR_SANAE = 1e-6;
 
 
-template<typename _T> class Matrix {
+template<typename _T = double> class Matrix {
 //Define variables(private)
 private:
 	std::vector<_T>   _Main;
@@ -62,7 +63,8 @@ private:
 			
 			std::cout << (*_DataP)[i] << " ";
 		}
-
+		std::cout << "\n";
+		
 		return;
 	}
 
@@ -288,7 +290,7 @@ private:
 
 	//逆行列を求める。
 	void _inverse_matrix(std::vector<_T>* _Data, std::vector<_T>* _to,SizeT _size) {
-		if (this->det() == 0)
+		if (this->Det() == 0)
 			throw std::runtime_error("Inverse does not exist.");
 
 		//単位行列にする。
@@ -371,6 +373,21 @@ public:
 	}
 
 	//Operator
+	_T& operator [](Ulong _ArrayNum) 
+	{
+		if (this->_Main.size() <= _ArrayNum)
+			throw std::out_of_range("Tried to access out of range.");
+
+		return this->_Main[_ArrayNum];
+	}
+	_T& operator [](SizeT _Num) 
+	{
+		if (this->_Main.size() <= this->_Convert_to_ArrayNum(this->_Size.first,_Num))
+			throw std::out_of_range("Tried to access out of range.");
+
+		return this->_Main[this->_Convert_to_ArrayNum(this->_Size.first,_Num)];
+	}
+
 	Matrix& operator =(const Matrix<_T>& _data)
 	{
 		this->_Size = _data._Size;
@@ -483,13 +500,13 @@ public:
 	}
 
 	//行列式を求めます。
-	_T det() 
+	_T Det() 
 	{
 		return this->_det(this->_Main,this->_Size);
 	}
 
 	//行列の転置を行います。
-	Matrix transpose() 
+	Matrix Transpose() 
 	{
 		std::vector<_T> _Data;
 		_Data.resize(this->_Size.first*this->_Size.second);
@@ -502,7 +519,7 @@ public:
 	}
 
 	//逆行列を返します。
-	Matrix inverse() 
+	Matrix Inverse() 
 	{
 		std::vector<_T> _to;
 		std::vector<_T> _buf = this->_Main;
@@ -516,6 +533,14 @@ public:
 	Matrix& View()
 	{
 		this->_View(&this->_Main, this->_Size);
+
+		return *this;
+	}
+
+	//シグモイド関数に通します。
+	Matrix& Sigmoid() {
+		for (Ulong i = 0; i < this->_Main.size(); i++)
+			this->_Main[i] = 1 / (1 + std::exp(-1 * (this->_Main[i])));
 
 		return *this;
 	}

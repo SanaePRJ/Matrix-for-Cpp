@@ -9,8 +9,7 @@ int main()
 		{4,3,6},
 		{9,1,4}
 	};
-	Matrix<double> b = a.inverse();
+	(a * a.Inverse()).View();
 
-	(a*a.inverse()).View();
-
+	a.Sigmoid().View();
 }
