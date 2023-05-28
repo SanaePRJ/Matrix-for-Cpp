@@ -5,13 +5,12 @@ int main()
 {
 	Matrix<double> a =
 	{
-		{3,1,1,2},
-		{5,1,3,4},
-		{2,0,1,0},
-		{1,3,2,1}
+		{3,1,3},
+		{4,3,6},
+		{9,1,4}
 	};
-	printf("逆数列。\n");
-	a.inverse().View();
-	printf("\n通常\n");
-	a.View();
+	Matrix<double> b = a.inverse();
+
+	(a*a.inverse()).View();
+
 }

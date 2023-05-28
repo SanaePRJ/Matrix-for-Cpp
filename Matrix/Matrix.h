@@ -23,6 +23,9 @@ using  Slong  = signed   _int64;
 using  SizeT  = std::pair<Ulong, Ulong>;
 
 
+constexpr auto _ERROR_SANAE = 1e-6;
+
+
 template<typename _T> class Matrix {
 //Define variables(private)
 private:
@@ -30,7 +33,6 @@ private:
 	//First:X Second:Y
 	SizeT             _Size = std::make_pair(0,0);
 
-	
 //Define functions(private)
 private:
 	//Converter
@@ -112,7 +114,7 @@ private:
 
 		for (Ulong i = 0; i < _size.first; i++)
 			for (Ulong j = 0; j < _size.second; j++)
-				this->_Access(SizeT{i, j}, _data, _size) = i == j ? 1 : 0;
+				(*_data)[this->_Convert_to_ArrayNum(_size.first, {i,j})] = i == j ? 1 : 0;
 
 		return;
 	}
@@ -128,7 +130,7 @@ private:
 
 		return;
 	}
-	void _Add(std::vector<std::vector<_T>>& _buf, std::vector<_T>* _DataP, SizeT _size)
+	void _Add(std::vector<_T>& _buf, std::vector<_T>* _DataP, SizeT _size)
 	{
 		if (_DataP->size() != _buf.size() || _size.first!=_buf[0].size()||_size.second!=_buf.size)
 			throw std::invalid_argument("Must be same size.");
@@ -150,7 +152,7 @@ private:
 
 		return;
 	}
-	void _Sub(std::vector<std::vector<_T>>& _buf, std::vector<_T>* _DataP, SizeT _size)
+	void _Sub(std::vector<_T>& _buf, std::vector<_T>* _DataP, SizeT _size)
 	{
 		if (_DataP->size() != _buf.size() || _size.first != _buf[0].size() || _size.second != _buf.size)
 			throw std::invalid_argument("Must be same size.");
@@ -186,7 +188,8 @@ private:
 				for (Ulong k = 0; k < _size2.second; k++)
 					num += _buf1[this->_Convert_to_ArrayNum(_size1.first, { k,i })] * _buf2[this->_Convert_to_ArrayNum(_size2.first, { j,k })];
 
-				(*_DataP)[this->_Convert_to_ArrayNum(_SizeP->first, { j,i })] = num;
+				//誤差の修正
+				(*_DataP)[this->_Convert_to_ArrayNum(_SizeP->first, { j,i })] = (num-(Slong)num)<=_ERROR_SANAE?(Slong)num:num;
 			}
 		}
 
@@ -260,7 +263,6 @@ private:
 
 		return _retdata;
 	}
-
 	//行列式を求めます。
 	_T _det(std::vector<_T>& _Data,SizeT _size) {
 		if (_size.first != _size.second)
@@ -284,13 +286,14 @@ private:
 		return _ret;
 	}
 
+	//逆行列を求める。
 	void _inverse_matrix(std::vector<_T>* _Data, std::vector<_T>* _to,SizeT _size) {
 		if (this->det() == 0)
 			throw std::runtime_error("Inverse does not exist.");
 
 		//単位行列にする。
 		this->_To_Identity_Matrix(_to,_size);
-
+		
 		//_pos:基準
 		for (Ulong _pos = 0; _pos < _size.first; _pos++) {
 			for (Ulong y = 0; y < _size.second; y++) {
@@ -330,6 +333,7 @@ private:
 
 		return;
 	}
+
 //Define functions(public)
 public:
 	//Constructor
@@ -397,25 +401,55 @@ public:
 
 		return *this;
 	}
+	Matrix  operator +(const Matrix& _Data) 
+	{
+		std::vector<_T> _ret = this->_Main;
+		this->_Add(_Data,&_ret,this->_Size);
 
-	//Calc
+		return std::pair<SizeT, std::vector<_T>>{this->_Size,_ret};
+	}
+	Matrix  operator -(const Matrix& _Data)
+	{
+		std::vector<_T> _ret = this->_Main;
+		this->_Sub(_Data, &_ret, this->_Size);
+
+		return std::pair<SizeT, std::vector<_T>>{this->_Size, _ret};
+	}
+	Matrix  operator *(const Matrix& _Data)
+	{
+		std::vector<_T> _ret;
+		SizeT           _ret_size;
+
+		std::vector<_T> _buf      = this->_Main;
+		SizeT           _buf_size = this->_Size;
+		
+		this->_mul(_buf, _buf_size, (std::vector<_T>&)_Data._Main, _Data._Size, &_ret, &_ret_size);
+
+		return std::pair<SizeT, std::vector<_T>>{_ret_size,_ret};
+	}
+
+	//足し算を行います。
 	Matrix& Add(const Matrix& _Data)
 	{
 		this->_Add(_Data._Main, &this->_Main, this->_Size);
 
 		return *this;
 	}
+	//引き算を行います。
 	Matrix& Sub(const Matrix& _Data)
 	{
 		this->_Sub(_Data._Main,&this->_Main,this->_Size);
 
 		return *this;
 	}
+
+	//スカラー倍を行います。
 	Matrix& Scalar_Mul(_T num) {
 		this->_scalar_mul(&this->_Main,num);
 
 		return *this;
 	}
+	//行列*行列を行います。
 	Matrix& Mul(const Matrix& _Data) {
 		std::vector<_T> _buf      = this->_Main;
 		SizeT           _buf_size = this->_Size;
@@ -425,13 +459,14 @@ public:
 		return *this;
 	}
 
-	//Util
+	//行を入れ替えます。
 	Matrix& Swap_Line(Ulong Line1,Ulong Line2) 
 	{
 		this->_Swap_Line(Line1,Line2,&this->_Main,this->_Size);
 
 		return *this;
 	}
+	//列を入れ替えます。
 	Matrix& Swap_Column(Ulong Column1, Ulong Column2) 
 	{
 		this->_Swap_Line(Column1, Column2, &this->_Main, this->_Size);
@@ -439,6 +474,7 @@ public:
 		return *this;
 	}
 
+	//単位行列にします。
 	Matrix& Ident() 
 	{
 		this->_To_Identity_Matrix(&this->_Main,this->_Size);
@@ -446,18 +482,13 @@ public:
 		return *this;
 	}
 
+	//行列式を求めます。
 	_T det() 
 	{
 		return this->_det(this->_Main,this->_Size);
 	}
 
-	Matrix& View() 
-	{
-		this->_View(&this->_Main,this->_Size);
-
-		return *this;
-	}
-
+	//行列の転置を行います。
 	Matrix transpose() 
 	{
 		std::vector<_T> _Data;
@@ -469,13 +500,24 @@ public:
 		
 		return std::pair<SizeT, std::vector<_T>>{ SizeT{this->_Size.second,this->_Size.first},_Data };
 	}
-	Matrix inverse() {
+
+	//逆行列を返します。
+	Matrix inverse() 
+	{
 		std::vector<_T> _to;
 		std::vector<_T> _buf = this->_Main;
 
 		this->_inverse_matrix(&_buf,&_to,this->_Size);
 
 		return std::pair<SizeT, std::vector<_T>>{ this->_Size, _to };
+	}
+
+	//行列を表示します。
+	Matrix& View()
+	{
+		this->_View(&this->_Main, this->_Size);
+
+		return *this;
 	}
 };
 #endif
