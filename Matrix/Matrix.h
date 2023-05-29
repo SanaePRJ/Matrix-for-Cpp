@@ -68,31 +68,14 @@ private:
 		return;
 	}
 
-	//Access
-	_T& _Access(SizeT _Pos,std::vector<_T>* _data,SizeT _size) 
-	{
-		Ulong _temp = this->_Convert_to_ArrayNum(_size.first, _Pos);
-		if (_temp >= _data->size())
-			throw std::out_of_range("Tried to access out of range.");
-
-		return (*_data)[_temp];
-	}
-	_T& _Access(Ulong _ArrayNum, std::vector<_T>* _data)
-	{
-		if (_ArrayNum >= _data->size())
-			throw std::out_of_range("Tried to access out of range.");
-
-		return (*_data)[_ArrayNum];
-	}
-
 	//w’è‚³‚ê‚½s‚ğ“ü‚ê‘Ö‚¦‚Ü‚·B
 	void _Swap_Line(Ulong Line1,Ulong Line2,std::vector<_T>* _data,SizeT _size)
 	{
 		for (Ulong i = 0; i < _size.first ;i++) {
-			_T _temp = this->_Access(SizeT{i, Line1}, _data,_size);
+			_T _temp = (*_data)[this->_Convert_to_ArrayNum(_size.first, { i,Line1 })];
 
-			this->_Access(SizeT{i, Line1}, _data,_size) = this->_Access(SizeT{i, Line2}, _data,_size);
-			this->_Access(SizeT{i, Line2}, _data,_size) = _temp;
+			(*_data)[this->_Convert_to_ArrayNum(_size.first, { i,Line1 })] = (*_data)[this->_Convert_to_ArrayNum(_size.first, {i,Line2})];
+			(*_data)[this->_Convert_to_ArrayNum(_size.first, { i,Line2 })] = _temp;
 		}
 
 		return;
