@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : Matrix.h 
 * AUTHOR    : SanaeProject
-* VER       : 0.0.1(BETA)
+* VER       : 1.0.0
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 =============================================================*/
 
@@ -345,10 +345,6 @@ public:
 
 		return;
 	}
-	Matrix(std::vector<_T> _Data,SizeT _size) {
-		this->_Main = _Data;
-		this->_Size = _size;
-	}
 	Matrix(const Matrix<_T>& _data)
 	{
 		this->_Size = _data._Size;
@@ -392,15 +388,35 @@ public:
 		return *this;
 	}
 	Matrix& operator +=(const Matrix& _Data) {
-		this->_Add(_Data._Main,&this->_Main,this->_Size);
+		this->_Add(_Data,&this->_Main,this->_Size);
 
 		return *this;
 	}
 	Matrix& operator -=(const Matrix& _data) {
-		this->_Sub(_data._Main,&this->_Main,this->_Size);
+		this->_Sub(_data,&this->_Main,this->_Size);
 
 		return *this;
 	}
+	Matrix& operator *=(const Matrix& _Data)
+	{
+		std::vector<_T> _ret;
+		SizeT           _ret_size;
+
+		std::vector<_T> _buf = this->_Main;
+		SizeT           _buf_size = this->_Size;
+
+		this->_mul(_buf, _buf_size, (std::vector<_T>&)_Data._Main, _Data._Size, &this->_Main, &this->_Size);
+
+		return *this;
+	}
+	Matrix& operator *=(_T _num)
+	{
+		for (Ulong i = 0; i < this->_Main.size(); i++)
+			this->_Main[i] *= _num;
+
+		return *this;
+	}
+
 	Matrix  operator +(const Matrix& _Data) 
 	{
 		std::vector<_T> _ret = this->_Main;
@@ -426,6 +442,15 @@ public:
 		this->_mul(_buf, _buf_size, (std::vector<_T>&)_Data._Main, _Data._Size, &_ret, &_ret_size);
 
 		return std::pair<SizeT, std::vector<_T>>{_ret_size,_ret};
+	}
+	Matrix  operator *(_T _num) 
+	{
+		std::vector<_T> _data = this->_Main;
+
+		for (Ulong i = 0; i < _data.size(); i++)
+			_data[i] *= _num;
+
+		return std::pair<SizeT,std::vector<_T>>{this->_Size,_data};
 	}
 
 	//ë´ÇµéZÇçsÇ¢Ç‹Ç∑ÅB
