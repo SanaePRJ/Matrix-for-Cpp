@@ -115,16 +115,6 @@ private:
 
 		return;
 	}
-	void _Add(std::vector<_T>& _buf, std::vector<_T>* _DataP, SizeT _size)
-	{
-		if (_DataP->size() != _buf.size() || _size.first!=_buf[0].size()||_size.second!=_buf.size)
-			throw std::invalid_argument("Must be same size.");
-
-		for (Ulong i = 0; i < _DataP->size(); i++)
-			(*_DataP)[i] += _buf[i];
-
-		return;
-	}
 
 	//引き算を行います。
 	void _Sub(const Matrix& _Data, std::vector<_T>* _DataP, SizeT _size)
@@ -134,16 +124,6 @@ private:
 
 		for (Ulong i = 0; i < _DataP->size(); i++)
 			(*_DataP)[i] -= _Data._Main[i];
-
-		return;
-	}
-	void _Sub(std::vector<_T>& _buf, std::vector<_T>* _DataP, SizeT _size)
-	{
-		if (_DataP->size() != _buf.size() || _size.first != _buf[0].size() || _size.second != _buf.size)
-			throw std::invalid_argument("Must be same size.");
-
-		for (Ulong i = 0; i < _DataP->size(); i++)
-			(*_DataP)[i] -= _buf[i];
 
 		return;
 	}
@@ -470,7 +450,7 @@ public:
 
 	//スカラー倍を行います。
 	Matrix& Scalar_Mul(_T num) {
-		this->_scalar_mul(&this->_Main,num);
+		this->_scalar_mul(this->_Main,num);
 
 		return *this;
 	}
