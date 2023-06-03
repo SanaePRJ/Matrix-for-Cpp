@@ -80,13 +80,13 @@ private:
 
 		return;
 	}
-	void _Swap_Coulmn(Ulong Column1, Ulong Column2, std::vector<_T>* _data, SizeT _size)
+	void _Swap_Column(Ulong Column1, Ulong Column2, std::vector<_T>* _data, SizeT _size)
 	{
 		for (Ulong i = 0; i < _size.second; i++) {
-			_T _temp = this->_Access(SizeT{Column1, i}, _data,_size);
+			_T _temp = (*_data)[this->_Convert_to_ArrayNum(_size.first, {Column1,i})];
 
-			this->_Access(SizeT{Column1, i}, _data,_size) = this->_Access(SizeT{Column2, i}, _data,_size);
-			this->_Access(SizeT{Column2, i}, _data,_size) = _temp;
+			(*_data)[this->_Convert_to_ArrayNum(_size.first, { Column1,i })] = (*_data)[this->_Convert_to_ArrayNum(_size.first, { Column2,i })];
+			(*_data)[this->_Convert_to_ArrayNum(_size.first, { Column2,i })] = _temp;
 		}
 
 		return;
@@ -149,7 +149,7 @@ private:
 	}
 
 	//掛け算を行います。
-	void _scalar_mul(std::vector<std::vector<_T>>& _buf,_T _mul_num) {
+	void _scalar_mul(std::vector<_T>& _buf,_T _mul_num) {
 		for (Ulong i = 0; i < _buf.size();i++)
 			_buf[i] *= _mul_num;
 
@@ -456,14 +456,14 @@ public:
 	//足し算を行います。
 	Matrix& Add(const Matrix& _Data)
 	{
-		this->_Add(_Data._Main, &this->_Main, this->_Size);
+		this->_Add(_Data, &this->_Main, this->_Size);
 
 		return *this;
 	}
 	//引き算を行います。
 	Matrix& Sub(const Matrix& _Data)
 	{
-		this->_Sub(_Data._Main,&this->_Main,this->_Size);
+		this->_Sub(_Data,&this->_Main,this->_Size);
 
 		return *this;
 	}
@@ -494,8 +494,8 @@ public:
 	//列を入れ替えます。
 	Matrix& Swap_Column(Ulong Column1, Ulong Column2) 
 	{
-		this->_Swap_Line(Column1, Column2, &this->_Main, this->_Size);
-
+		this->_Swap_Column(Column1, Column2, &this->_Main, this->_Size);
+		
 		return *this;
 	}
 
