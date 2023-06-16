@@ -37,7 +37,8 @@ private:
 //Define functions(private)
 private:
 	//Converter
-	Ulong _Convert_to_ArrayNum            //{列,行}を配列番号に変換する。
+	//{列,行}を配列番号に変換する。
+	Ulong _Convert_to_ArrayNum
 	(
 		Ulong _Width,
 		SizeT _Pos
@@ -46,7 +47,8 @@ private:
 		return (_Width*_Pos.second)+_Pos.first;
 	}
 
-	SizeT _Convert_to_Position            //行列番号を{列,行}に変換する。
+	//行列番号を{列,行}に変換する。
+	SizeT _Convert_to_Position
 	(
 		Ulong _Width,
 		Ulong _Arraynum
@@ -55,10 +57,11 @@ private:
 		return std::make_pair(_Arraynum%_Width,(_Arraynum - (_Arraynum % _Width))/_Width);
 	}
 
-	void _Convert_to_Array                //初期値をstd::vector<_T>へ変換する。
+	//初期値をstd::vector<_T>へ変換する。
+	void _Convert_to_Array
 	(
-		std::initializer_list<std::vector<_T>>& _Input
-		,std::vector<_T>&                       _Storage
+		std::initializer_list<std::vector<_T>>& _Input,
+		std::vector<_T>&                       _Storage
 	)                              
 	{
 		std::vector<std::vector<_T>> _bufs = _Input;
@@ -67,7 +70,8 @@ private:
 			_Storage.insert(_Storage.end(),_bufs[i].begin(),_bufs[i].end());
 	}
 
-	void _View                            //行列を表示する。
+	//行列を表示する。
+	void _View
 	(
 		std::vector<_T>* _DataP,
 		SizeT            _Size
@@ -83,7 +87,8 @@ private:
 		return;
 	}
 
-	void _Swap_Line                        //指定された行を入れ替えます。
+	//指定された行を入れ替えます。
+	void _Swap_Line
 	(
 		Ulong             _Line1,
 		Ulong             _Line2,
@@ -101,7 +106,8 @@ private:
 		return;
 	}
 
-	void _Swap_Column                     //指定した列を入れ替えます。
+	//指定した列を入れ替えます。
+	void _Swap_Column
 	(
 		Ulong            _Column1, 
 		Ulong            _Column2,
@@ -119,7 +125,8 @@ private:
 		return;
 	}
 
-	void _To_Identity_Matrix              //単位行列にします。
+	//単位行列にします。
+	void _To_Identity_Matrix
 	(
 		std::vector<_T>* _Data,
 		SizeT            _Size
@@ -135,7 +142,8 @@ private:
 		return;
 	}
 
-	void _Add                             //足し算を行います。
+	//足し算を行います。
+	void _Add
 	(
 		const Matrix&    _Data,
 		std::vector<_T>* _DataP,
@@ -151,7 +159,8 @@ private:
 		return;
 	}
 
-	void _Sub                             //引き算を行います。
+	//引き算を行います。
+	void _Sub
 	(
 		const Matrix&    _Data, 
 		std::vector<_T>* _DataP, 
@@ -167,7 +176,8 @@ private:
 		return;
 	}
 
-	void _Scalar_mul                      //スカラー倍を行います。
+	//スカラー倍を行います。
+	void _Scalar_mul
 	(
 		std::vector<_T>& _Data,
 		_T               _Mul_num
@@ -179,7 +189,8 @@ private:
 		return;
 	}
 	
-	void _Mul                             //行列の乗算を行います。
+	//行列の乗算を行います。
+	void _Mul
 	(
 		std::vector<_T>& _Data1,
 		SizeT            _Size1,
@@ -214,7 +225,8 @@ private:
 		return;
 	}
 
-	_T _Det_2                             //サラスの方式で解きます。(2次元)1
+	//サラスの方式で解きます。(2次元)
+	_T _Det_2
 	(
 		std::vector<_T>* _DataP,
 		_T               _Coeff,
@@ -230,7 +242,8 @@ private:
 		return _Coeff * (((*_DataP)[this->_Convert_to_ArrayNum(2, {0,0})]* (*_DataP)[this->_Convert_to_ArrayNum(2, { 1,1 })])-((*_DataP)[this->_Convert_to_ArrayNum(2, { 1,0 })] * (*_DataP)[this->_Convert_to_ArrayNum(2, { 0,1 })]));
 	}
 
-	void _Confactor_expansion_1           //余因子展開をして行列を一次元下げます。下げた値は_Storageに格納され係数は_Coeffに格納されます。
+	//余因子展開をして行列を一次元下げます。下げた値は_Storageに格納され係数は_Coeffに格納されます。
+	void _Confactor_expansion_1
 	(
 		std::vector<_T>&              _Data,
 		SizeT                         _Size,
@@ -254,8 +267,9 @@ private:
 		}
 	}
 	
+	//2次元になるまで余因子展開を行います。
 	std::pair<std::vector<std::vector<_T>>, std::vector<_T>> 
-		_Confactor_expansion_to_2            //2次元になるまで余因子展開を行います。
+		_Confactor_expansion_to_2
 	(
 		std::vector<_T>& _Data,
 		SizeT            _Size,
@@ -296,7 +310,8 @@ private:
 		return _retdata;
 	}
 	
-	_T _Det                               //行列式を求めます。
+	//行列式を求めます。
+	_T _Det
 	(
 		std::vector<_T>& _Data,
 		SizeT            _Size
@@ -323,7 +338,8 @@ private:
 		return _ret;
 	}
 
-	void _Inverse_matrix                  //逆行列を求める
+	//逆行列を求める
+	void _Inverse_matrix
 	(
 		std::vector<_T>* _Data,
 		std::vector<_T>* _Storage,
@@ -433,7 +449,8 @@ public:
 
 
 	//Operator
-	bool operator==                       //比較
+	//比較
+	bool operator==
 	(
 		const Matrix& _Data
 	)
@@ -448,7 +465,8 @@ public:
 		return true;
 	}
 
-	_T& operator[]                        //配列参照
+	//配列参照
+	_T& operator[]
 	(
 		Ulong _ArrayNum
 	) 
@@ -459,7 +477,8 @@ public:
 		return this->_Main[_ArrayNum];
 	}
 
-	_T& operator[]                        //{列,行}参照
+	//{列,行}参照
+	_T& operator[]
 	(
 		SizeT _Num
 	) 
@@ -470,7 +489,8 @@ public:
 		return this->_Main[this->_Convert_to_ArrayNum(this->_Size.first,_Num)];
 	}
 
-	Matrix& operator=                     //代入
+	//代入
+	Matrix& operator=
 	(
 		const Matrix<_T>& _Data
 	)
@@ -481,7 +501,8 @@ public:
 		return *this;
 	}
 	
-	Matrix& operator=                     //代入
+	//代入
+	Matrix& operator=
 	(
 		std::initializer_list<std::vector<_T>> _In
 	)
@@ -596,7 +617,8 @@ public:
 		return std::pair<SizeT,std::vector<_T>>{this->_Size,_data};
 	}
 
-	Matrix& Add                           //足し算を行う。
+	//足し算を行う。
+	Matrix& Add
 	(
 		const Matrix& _Data
 	)
@@ -606,7 +628,8 @@ public:
 		return *this;
 	}
 
-	Matrix& Sub                           //引き算を行う。
+	//引き算を行う。
+	Matrix& Sub
 	(
 		const Matrix& _Data
 	)
@@ -616,7 +639,8 @@ public:
 		return *this;
 	}
 
-	Matrix& Scalar_Mul                    //スカラー倍を行う。
+	//スカラー倍を行う。
+	Matrix& Scalar_Mul
 	(
 		_T _Num
 	)
@@ -626,7 +650,8 @@ public:
 		return *this;
 	}
 	
-	Matrix& Mul                           //行列どうしの乗算を行う。
+	//行列どうしの乗算を行う。
+	Matrix& Mul
 	(
 		const Matrix& _Data
 	)
@@ -639,7 +664,8 @@ public:
 		return *this;
 	}
 
-	Matrix& Swap_Line                     //行を入れ替える。
+	//行を入れ替える。
+	Matrix& Swap_Line
 	(
 		Ulong _Line1,
 		Ulong _Line2
@@ -650,7 +676,8 @@ public:
 		return *this;
 	}
 	
-	Matrix& Swap_Column                   //列を入れ替える。
+	//列を入れ替える。
+	Matrix& Swap_Column
 	(
 		Ulong _Column1,
 		Ulong _Column2
@@ -661,14 +688,16 @@ public:
 		return *this;
 	}
 
-	Matrix& Ident()                       //単位行列にする。
+	//単位行列にする。
+	Matrix& Ident()
 	{
 		this->_To_Identity_Matrix(&this->_Main,this->_Size);
 
 		return *this;
 	}
 
-	_T Det()                              //行列式を求めます。 
+	//行列式を求めます。 
+	_T Det()
 	{
 		return this->_Det(this->_Main,this->_Size);
 	}

@@ -1,5 +1,20 @@
 # Matrix-for-Cpp目標
 行列を扱う型を作成していく。
+
+# Coding convention
+関数の書き方を以下のように定める。
+    
+    //Comment
+    ReturnClass Func
+    (
+        Argument1,
+        Argument2,
+        ...
+    )
+    {
+        Process
+    }
+
 # メンバ一覧
 ## 宣言
 ### 引数なし
