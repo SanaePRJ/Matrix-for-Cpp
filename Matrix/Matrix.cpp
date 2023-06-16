@@ -112,7 +112,7 @@ int main()
 		{6,0,2},
 		{4,2,1}
 	};
-
+	
 //破壊的
 	//列と列を入れ替える。
 	func_var0.Swap_Column(0,1);
@@ -154,4 +154,6 @@ int main()
 //破壊的
 	//シグモイド関数
 	func_var0.Sigmoid();
+
+	return 0;
 }
