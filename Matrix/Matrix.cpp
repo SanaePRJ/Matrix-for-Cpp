@@ -1,7 +1,11 @@
 ﻿#include <iostream>
 #include "Matrix.h"
 
-int main()
+int main() {
+	printf("%llu",__cplusplus);
+}
+
+int test()
 {
 /*-----Constructor-----*/
 	Matrix<double> a;

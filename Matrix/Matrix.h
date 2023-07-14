@@ -402,18 +402,18 @@ public:
 
 	Matrix
 	(
-		const std::vector<_T>& _Main, 
-		const SizeT&           _Size
+		const std::vector<_T>& _In_Main, 
+		const SizeT&           _In_Size
 	)
-		: _Main(_Main), _Size(_Size)
+		: _Main(_In_Main), _Size(_In_Size)
 	{
 	}
 
 	Matrix
 	(
-		const Matrix<_T>& _Data
+		const Matrix<_T>& _In_Data
 	)
-		: _Main(_Data._Main), _Size(_Data._Size)
+		: _Main(_In_Data._Main), _Size(_In_Data._Size)
 	{
 	}
 
@@ -447,6 +447,14 @@ public:
 		return;
 	}
 
+	Matrix
+	(
+		SizeT _In_Size
+	) 
+		: _Size(_In_Size)
+	{
+		this->_Main.resize(_In_Size.first*_In_Size.second);
+	}
 
 	//Operator
 	//比較
@@ -547,7 +555,7 @@ public:
 		std::vector<_T> _ret;
 		SizeT           _ret_size;
 
-		std::vector<_T> _buf = this->_Main;
+		std::vector<_T> _buf      = this->_Main;
 		SizeT           _buf_size = this->_Size;
 
 		this->_Mul(_buf, _buf_size, (std::vector<_T>&)_Data._Main, _Data._Size, &this->_Main, &this->_Size);
@@ -615,6 +623,16 @@ public:
 			_data[i] *= _Num;
 
 		return std::pair<SizeT,std::vector<_T>>{this->_Size,_data};
+	}
+
+	//サイズ変更(データはすべて削除されます。)
+	Matrix& SetSize
+	(
+		SizeT _Data
+	)
+	{
+		this->_Main.erase (this->_Main.begin(),this->_Main.end());
+		this->_Main.resize(_Data.first*_Data.second);
 	}
 
 	//足し算を行う。
