@@ -32,8 +32,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrixold.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="MatrixDet.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixImpl.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixBase.hpp">
+      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixBaseImpl.hpp">
+      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix2\Matrix.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="MatrixDet.hpp">
       <Filter>ヘッダー ファイル\Matrix</Filter>

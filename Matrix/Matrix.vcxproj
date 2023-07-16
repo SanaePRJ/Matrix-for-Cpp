@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Matrix2\Matrix.hpp" />
-    <ClInclude Include="Matrixold.h" />
     <ClInclude Include="MatrixBase.hpp" />
     <ClInclude Include="MatrixBaseImpl.hpp" />
     <ClInclude Include="MatrixDet.hpp" />
