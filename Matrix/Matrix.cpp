@@ -1,16 +1,12 @@
-﻿#include <iostream>
-#include "Matrix.h"
+﻿#include "Matrix.h"
+using namespace Sanae;
 
-int main() {
-	printf("%llu",__cplusplus);
-}
-
-int test()
+int main()
 {
 /*-----Constructor-----*/
-	Matrix<double> a;
+	Matrix a;
 
-	Matrix<double> b = 
+	Matrix b = 
 	{
 		{1,2,3},
 		{4,5,6},
@@ -22,7 +18,7 @@ int test()
 		7 8 9
 	----------*/
 
-	Matrix<double> c = b;
+	Matrix c = b;
 	/*----------
 		1 2 3
 		4 5 6
@@ -30,7 +26,7 @@ int test()
 	----------*/
 
 	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
-	Matrix<double>      d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
+	Matrix              d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
 	/*----------
 		1 2 3
 		4 5 6
@@ -57,21 +53,21 @@ int test()
 		3 5 1
 	----------*/
 
-	a += b;	//a.Add(b);
+	a += b;
 	/*----------
 	4 3 8   1 2 3    5  5 11
 	8 5 0 + 4 5 6 = 12 10  6
 	3 5 1   7 8 9   10 13 10
 	----------*/
 
-	a -= b;	//a.Sub(b);
+	a -= b;
 	/*----------
 	 5  5 11   1 2 3   4 3 6
 	12 10  6 - 4 5 6 = 8 5 0
 	10 13 10   7 8 9   3 5 1
 	----------*/
 	
-	a *= b;	//a.Mul(b);
+	a *= b;
 	/*----------
 	4 3 6   1 2 3   72 87 102
 	8 5 0 * 4 5 6 = 28 41  54
@@ -86,7 +82,7 @@ int test()
 	7 8 9
 	----------*/
 	
-	a *= 3;	//a.Scalar_Mul(3);
+	a *= 3;
 	/*----------
 	 3  6  9
 	12 15 18
@@ -110,7 +106,7 @@ int test()
 	b[{1, 1}];	//5 [{列番号,行番号}]
 
 /*-----Function-----*/
-	Matrix<double> func_var0 = 
+	Matrix func_var0 = 
 	{
 		{7,8,2},
 		{6,0,2},
@@ -148,16 +144,12 @@ int test()
 	//12
 
 	//逆行列を求める。
-	func_var0.Inverse();
+	func_var0.Inverse().View();
 	/*----------
-	 0.166667  -0.166667  -0.0833333
-	-0.333333   1.33333   -0.333333
-	 1         -4          1.5
+	 0.166667 -0.166667 -0.0833333
+	-0.333333  1.33333  -0.333333
+	 1        -4         1.5
 	----------*/
-
-//破壊的
-	//シグモイド関数
-	func_var0.Sigmoid();
 
 	return 0;
 }

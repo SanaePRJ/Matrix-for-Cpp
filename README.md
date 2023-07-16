@@ -14,7 +14,17 @@
     {
         Process
     }
-
+# ファイル構造
+ファイルをプロトタイプ宣言用と実装用の二つに分けて作成する。
+## 構造
+    
+    Matrix.h ->Matrix.hpp(プロトタイプ宣言用)->MatrixBase.hpp(プロトタイプ宣言用)-->iostream
+             |                               |                                   |->vector
+             |                               |                                   |->utility
+             |                               |                                   |->stdexcept
+             |                               ->MatrixBaseImpl.hpp(実装用)
+             ->MatrixImpl.hpp(実装用)->MatrixDet.hpp
+    
 # メンバ一覧
 ## 宣言
 ### 引数なし

@@ -133,9 +133,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="Matrix.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Matrix2\Matrix.hpp" />
+    <ClInclude Include="Matrixold.h" />
+    <ClInclude Include="MatrixBase.hpp" />
+    <ClInclude Include="MatrixBaseImpl.hpp" />
+    <ClInclude Include="MatrixDet.hpp" />
+    <ClInclude Include="MatrixImpl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Matrix">
+      <UniqueIdentifier>{777f135e-6c70-492b-8b8a-bc4961b27e91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Matrix\MatrixBase">
+      <UniqueIdentifier>{b08b7f31-4594-4848-95a0-7c389a375fff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
@@ -21,10 +27,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="Matrix.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h">
+    <ClInclude Include="Matrixold.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixDet.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixImpl.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixBase.hpp">
+      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixBaseImpl.hpp">
+      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix2\Matrix.hpp">
+      <Filter>ヘッダー ファイル\Matrix</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
