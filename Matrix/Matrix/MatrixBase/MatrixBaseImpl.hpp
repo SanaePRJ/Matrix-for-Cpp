@@ -230,7 +230,7 @@ namespace Sanae {
 		for (Ulong i = 0; i < _Size1.second; i++) {
 			for (Ulong j = 0; j < _Size2.first; j++) {
 				_T num = 0;
-
+				printf("Š|‚¯ŽZ‚Ì‰‰ŽZ\n");
 				for (Ulong k = 0; k < _Size2.second; k++)
 					num += _Data1[this->_Convert_to_ArrayNum(_Size1.first, { k,i })] * _Data2[this->_Convert_to_ArrayNum(_Size2.first, { j,k })];
 
