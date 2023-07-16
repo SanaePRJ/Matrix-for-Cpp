@@ -19,10 +19,10 @@
 ## 構造
     
     Matrix.h ->Matrix.hpp(プロトタイプ宣言用)->MatrixBase.hpp(プロトタイプ宣言用)-->iostream
-             |                               |                                   |->vector
-             |                               |                                   |->utility
-             |                               |                                   |->stdexcept
-             |                               ->MatrixBaseImpl.hpp(実装用)
+             |                             |                                  |->vector
+             |                             |                                  |->utility
+             |                             |                                  |->stdexcept
+             |                             ->MatrixBaseImpl.hpp(実装用)
              ->MatrixImpl.hpp(実装用)->MatrixDet.hpp
     
 # メンバ一覧
