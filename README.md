@@ -28,13 +28,12 @@
 # メンバ一覧
 ## 宣言
 ### 引数なし
-    Matrix<double> _var;
+    Matrix _var;
 ### 配列
     std::vector<double> var0 = {0,1,2,3};
-    Matrix<double>      var1 = std::pair<SizeT,std::vector<double>>{ {2,2},var0 };
-	  var1.View();
+    Matrix              var1 = std::pair<SizeT,std::vector<double>>{ {2,2},var0 };
 ### 3*3行列
-    Matrix<double> _var
+    Matrix _var
     {
       {1,2,3},
       {4,5,6},
@@ -42,16 +41,16 @@
     };
 ### Matrix
     //3*3行列を定義
-    Matrix<double> var0 =
+    Matrix var0 =
     {
       {0,1,2},
       {3,4,5},
       {6,7,8}
     }
     
-    Matrix<double> var1 = var0;
+    Matrix var1 = var0;
 ## 参照
-    Matrix<double> var0 =
+    Matrix var0 =
     {
       {0,1,2},
       {3,4,5},
@@ -62,10 +61,10 @@
 ## 代入
 以下の変数が定義されているものとする。
 
-    Matrix<double> var0;
+    Matrix var0;
 
 ### Matrix
-    Matrix<double> var1 =
+    Matrix var1 =
     {
       {1,2,3},
       {4,5,6},
@@ -81,14 +80,14 @@
 ## 演算
 以下の変数が定義されているものとする。
     
-    Matrix<double> var0 = 
+    Matrix var0 = 
     {
-      {7,8,2},
+          {7,8,2},
 		  {6,0,2},
 		  {4,2,1}
     };
     
-    Matrix<double> var1 =
+    Matrix var1 =
     {
       {1,2,3},
       {4,5,6},
@@ -97,28 +96,28 @@
     
 ### 足し算
     //破壊的
-    var0 += var1; //var0.Add(var1);
+    var0 += var1;
     
     //非破壊的
     (var0+var1);
     
 ### 引き算
     //破壊的
-    var0 -= var1; //var0.Sub(var1);
+    var0 -= var1;
     
     //非破壊的
     (var0+var1);
     
 ### 乗算
     //破壊的
-    var0 *= var1; //var0.Mul(var1);
+    var0 *= var1;
     
     //非破壊的
     (var0*var1);
     
 ### スカラー倍
     //破壊的
-    var0 *= 5; //var0.Scalar_Mul(5);
+    var0 *= 5;
     
     //非破壊的
     (var0*5);
