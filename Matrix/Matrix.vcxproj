@@ -136,11 +136,11 @@
     <None Include="Matrix.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix2\Matrix.hpp" />
-    <ClInclude Include="MatrixBase.hpp" />
-    <ClInclude Include="MatrixBaseImpl.hpp" />
-    <ClInclude Include="MatrixDet.hpp" />
-    <ClInclude Include="MatrixImpl.hpp" />
+    <ClInclude Include="Matrix\Matrix.hpp" />
+    <ClInclude Include="Matrix\MatrixBase\MatrixBase.hpp" />
+    <ClInclude Include="Matrix\MatrixBase\MatrixBaseImpl.hpp" />
+    <ClInclude Include="Matrix\MatrixDet.hpp" />
+    <ClInclude Include="Matrix\MatrixImpl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
