@@ -3,6 +3,10 @@
 * AUTHOR    : SanaeProject
 * VER       : 2.0.0
 * COPYRIGHGT: Copyright 2023 SanaeProject.
+* 
+* 行列式実装用
+* 
+* このファイルはMatrixImpl.hppによってインクルードされます。
 =============================================================*/
 
 

@@ -3,6 +3,11 @@
 * AUTHOR    : SanaeProject
 * VER       : 2.0.0
 * COPYRIGHGT: Copyright 2023 SanaeProject.
+* 
+* 実装
+* 
+* 注意:
+* このファイルをインクルードする前にMatrixBase.hppをインクルードしてください。
 =============================================================*/
 
 

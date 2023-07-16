@@ -3,6 +3,11 @@
 * AUTHOR    : SanaeProject
 * VER       : 2.0.0
 * COPYRIGHGT: Copyright 2023 SanaeProject.
+* 
+* 実装します。
+* 
+* 注意:
+* このファイルをインクルードする前にMatrix.hppをインクルードしてください。
 =============================================================*/
 
 
@@ -18,6 +23,7 @@
 
 namespace Sanae{
 	/*------Function private------*/
+	//初期値をstd::vector<double>へ変換します。
 	void Matrix::_Convert_to_Array
 	(
 		std::initializer_list<std::vector<double>>& _Input,
@@ -29,6 +35,7 @@ namespace Sanae{
 		for (Ulong i = 0; i < _bufs.size(); i++)
 			_Storage.insert(_Storage.end(), _bufs[i].begin(), _bufs[i].end());
 	}
+	//表示します。
 	void Matrix::_View
 	(
 		std::vector<double>* _DataP,
@@ -44,6 +51,7 @@ namespace Sanae{
 
 		return;
 	}
+	//単位行列にします。
 	void Matrix::_To_Identity_Matrix
 	(
 		std::vector<double>* _Data,
@@ -60,6 +68,7 @@ namespace Sanae{
 		return;
 	}
 
+	//逆行列を求めます。
 	void Matrix::_Inverse_matrix
 	(
 		std::vector<double>* _Data,
@@ -115,7 +124,7 @@ namespace Sanae{
 
 
 	/*------Function public------*/
-		//代入
+	//代入
 	Matrix& Matrix::operator=
 	(
 		const Matrix& _Data
@@ -126,7 +135,6 @@ namespace Sanae{
 
 		return *this;
 	}
-	//代入
 	Matrix& Matrix::operator=
 	(
 		std::initializer_list<std::vector<double>> _In
@@ -143,16 +151,18 @@ namespace Sanae{
 
 		return *this;
 	}
+
+	/*破壊的処理*/
+	//演算
 	Matrix& Matrix::operator+=
-		(
-			const Matrix& _Data
-			)
+	(
+		const Matrix& _Data
+	)
 	{
 		this->_Add(_Data, &this->_Main, this->_Size);
 
 		return *this;
 	}
-
 	Matrix& Matrix::operator-=
 	(
 		const Matrix& _Data
@@ -162,7 +172,6 @@ namespace Sanae{
 
 		return *this;
 	}
-
 	Matrix& Matrix::operator*=
 	(
 		const Matrix& _Data
@@ -178,7 +187,6 @@ namespace Sanae{
 
 		return *this;
 	}
-
 	Matrix& Matrix::operator*=
 	(
 		double _Num
@@ -189,6 +197,9 @@ namespace Sanae{
 
 		return *this;
 	}
+
+	/*非破壊的処理*/
+	//演算
 	Matrix  Matrix::operator+
 	(
 		const Matrix& _Data
@@ -224,7 +235,6 @@ namespace Sanae{
 
 		return std::pair<SizeT, std::vector<double>>{_ret_size, _ret};
 	}
-
 	Matrix  Matrix::operator*
 	(
 		double _Num
@@ -238,6 +248,7 @@ namespace Sanae{
 		return std::pair<SizeT, std::vector<double>>{this->_Size, _data};
 	}
 
+	//サイズを変えます。(データはすべて削除されます)
 	Matrix& Matrix::SetSize
 	(
 		SizeT _Data
