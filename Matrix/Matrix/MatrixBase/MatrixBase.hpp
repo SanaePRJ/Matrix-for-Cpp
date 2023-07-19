@@ -38,7 +38,7 @@ using  SizeT = std::pair<Ulong, Ulong>;
 
 
 //æZ10^-6ˆÈ‰º‚ÌŒë·‚Í–³‹‚·‚éB
-constexpr auto _ERROR_SANAE = 1e-6;
+constexpr auto _ERROR_SANAE = 1e-12;
 
 
 namespace Sanae {

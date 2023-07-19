@@ -256,6 +256,7 @@ namespace Sanae{
 	{
 		this->_Main.erase(this->_Main.begin(), this->_Main.end());
 		this->_Main.resize(_Data.first * _Data.second);
+		this->_Size = _Data;
 
 		return *this;
 	}
