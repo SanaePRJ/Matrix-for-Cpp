@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : Matrix.hpp
 * AUTHOR    : SanaeProject
-* VER       : 2.0.0
+* VER       : 2.0.1
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
 * プロトタイプ宣言
@@ -135,7 +135,8 @@ namespace Sanae {
 		//(破壊的処理)サイズ変更(データはすべて削除されます。)
 		Matrix& SetSize
 		(
-			SizeT _Data
+			SizeT _Data,
+			bool  _Clear
 		);
 
 		//(破壊的処理)行を入れ替える。

@@ -1,5 +1,11 @@
 ﻿#include "Matrix.h"
+#include <thread>
+#include <random>
+#include <time.h>
+
+
 using namespace Sanae;
+
 
 int main()
 {
@@ -12,6 +18,8 @@ int main()
 		{4,5,6},
 		{7,8,9}
 	};
+	b.SetSize({1,1},true);
+	b.View();
 	/*----------
 		1 2 3
 		4 5 6
@@ -152,6 +160,4 @@ int main()
 	-0.333333  1.33333  -0.333333
 	 1        -4         1.5
 	----------*/
-
-	return 0;
 }

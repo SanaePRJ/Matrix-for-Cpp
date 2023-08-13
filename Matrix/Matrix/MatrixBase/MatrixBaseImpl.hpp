@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : MatrixBaseImpl.hpp
 * AUTHOR    : SanaeProject
-* VER       : 2.0.0
+* VER       : 2.0.1
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
 * À‘•
@@ -227,13 +227,23 @@ namespace Sanae {
 
 		(*_SizeP) = { _Size2.first,_Size1.second }; //ŒvZŒ‹‰ÊŠi”[æ
 
+		//{—ñ,s}‚ÌæZŒ‹‰Ê‚ğ‹‚ß‚Ü‚·B
+		auto mul = [&](Ulong _i,Ulong _j) {
+			_T num = 0;
+
+			for (Ulong k = 0; k < _Size2.second; k++)
+				num += _Data1[this->_Convert_to_ArrayNum(_Size1.first, { k,_i })] * _Data2[this->_Convert_to_ArrayNum(_Size2.first, { _j,k })];
+
+			//Œë·‚ÌC³
+			(*_Storage)[this->_Convert_to_ArrayNum(_SizeP->first, { _j,_i })] = abs(num - (Slong)num) <= _ERROR_SANAE ? (Slong)num : num;
+
+			return;
+		};
+
+		//{—ñ,s}‚ÌæZˆ—‚ğs‚¤B
 		for (Ulong i = 0; i < _Size1.second; i++) {
 			for (Ulong j = 0; j < _Size2.first; j++) {
-				_T num = 0;
-				for (Ulong k = 0; k < _Size2.second; k++)
-					num += _Data1[this->_Convert_to_ArrayNum(_Size1.first, { k,i })] * _Data2[this->_Convert_to_ArrayNum(_Size2.first, { j,k })];
-				//Œë·‚ÌC³
-				(*_Storage)[this->_Convert_to_ArrayNum(_SizeP->first, { j,i })] = abs(num - (Slong)num) <= _ERROR_SANAE ? (Slong)num : num;
+				mul(i,j);
 			}
 		}
 

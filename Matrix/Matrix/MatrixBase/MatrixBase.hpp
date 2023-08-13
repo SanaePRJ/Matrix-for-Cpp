@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : MatrixBase.hpp
 * AUTHOR    : SanaeProject
-* VER       : 2.0.0
+* VER       : 2.0.1
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
 * プロトタイプ宣言
