@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : Matrix.hpp
 * AUTHOR    : SanaeProject
-* VER       : 2.0.1
+* VER       : 2.0.2
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
 * プロトタイプ宣言
@@ -47,6 +47,7 @@ namespace Sanae {
 			SizeT
 		);
 
+		//行列式関係
 		//サラスの方式で解きます。(2次元)
 		double _Det_2
 		(
@@ -107,67 +108,67 @@ namespace Sanae {
 		//代入
 		Matrix& operator=
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix& operator=
 		(
-			std::initializer_list<std::vector<double>> _In
+			std::initializer_list<std::vector<double>>
 		);
 
 		//破壊的処理
 		Matrix& operator+=
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix& operator-=
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix& operator*=
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix& operator*=
 		(
-			double _Num
+			double
 		);
 
 		//非破壊的処理
 		Matrix  operator+
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix  operator-
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix  operator*
 		(
-			const Matrix& _Data
+			const Matrix&
 		);
 		Matrix  operator*
 		(
-			double _Num
+			double
 		);
 
 		//(破壊的処理)サイズ変更(データはすべて削除されます。)
 		Matrix& SetSize
 		(
-			SizeT _Data,
-			bool  _Clear
+			SizeT,
+			bool
 		);
 
 		//(破壊的処理)行を入れ替える。
 		Matrix& Swap_Line
 		(
-			Ulong _Line1,
-			Ulong _Line2
+			Ulong,
+			Ulong
 		);
 		//(破壊的処理)列を入れ替える。
 		Matrix& Swap_Column
 		(
-			Ulong _Column1,
-			Ulong _Column2
+			Ulong,
+			Ulong
 		);
 
 		//(破壊的処理)単位行列にする。
@@ -187,16 +188,20 @@ namespace Sanae {
 		//大きさを返します。 first:列 second:行
 		SizeT GetSizeWH();
 
-		Matrix&  Inner_Product
+		//(非破壊的処理)内積を求めます。
+		Matrix& Inner_Product
 		(
 			Matrix&
 		);
+		//(破壊的処理)内積を求めます。
 		Matrix Inner_Product_Destructive
 		(
 			Matrix&
 		);
-	};
 
+		//_Mainのポインタを返します。(std::maxなどの関数で使用する用)
+		[[deprecated("参照はお勧めできません。")]] const std::vector<double>* GetVectorP();
+	};
 }
 
 #endif

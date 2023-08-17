@@ -1,7 +1,7 @@
 /*=============================================================
 * NAME      : MatrixImpl.hpp
 * AUTHOR    : SanaeProject
-* VER       : 2.0.1
+* VER       : 2.0.2
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
 * 実装します。
@@ -380,6 +380,7 @@ namespace Sanae{
 		return this->_Size;
 	}
 
+	//(非破壊的処理)内積を求めます。
 	Matrix& Matrix::Inner_Product
 	(
 		Matrix& _Data
@@ -388,6 +389,7 @@ namespace Sanae{
 		this->_Inner_Product(&this->_Main,&this->_Size,&_Data._Main,&_Data._Size,&this->_Main,false);
 		return *this;
 	}
+	//(破壊的処理)内積を求めます。
 	Matrix Matrix::Inner_Product_Destructive
 	(
 		Matrix& _Data
@@ -398,6 +400,12 @@ namespace Sanae{
 		Ret._Size = this->_Size;
 
 		return Ret;
+	}
+
+	//_Mainのポインタを返します。(std::maxなどの関数で使用する用)
+	const std::vector<double>* Matrix::GetVectorP() 
+	{
+		return &this->_Main;
 	}
 }
 
