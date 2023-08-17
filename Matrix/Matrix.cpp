@@ -9,6 +9,8 @@ using namespace Sanae;
 
 int main()
 {
+
+
 /*-----Constructor-----*/
 	Matrix a;
 
@@ -18,8 +20,6 @@ int main()
 		{4,5,6},
 		{7,8,9}
 	};
-	b.SetSize({1,1},true);
-	b.View();
 	/*----------
 		1 2 3
 		4 5 6
@@ -32,6 +32,17 @@ int main()
 		4 5 6
 		7 8 9
 	----------*/
+
+	c = 
+	{
+		{10,11,12},
+		{13,14,15},
+		{16,17,18}
+	};
+
+	Matrix g = b.Inner_Product_Destructive(c);
+	g.View();
+	system("pause");
 
 	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
 	Matrix              d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };

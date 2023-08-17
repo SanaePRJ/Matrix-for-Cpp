@@ -33,6 +33,7 @@ namespace Sanae {
 			std::initializer_list<std::vector<double>>&,
 			std::vector<double>&
 		);
+
 		//行列を表示する。
 		void _View
 		(
@@ -45,6 +46,7 @@ namespace Sanae {
 			std::vector<double>*,
 			SizeT
 		);
+
 		//サラスの方式で解きます。(2次元)
 		double _Det_2
 		(
@@ -74,13 +76,29 @@ namespace Sanae {
 			std::vector<double>&,
 			SizeT
 		);
-		//逆行列を求める
+
+		//逆行列を求めます。
 		void _Inverse_matrix
 		(
 			std::vector<double>*,
 			std::vector<double>*,
 			SizeT
 		);
+
+		//内積を求めます。
+		void _Inner_Product
+		(
+			std::vector<double>*,
+			SizeT*,
+
+			std::vector<double>*,
+			SizeT*,
+
+			std::vector<double>*,
+
+			bool
+		);
+
 		//Define Functions(public)
 	public:
 		//Constructor
@@ -168,6 +186,15 @@ namespace Sanae {
 		Ulong GetSize();
 		//大きさを返します。 first:列 second:行
 		SizeT GetSizeWH();
+
+		Matrix&  Inner_Product
+		(
+			Matrix&
+		);
+		Matrix Inner_Product_Destructive
+		(
+			Matrix&
+		);
 	};
 
 }

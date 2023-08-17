@@ -122,6 +122,33 @@ namespace Sanae{
 		return;
 	}
 
+	//内積を求めます。
+	void Matrix::_Inner_Product
+	(
+		std::vector<double>* _Data1,
+		SizeT*               _Size1,
+
+		std::vector<double>* _Data2,
+		SizeT*               _Size2,
+
+		std::vector<double>* _Store,
+
+		bool                 _Clear
+	) 
+	{
+		if (_Size1 == _Size2)
+			throw std::invalid_argument("Must be same size.");
+
+		Ulong Size = _Size1->first * _Size1->second;
+
+		if (_Clear) {
+			_Store->erase(_Store->begin(), _Store->end());
+			_Store->resize(Size);
+		}
+
+		for (Ulong i = 0; i < Size; i++)
+			(*_Store)[i] = (*_Data1)[i] * (*_Data2)[i];
+	}
 
 	/*------Function public------*/
 	//代入
@@ -248,11 +275,11 @@ namespace Sanae{
 		return std::pair<SizeT, std::vector<double>>{this->_Size, _data};
 	}
 
-	//サイズを変えます。
+	//サイズを変更します。
 	Matrix& Matrix::SetSize
 	(
 		SizeT _Data,
-		bool  _Clear = false
+		bool  _Clear = true
 	)
 	{
 		if (_Clear) 
@@ -343,6 +370,7 @@ namespace Sanae{
 
 		return *this;
 	}
+
 	//大きさを返します。
 	Ulong Matrix::GetSize() {
 		return this->_Main.size();
@@ -350,6 +378,26 @@ namespace Sanae{
 	//大きさを返します。 first:列 second:行
 	SizeT Matrix::GetSizeWH() {
 		return this->_Size;
+	}
+
+	Matrix& Matrix::Inner_Product
+	(
+		Matrix& _Data
+	)
+	{
+		this->_Inner_Product(&this->_Main,&this->_Size,&_Data._Main,&_Data._Size,&this->_Main,false);
+		return *this;
+	}
+	Matrix Matrix::Inner_Product_Destructive
+	(
+		Matrix& _Data
+	) 
+	{
+		Matrix Ret;
+		this->_Inner_Product(&this->_Main, &this->_Size, &_Data._Main, &_Data._Size, &Ret._Main, true);
+		Ret._Size = this->_Size;
+
+		return Ret;
 	}
 }
 
