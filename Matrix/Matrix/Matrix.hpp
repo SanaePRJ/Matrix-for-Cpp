@@ -199,8 +199,14 @@ namespace Sanae {
 			Matrix&
 		);
 
-		//_Mainのポインタを返します。(std::maxなどの関数で使用する用)
-		[[deprecated("参照はお勧めできません。")]] const std::vector<double>* GetVectorP();
+		Matrix& Move
+		(
+			std::vector<double>*,
+			SizeT
+		);
+
+		//_Mainのポインタを返します。(std::max_elementなどの関数で使用する用)
+		const std::vector<double>* GetVectorP();
 	};
 }
 

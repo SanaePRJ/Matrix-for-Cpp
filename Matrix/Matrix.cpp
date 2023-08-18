@@ -8,9 +8,15 @@ using namespace Sanae;
 
 int main()
 {
+	std::vector<double> j = {1,2,3,4};
+	Matrix l;
+	l.Move(&j, SizeT{4,1});
+	l.View();
+	printf("\n\n");
+
 /*-----Constructor-----*/
 	Matrix a;
-	a.GetVectorP();
+	
 	Matrix b = 
 	{
 		{1,2,3},

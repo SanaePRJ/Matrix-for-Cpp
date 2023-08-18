@@ -402,6 +402,18 @@ namespace Sanae{
 		return Ret;
 	}
 
+	Matrix& Matrix::Move
+	(
+		std::vector<double>* _Data,
+		SizeT                _Size
+	)
+	{
+		this->_Main = std::move(*_Data);
+		this->_Size = _Size;
+
+		return *this;
+	}
+
 	//_Mainのポインタを返します。(std::maxなどの関数で使用する用)
 	const std::vector<double>* Matrix::GetVectorP() 
 	{
