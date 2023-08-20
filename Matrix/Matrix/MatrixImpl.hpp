@@ -4,10 +4,10 @@
 * VER       : 2.0.2
 * COPYRIGHGT: Copyright 2023 SanaeProject.
 * 
-* À‘•‚µ‚Ü‚·B
+* å®Ÿè£…ã—ã¾ã™ã€‚
 * 
-* ’ˆÓ:
-* ‚±‚Ìƒtƒ@ƒCƒ‹‚ğƒCƒ“ƒNƒ‹[ƒh‚·‚é‘O‚ÉMatrix.hpp‚ğƒCƒ“ƒNƒ‹[ƒh‚µ‚Ä‚­‚¾‚³‚¢B
+* æ³¨æ„:
+* ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã™ã‚‹å‰ã«Matrix.hppã‚’ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã—ã¦ãã ã•ã„ã€‚
 =============================================================*/
 
 
@@ -23,7 +23,7 @@
 
 namespace Sanae{
 	/*------Function private------*/
-	//‰Šú’l‚ğstd::vector<double>‚Ö•ÏŠ·‚µ‚Ü‚·B
+	//åˆæœŸå€¤ã‚’std::vector<double>ã¸å¤‰æ›ã—ã¾ã™ã€‚
 	void Matrix::_Convert_to_Array
 	(
 		std::initializer_list<std::vector<double>>& _Input,
@@ -35,7 +35,7 @@ namespace Sanae{
 		for (Ulong i = 0; i < _bufs.size(); i++)
 			_Storage.insert(_Storage.end(), _bufs[i].begin(), _bufs[i].end());
 	}
-	//•\¦‚µ‚Ü‚·B
+	//è¡¨ç¤ºã—ã¾ã™ã€‚
 	void Matrix::_View
 	(
 		std::vector<double>* _DataP,
@@ -51,24 +51,24 @@ namespace Sanae{
 
 		return;
 	}
-	//’PˆÊs—ñ‚É‚µ‚Ü‚·B
+	//å˜ä½è¡Œåˆ—ã«ã—ã¾ã™ã€‚
 	void Matrix::_To_Identity_Matrix
 	(
 		std::vector<double>* _Data,
 		SizeT                _Size
 	)
 	{
-		_Data->erase (_Data->begin(), _Data->end());  //‘Sƒf[ƒ^‚Ìíœ
-		_Data->resize(_Size.first * _Size.second);    //ƒTƒCƒY‚Ì•ÏX
+		_Data->erase (_Data->begin(), _Data->end());  //å…¨ãƒ‡ãƒ¼ã‚¿ã®å‰Šé™¤
+		_Data->resize(_Size.first * _Size.second);    //ã‚µã‚¤ã‚ºã®å¤‰æ›´
 
 		for (Ulong i = 0; i < _Size.first; i++)
 			for (Ulong j = 0; j < _Size.second; j++)
-				(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,j })] = i == j ? 1 : 0; //s‚Æ—ñ‚Ì”Ô†‚ª“¯‚¶ê‡1‚»‚êˆÈŠO‚Ìê‡0
+				(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,j })] = i == j ? 1 : 0; //è¡Œã¨åˆ—ã®ç•ªå·ãŒåŒã˜å ´åˆ1ãã‚Œä»¥å¤–ã®å ´åˆ0
 
 		return;
 	}
 
-	//‹ts—ñ‚ğ‹‚ß‚Ü‚·B
+	//é€†è¡Œåˆ—ã‚’æ±‚ã‚ã¾ã™ã€‚
 	void Matrix::_Inverse_matrix
 	(
 		std::vector<double>* _Data,
@@ -79,16 +79,16 @@ namespace Sanae{
 		if (this->_Det(this->_Main, this->_Size) == 0)
 			throw std::runtime_error("Inverse does not exist.");
 
-		//’PˆÊs—ñ‚É‚·‚éB
+		//å˜ä½è¡Œåˆ—ã«ã™ã‚‹ã€‚
 		this->_To_Identity_Matrix(_Storage, _Size);
 
-		//_pos:Šî€
+		//_pos:åŸºæº–
 		for (Ulong _pos = 0; _pos < _Size.first; _pos++) {
 			for (Ulong y = 0; y < _Size.second; y++) {
 				if (_pos != y) {
 					double div = 0;
 
-					//Šî€‚ª0‚Ìê‡s‚ğ“ü‚ê‘Ö‚¦‚éB
+					//åŸºæº–ãŒ0ã®å ´åˆè¡Œã‚’å…¥ã‚Œæ›¿ãˆã‚‹ã€‚
 					if ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })] == 0) {
 						for (Ulong findy = 0; findy < _Size.second; findy++) {
 							if ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,findy })] != 0) {
@@ -101,7 +101,7 @@ namespace Sanae{
 					//ax+b=0 x -= b/a  
 					div = ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,y })] / (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })]);
 
-					//‚»‚Ì‘¼—ñ‚Ö‚Ì“K—p
+					//ãã®ä»–åˆ—ã¸ã®é©ç”¨
 					for (Ulong x = 0; x < _Size.first; x++) {
 						(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { x,y })] -= div * ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { x,_pos })]);
 						(*_Storage)[this->_Convert_to_ArrayNum(_Size.first, { x,y })] -= div * ((*_Storage)[this->_Convert_to_ArrayNum(_Size.first, { x,_pos })]);
@@ -110,7 +110,7 @@ namespace Sanae{
 			}
 		}
 
-		//Šî€‚ª1‚É‚È‚Á‚Ä‚¢‚È‚¢ê‡‚»‚Ìs‚Ö“K—p‚µ1‚É‚·‚éB
+		//åŸºæº–ãŒ1ã«ãªã£ã¦ã„ãªã„å ´åˆãã®è¡Œã¸é©ç”¨ã—1ã«ã™ã‚‹ã€‚
 		for (Ulong _pos = 0; _pos < _Size.first; _pos++) {
 			for (Ulong _x = 0; _x < _Size.first; _x++) {
 				double _is_zero_buf = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })];
@@ -122,7 +122,7 @@ namespace Sanae{
 		return;
 	}
 
-	//“àÏ‚ğ‹‚ß‚Ü‚·B
+	//å†…ç©ã‚’æ±‚ã‚ã¾ã™ã€‚
 	void Matrix::_Inner_Product
 	(
 		std::vector<double>* _Data1,
@@ -136,7 +136,7 @@ namespace Sanae{
 		bool                 _Clear
 	) 
 	{
-		if (_Size1 == _Size2)
+		if (_Size1 != _Size2)
 			throw std::invalid_argument("Must be same size.");
 
 		Ulong Size = _Size1->first * _Size1->second;
@@ -151,7 +151,7 @@ namespace Sanae{
 	}
 
 	/*------Function public------*/
-	//‘ã“ü
+	//ä»£å…¥
 	Matrix& Matrix::operator=
 	(
 		const Matrix& _Data
@@ -179,8 +179,8 @@ namespace Sanae{
 		return *this;
 	}
 
-	/*”j‰ó“Iˆ—*/
-	//‰‰Z
+	/*ç ´å£Šçš„å‡¦ç†*/
+	//æ¼”ç®—
 	Matrix& Matrix::operator+=
 	(
 		const Matrix& _Data
@@ -225,8 +225,8 @@ namespace Sanae{
 		return *this;
 	}
 
-	/*”ñ”j‰ó“Iˆ—*/
-	//‰‰Z
+	/*éç ´å£Šçš„å‡¦ç†*/
+	//æ¼”ç®—
 	Matrix  Matrix::operator+
 	(
 		const Matrix& _Data
@@ -275,7 +275,7 @@ namespace Sanae{
 		return std::pair<SizeT, std::vector<double>>{this->_Size, _data};
 	}
 
-	//ƒTƒCƒY‚ğ•ÏX‚µ‚Ü‚·B
+	//ã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã—ã¾ã™ã€‚
 	Matrix& Matrix::SetSize
 	(
 		SizeT _Data,
@@ -288,13 +288,13 @@ namespace Sanae{
 		}
 		else 
 		{
-			//ƒTƒCƒY‘‘å
+			//ã‚µã‚¤ã‚ºå¢—å¤§
 			if (_Data.first > this->_Size.first) {
 				for (Ulong i = 1; i < _Data.second; i++)
 					this->_Main.insert(this->_Main.begin() + (this->_Size.first * i) + (i - 1), 0);
 			}
 
-			//ƒTƒCƒYŒ¸­
+			//ã‚µã‚¤ã‚ºæ¸›å°‘
 			if (_Data.first < this->_Size.first) {
 				for (Ulong i = 1; i < _Data.second; i++)
 					this->_Main.erase(this->_Main.begin() + _Data.first, this->_Main.begin() + _Data.first + (this->_Size.first - _Data.first));
@@ -306,7 +306,7 @@ namespace Sanae{
 
 		return *this;
 	}
-	//(”j‰ó)s‚ğ“ü‚ê‘Ö‚¦‚éB
+	//(ç ´å£Š)è¡Œã‚’å…¥ã‚Œæ›¿ãˆã‚‹ã€‚
 	Matrix& Matrix::Swap_Line
 	(
 		Ulong _Line1,
@@ -317,7 +317,7 @@ namespace Sanae{
 
 		return *this;
 	}
-	//(”j‰ó)—ñ‚ğ“ü‚ê‘Ö‚¦‚éB
+	//(ç ´å£Š)åˆ—ã‚’å…¥ã‚Œæ›¿ãˆã‚‹ã€‚
 	Matrix& Matrix::Swap_Column
 	(
 		Ulong _Column1,
@@ -328,7 +328,7 @@ namespace Sanae{
 
 		return *this;
 	}
-	//’PˆÊs—ñ‚É‚·‚éB
+	//å˜ä½è¡Œåˆ—ã«ã™ã‚‹ã€‚
 	Matrix& Matrix::Ident()
 	{
 		this->_To_Identity_Matrix(&this->_Main, this->_Size);
@@ -336,12 +336,12 @@ namespace Sanae{
 		return *this;
 	}
 
-	//(”ñ”j‰ó)s—ñ®‚ğ‹‚ß‚Ü‚·B 
+	//(éç ´å£Š)è¡Œåˆ—å¼ã‚’æ±‚ã‚ã¾ã™ã€‚ 
 	double Matrix::Det()
 	{
 		return this->_Det(this->_Main, this->_Size);
 	}
-	//(”ñ”j‰ó)s—ñ‚Ì“]’u‚ğs‚¢‚Ü‚·B
+	//(éç ´å£Š)è¡Œåˆ—ã®è»¢ç½®ã‚’è¡Œã„ã¾ã™ã€‚
 	Matrix Matrix::Transpose()
 	{
 		std::vector<double> _Data;
@@ -353,7 +353,7 @@ namespace Sanae{
 
 		return std::pair<SizeT, std::vector<double>>{ SizeT{this->_Size.second, this->_Size.first}, _Data };
 	}
-	//(”ñ”j‰ó)‹ts—ñ‚ğ•Ô‚µ‚Ü‚·B
+	//(éç ´å£Š)é€†è¡Œåˆ—ã‚’è¿”ã—ã¾ã™ã€‚
 	Matrix Matrix::Inverse()
 	{
 		std::vector<double> _to;
@@ -363,7 +363,7 @@ namespace Sanae{
 
 		return std::pair<SizeT, std::vector<double>>{ this->_Size, _to };
 	}
-	//s—ñ‚ğ•\¦‚µ‚Ü‚·B
+	//è¡Œåˆ—ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚
 	Matrix& Matrix::View()
 	{
 		this->_View(&this->_Main, this->_Size);
@@ -371,16 +371,16 @@ namespace Sanae{
 		return *this;
 	}
 
-	//‘å‚«‚³‚ğ•Ô‚µ‚Ü‚·B
+	//å¤§ãã•ã‚’è¿”ã—ã¾ã™ã€‚
 	Ulong Matrix::GetSize() {
 		return this->_Main.size();
 	}
-	//‘å‚«‚³‚ğ•Ô‚µ‚Ü‚·B first:—ñ second:s
+	//å¤§ãã•ã‚’è¿”ã—ã¾ã™ã€‚ first:åˆ— second:è¡Œ
 	SizeT Matrix::GetSizeWH() {
 		return this->_Size;
 	}
 
-	//(”ñ”j‰ó“Iˆ—)“àÏ‚ğ‹‚ß‚Ü‚·B
+	//(éç ´å£Šçš„å‡¦ç†)å†…ç©ã‚’æ±‚ã‚ã¾ã™ã€‚
 	Matrix& Matrix::Inner_Product
 	(
 		Matrix& _Data
@@ -389,7 +389,7 @@ namespace Sanae{
 		this->_Inner_Product(&this->_Main,&this->_Size,&_Data._Main,&_Data._Size,&this->_Main,false);
 		return *this;
 	}
-	//(”j‰ó“Iˆ—)“àÏ‚ğ‹‚ß‚Ü‚·B
+	//(ç ´å£Šçš„å‡¦ç†)å†…ç©ã‚’æ±‚ã‚ã¾ã™ã€‚
 	Matrix Matrix::Inner_Product_Destructive
 	(
 		Matrix& _Data
@@ -414,7 +414,7 @@ namespace Sanae{
 		return *this;
 	}
 
-	//_Main‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚µ‚Ü‚·B(std::max‚È‚Ç‚ÌŠÖ”‚Åg—p‚·‚é—p)
+	//_Mainã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã—ã¾ã™ã€‚(std::maxãªã©ã®é–¢æ•°ã§ä½¿ç”¨ã™ã‚‹ç”¨)
 	const std::vector<double>* Matrix::GetVectorP() 
 	{
 		return &this->_Main;
