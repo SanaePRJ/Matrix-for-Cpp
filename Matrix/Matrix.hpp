@@ -9,8 +9,8 @@
 
 
 /*-----Include Guard-----*/
-#ifndef _SANAE_MATRIX_HPP_
-#define _SANAE_MATRIX_HPP_
+#ifndef SANAE_MATRIX_HPP
+#define SANAE_MATRIX_HPP
 
 
 
@@ -19,17 +19,17 @@
 #include "MatrixBase.hpp"
 
 /*-----Check Version C++14 or more and Is existing-----*/
-#if defined(_CPP_14_OR_MORE_) && defined(_SANAE_MATRIXBASE_HPP_ALL_INCLUDE_)
+#if defined(SANAE_CPP_14_OR_MORE) && defined(SANAE_MATRIXBASE_HPP_ALL_INCLUDE)
 
 
 
 
 /*-----Define Class-----*/
 namespace Sanae {
-	 template<typename _T> class _Matrix_;
+	 template<typename T> class MatrixT;
 
-	 using Matrix      = _Matrix_<double>;
-	 using Matrix_Lite = _Matrix_<float >;
+	 using Matrix      = MatrixT<double>;
+	 using Matrix_Lite = MatrixT<float >;
 }
 
 
@@ -42,7 +42,7 @@ namespace Sanae {
 -------------------------------------------------------------*/
 
 
-template<typename _T> class Sanae::_Matrix_ :public Sanae::_MatrixBase<_T>
+template<typename T> class Sanae::MatrixT :public Sanae::MatrixBase<T>
 {
 
 
@@ -54,19 +54,19 @@ protected:
 	* Convert the initial value to std::vector<_T>.
 	* 初期値をstd::vector<_T>へ変換します。
 	----------------------------------------------*/
-	void _Convert_to_Array
+	void m_Convert_to_Array
 	(
-		std::initializer_list<std::vector<_T>>&,
-		std::vector<_T>&
+		std::initializer_list<std::vector<T>>&,
+		std::vector<T>&
 	);
 
 	/*----------------------------------------------
 	* Display the matrix.
 	* 行列を表示します。
 	----------------------------------------------*/
-	void _View
+	void m_View
 	(
-		std::vector<_T>*,
+		std::vector<T>*,
 		SizeT
 	);
 
@@ -74,9 +74,9 @@ protected:
 	* Identity matrix.
 	* 単位行列にします。
 	----------------------------------------------*/
-	void _To_Identity_Matrix
+	void m_To_Identity_Matrix
 	(
-		std::vector<_T>*,
+		std::vector<T>*,
 		SizeT
 	);
 
@@ -86,10 +86,10 @@ protected:
 	* Find the determinant using Salas' method. (2D)
 	* サラスの方式で行列式を求めます。(2次元)
 	----------------------------------------------*/
-	_T _Det_2
+	T m_Det_2
 	(
-		std::vector<_T>*,
-		_T,
+		std::vector<T>*,
+		T,
 		SizeT
 	);
 
@@ -99,33 +99,33 @@ protected:
 	* 余因子展開をして行列を一次元下げます。
 	下げた値は_Storageに格納され係数は_Coeffに格納されます。
 	----------------------------------------------*/
-	void _Confactor_expansion_1
+	void m_Confactor_expansion_1
 	(
-		std::vector<_T>&,
+		std::vector<T>&,
 		SizeT,
-		std::vector<std::vector<_T>>*,
-		std::vector<_T>*
+		std::vector<std::vector<T>>*,
+		std::vector<T>*
 	);
 
 	/*----------------------------------------------
 	* Perform cofactor expansion until it becomes two-dimensional.
 	* 二次元になるまで余因子展開を行います。
 	----------------------------------------------*/
-	std::pair<std::vector<std::vector<_T>>, std::vector<_T>>
-		_Confactor_expansion_to_2
+	std::pair<std::vector<std::vector<T>>, std::vector<T>>
+		m_Confactor_expansion_to_2
 		(
-			std::vector<_T>&,
+			std::vector<T>&,
 			SizeT,
-			double = 1
+			T = 1
 		);
 
 	/*----------------------------------------------
 	* Find the determinant.
 	* 行列式を求めます。
 	----------------------------------------------*/
-	double _Det
+	T m_Det
 	(
-		std::vector<_T>&,
+		std::vector<T>&,
 		SizeT
 	);
 
@@ -133,10 +133,10 @@ protected:
 	* Find the inverse of the matrix.
 	* 逆行列を求めます。
 	----------------------------------------------*/
-	void _Inverse_matrix
+	void m_Inverse_matrix
 	(
-		std::vector<_T>*,
-		std::vector<_T>*,
+		std::vector<T>*,
+		std::vector<T>*,
 		SizeT
 	);
 
@@ -144,15 +144,15 @@ protected:
 	* Find the inner product.
 	* 内積を求めます。
 	----------------------------------------------*/
-	void _Inner_Product
+	void m_Inner_Product
 	(
-		std::vector<_T>*,
+		std::vector<T>*,
 		SizeT*,
 
-		std::vector<_T>*,
+		std::vector<T>*,
 		SizeT*,
 
-		std::vector<_T>*,
+		std::vector<T>*,
 
 		bool
 	);
@@ -163,69 +163,69 @@ public:
 
 
 	/*-----Constructor-----*/
-	using _MatrixBase<_T>::_MatrixBase;
+	using MatrixBase<T>::MatrixBase;
 
 
 	/*----------------------------------------------
 	* Assignment.
 	* 代入
 	----------------------------------------------*/
-	_Matrix_& operator=
+	MatrixT& operator=
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_& operator=
+	MatrixT& operator=
 	(
-		std::initializer_list<std::vector<_T>>
+		std::initializer_list<std::vector<T>>
 	);
 
 	/*----------------------------------------------
 	* Destructive processing
 	* 破壊的処理
 	----------------------------------------------*/
-	_Matrix_& operator+=
+	MatrixT& operator+=
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_& operator-=
+	MatrixT& operator-=
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_& operator*=
+	MatrixT& operator*=
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_& operator*=
+	MatrixT& operator*=
 	(
-		_T
+		T
 	);
 
 	/*----------------------------------------------
 	*  Non-destructive processing.
 	* 非破壊的処理
 	----------------------------------------------*/
-	_Matrix_  operator+
+	MatrixT  operator+
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_  operator-
+	MatrixT  operator-
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_  operator*
+	MatrixT  operator*
 	(
-		const _Matrix_&
+		const MatrixT&
 	);
-	_Matrix_  operator*
+	MatrixT  operator*
 	(
-		_T
+		T
 	);
 
 	/*----------------------------------------------
 	* (Destructive processing) Resize.
 	* (破壊的処理)サイズ変更
 	----------------------------------------------*/
-	_Matrix_& SetSize
+	MatrixT& SetSize
 	(
 		SizeT,
 		bool = true
@@ -235,7 +235,7 @@ public:
 	* (Destructive processing) Swap lines.
 	* (破壊的処理)行と行を入れ替える。
 	----------------------------------------------*/
-	_Matrix_& Swap_Line
+	MatrixT& Swap_Line
 	(
 		Ulong,
 		Ulong
@@ -245,7 +245,7 @@ public:
 	* (Destructive processing) Swap Columns.
 	* (破壊的処理)列を入れ替える。
 	----------------------------------------------*/
-	_Matrix_& Swap_Column
+	MatrixT& Swap_Column
 	(
 		Ulong,
 		Ulong
@@ -256,31 +256,31 @@ public:
 	Make it an identity matrix.
 	* (破壊的処理)単位行列にする。
 	----------------------------------------------*/
-	_Matrix_& Ident();
+	MatrixT& Ident();
 
 	/*----------------------------------------------
 	* (Non-destructive processing) Find the determinant.
 	* (非破壊的処理)行列式を求めます。
 	----------------------------------------------*/
-	_T Det();
+	T Det();
 
 	/*----------------------------------------------
 	* (Non-destructive processing) Transposes a matrix.
 	* (非破壊的処理)行列の転置を行います。
 	----------------------------------------------*/
-	_Matrix_ Transpose();
+	MatrixT Transpose();
 
 	/*----------------------------------------------
 	* (Non-destructive processing) Returns the inverse of the matrix.
 	* (非破壊的処理)逆行列を返します。
 	----------------------------------------------*/
-	_Matrix_ Inverse();
+	MatrixT Inverse();
 
 	/*----------------------------------------------
 	* Display the matrix.
 	* 行列を表示します。
 	----------------------------------------------*/
-	_Matrix_& View();
+	MatrixT& View();
 
 	/*----------------------------------------------
 	* Returns the size.
@@ -298,27 +298,27 @@ public:
 	* (Destructive processing) Find the dot product.
 	* (破壊的処理)内積を求めます。
 	----------------------------------------------*/
-	_Matrix_ Inner_Product
+	MatrixT Inner_Product
 	(
-		_Matrix_&
+		MatrixT&
 	);
 
 	/*----------------------------------------------
 	* (Destructive processing) Find the dot product.
 	* (破壊的処理)内積を求めます。
 	----------------------------------------------*/
-	_Matrix_& Inner_Product_Destructive
+	MatrixT& Inner_Product_Destructive
 	(
-		_Matrix_&
+		MatrixT&
 	);
 
 	/*----------------------------------------------
 	* Transfer an array.
 	* 配列を譲渡します。
 	----------------------------------------------*/
-	_Matrix_& Move
+	MatrixT& Move
 	(
-		std::vector<_T>*,
+		std::vector<T>*,
 		SizeT
 	);
 
@@ -328,14 +328,14 @@ public:
 	* _Mainのポインタを返します。
 	(std::max_elementなどの関数で使用することができます。)
 	----------------------------------------------*/
-	const std::vector<_T>* GetVectorP();
+	const std::vector<T>* GetVectorP();
 
 	/*----------------------------------------------
 	* Returns a pointer to _Main.
 	(Can be used in functions such as std::max_element.)
 	* 同じ大きさで形を変更します。
 	----------------------------------------------*/
-	_Matrix_& Deformation
+	MatrixT& Deformation
 	(
 		SizeT
 	);
@@ -358,34 +358,34 @@ public:
 * Convert the initial value to std::vector<_T>.
 * 初期値をstd::vector<_T>へ変換します。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_Convert_to_Array
+template<typename T>
+void Sanae::MatrixT<T>::m_Convert_to_Array
 (
-	std::initializer_list<std::vector<_T>>& _Input,
-	std::vector<_T>& _Storage
+	std::initializer_list<std::vector<T>>& a_Input,
+	std::vector<T>&                        a_Storage
 )
 {
-	std::vector<std::vector<_T>> _bufs = _Input;
+	std::vector<std::vector<T>> _bufs = a_Input;
 
 	for (Ulong i = 0; i < _bufs.size(); i++)
-		_Storage.insert(_Storage.end(), _bufs[i].begin(), _bufs[i].end());
+		a_Storage.insert(a_Storage.end(), _bufs[i].begin(), _bufs[i].end());
 }
 
 /*----------------------------------------------
 * Display the matrix.
 * 行列を表示します。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_View
+template<typename T>
+void Sanae::MatrixT<T>::m_View
 (
-	std::vector<_T>* _DataP,
-	SizeT                _Size
+	std::vector<T>* a_DataP,
+	SizeT           a_Size
 )
 {
-	for (Ulong i = 0; i < _DataP->size(); i++) {
-		if (i != 0 && i % _Size.first == 0) std::cout << "\n";
+	for (Ulong i = 0; i < a_DataP->size(); i++) {
+		if (i != 0 && i % a_Size.first == 0) std::cout << "\n";
 
-		std::cout << (*_DataP)[i] << " ";
+		std::cout << (*a_DataP)[i] << " ";
 	}
 	std::cout << "\n";
 
@@ -396,19 +396,19 @@ void Sanae::_Matrix_<_T>::_View
 * Identity matrix.
 * 単位行列にします。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_To_Identity_Matrix
+template<typename T>
+void Sanae::MatrixT<T>::m_To_Identity_Matrix
 (
-	std::vector<_T>*     _Data,
-	SizeT                _Size
+	std::vector<T>*     a_Data,
+	SizeT               a_Size
 )
 {
-	_Data->erase(_Data->begin(), _Data->end());  //全データの削除
-	_Data->resize(_Size.first * _Size.second);    //サイズの変更
+	a_Data->erase(a_Data->begin(), a_Data->end());  //全データの削除
+	a_Data->resize(a_Size.first * a_Size.second);    //サイズの変更
 
-	for (Ulong i = 0; i < _Size.first; i++)
-		for (Ulong j = 0; j < _Size.second; j++)
-			(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,j })] = i == j ? 1 : 0; //行と列の番号が同じ場合1それ以外の場合0
+	for (Ulong i = 0; i < a_Size.first; i++)
+		for (Ulong j = 0; j < a_Size.second; j++)
+			(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { i,j })] = i == j ? (T)1 : (T)0; //行と列の番号が同じ場合1それ以外の場合0
 
 	return;
 }
@@ -418,21 +418,21 @@ void Sanae::_Matrix_<_T>::_To_Identity_Matrix
 * Find the determinant using Salas' method. (2D)
 * サラスの方式で行列式を求めます。(2次元)
 ----------------------------------------------*/
-template<typename _T>
-_T Sanae::_Matrix_<_T>::_Det_2
+template<typename T>
+T Sanae::MatrixT<T>::m_Det_2
 (
-	std::vector<_T>* _DataP,
-	_T               _Coeff,
-	SizeT            _Size
+	std::vector<T>* a_DataP,
+	T               a_Coeff,
+	SizeT           a_Size
 )
 {
-	if (_Size.first != _Size.second)
+	if (a_Size.first != a_Size.second)
 		throw std::invalid_argument("Must be same column and line.");
 
-	if (_Size.first != 2)
+	if (a_Size.first != 2)
 		throw std::invalid_argument("Must pass 2 as argument.");
 
-	return _Coeff * (((*_DataP)[this->_Convert_to_ArrayNum(2, { 0,0 })] * (*_DataP)[this->_Convert_to_ArrayNum(2, { 1,1 })]) - ((*_DataP)[this->_Convert_to_ArrayNum(2, { 1,0 })] * (*_DataP)[this->_Convert_to_ArrayNum(2, { 0,1 })]));
+	return a_Coeff * (((*a_DataP)[this->m_Convert_to_ArrayNum(2, { 0,0 })] * (*a_DataP)[this->m_Convert_to_ArrayNum(2, { 1,1 })]) - ((*a_DataP)[this->m_Convert_to_ArrayNum(2, { 1,0 })] * (*a_DataP)[this->m_Convert_to_ArrayNum(2, { 0,1 })]));
 }
 
 /*----------------------------------------------
@@ -441,28 +441,28 @@ The lowered value is stored in _Storage and the coefficient is stored in _Coeff.
 * 余因子展開をして行列を一次元下げます。
 下げた値は_Storageに格納され係数は_Coeffに格納されます。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_Confactor_expansion_1
+template<typename T>
+void Sanae::MatrixT<T>::m_Confactor_expansion_1
 (
-	std::vector<_T>& _Data,
-	SizeT                             _Size,
-	std::vector<std::vector<_T>>* _Storage,
-	std::vector<_T>* _Coeff
+	std::vector<T>&              a_Data,
+	SizeT                        a_Size,
+	std::vector<std::vector<T>>* a_Storage,
+	std::vector<T>*              a_Coeff
 )
 {
-	if (_Size.first != _Size.second)
+	if (a_Size.first != a_Size.second)
 		throw std::invalid_argument("Must be same size.");
 
-	for (Ulong i = 0; i < _Size.first; i++) {
-		std::vector<double> _buffer;
+	for (Ulong i = 0; i < a_Size.first; i++) {
+		std::vector<T> _buffer;
 
-		for (Ulong y = 0; y < _Size.first; y++)
-			for (Ulong x = 0; x < _Size.second; x++)
+		for (Ulong y = 0; y < a_Size.first; y++)
+			for (Ulong x = 0; x < a_Size.second; x++)
 				if (x != 0 && y != i)
-					_buffer.push_back(_Data[this->_Convert_to_ArrayNum(_Size.first, { x,y })]);
+					_buffer.push_back(a_Data[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })]);
 
-		_Coeff->push_back(_Data[this->_Convert_to_ArrayNum(_Size.first, { 0,i })] * std::pow(-1, 1 + (i + 1)));
-		_Storage->push_back(_buffer);
+		a_Coeff->push_back(a_Data[this->m_Convert_to_ArrayNum(a_Size.first, { 0,i })] * (T)std::pow(-1, 1 + (i + 1)));
+		a_Storage->push_back(_buffer);
 	}
 }
 
@@ -470,38 +470,38 @@ void Sanae::_Matrix_<_T>::_Confactor_expansion_1
 * Perform cofactor expansion until it becomes two-dimensional.
 * 二次元になるまで余因子展開を行います。
 ----------------------------------------------*/
-template<typename _T>
-std::pair<std::vector<std::vector<_T>>, std::vector<_T>>
-Sanae::_Matrix_<_T>::_Confactor_expansion_to_2
+template<typename T>
+std::pair<std::vector<std::vector<T>>, std::vector<T>>
+Sanae::MatrixT<T>::m_Confactor_expansion_to_2
 (
-	std::vector<_T>&     _Data,
-	SizeT                _Size,
-	double               _In_Coeff
+	std::vector<T>&     a_Data,
+	SizeT               a_Size,
+	T              a_In_Coeff
 )
 {
-	if (_Size.first != _Size.second)
+	if (a_Size.first != a_Size.second)
 		throw std::invalid_argument("Must be same size.");
 
-	if (_Size.first < 3)
+	if (a_Size.first < 3)
 		throw std::invalid_argument("Must pass above 3 as argument.");
 
-	std::vector<std::vector<double>> _buf;   //行列格納用
-	std::vector<double>              _coeff; //係数格納用
+	std::vector<std::vector<T>> _buf;   //行列格納用
+	std::vector<T>              _coeff; //係数格納用
 
-	this->_Confactor_expansion_1(_Data, _Size, &_buf, &_coeff); //一次元下げる
+	this->m_Confactor_expansion_1(a_Data, a_Size, &_buf, &_coeff); //一次元下げる
 
 	for (Ulong i = 0; i < _coeff.size(); i++)
-		_coeff[i] *= _In_Coeff;
+		_coeff[i] *= a_In_Coeff;
 
-	if (_Size.first == 3)
+	if (a_Size.first == 3)
 		return { _buf,_coeff };
 
-	std::vector<std::pair<std::vector<std::vector<double>>, std::vector<double>>> _bufs;
+	std::vector<std::pair<std::vector<std::vector<T>>, std::vector<T>>> _bufs;
 	for (Ulong i = 0; i < _buf.size(); i++)
-		_bufs.push_back(this->_Confactor_expansion_to_2(_buf[i], { _Size.first - 1,_Size.second - 1 }, _coeff[i])); //自分自身を呼び出す。
+		_bufs.push_back(this->m_Confactor_expansion_to_2(_buf[i], { a_Size.first - 1,a_Size.second - 1 }, _coeff[i])); //自分自身を呼び出す。
 
 	//行列を係数の格納
-	std::pair<std::vector<std::vector<double>>, std::vector<double>> _retdata;
+	std::pair<std::vector<std::vector<T>>, std::vector<T>> _retdata;
 
 	for (Ulong i = 0; i < _bufs.size(); i++) {
 		for (Ulong j = 0; j < _bufs[i].first.size(); j++) {
@@ -517,30 +517,30 @@ Sanae::_Matrix_<_T>::_Confactor_expansion_to_2
 * Find the determinant.
 * 行列式を求めます。
 ----------------------------------------------*/
-template<typename _T>
-double Sanae::_Matrix_<_T>::_Det
+template<typename T>
+T Sanae::MatrixT<T>::m_Det
 (
-	std::vector<_T>&     _Data,
-	SizeT                _Size
+	std::vector<T>&     a_Data,
+	SizeT               a_Size
 )
 {
-	if (_Size.first != _Size.second)
+	if (a_Size.first != a_Size.second)
 		throw std::invalid_argument("Must be same size.");
 
-	switch (_Size.first) {
+	switch (a_Size.first) {
 	case 1:
-		return _Data[0];
+		return a_Data[0];
 	case 2:
-		return this->_Det_2(&_Data, 1, { 2,2 });
+		return this->m_Det_2(&a_Data, 1, { 2,2 });
 	default:
 		break;
 	}
 
-	double _ret = 0;
-	std::pair<std::vector<std::vector<double>>, std::vector<double>> _buf = this->_Confactor_expansion_to_2(_Data, _Size);
+	T _ret = 0;
+	std::pair<std::vector<std::vector<T>>, std::vector<T>> _buf = this->m_Confactor_expansion_to_2(a_Data, a_Size);
 
 	for (Ulong i = 0; i < _buf.first.size(); i++)
-		_ret += this->_Det_2(&_buf.first[i], _buf.second[i], { 2,2 });
+		_ret += this->m_Det_2(&_buf.first[i], _buf.second[i], { 2,2 });
 
 	return _ret;
 }
@@ -549,54 +549,54 @@ double Sanae::_Matrix_<_T>::_Det
 * Find the inverse of the matrix.
 * 逆行列を求めます。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_Inverse_matrix
+template<typename T>
+void Sanae::MatrixT<T>::m_Inverse_matrix
 (
-	std::vector<_T>* _Data,
-	std::vector<_T>* _Storage,
-	SizeT            _Size
+	std::vector<T>* a_Data,
+	std::vector<T>* a_Storage,
+	SizeT           a_Size
 )
 {
-	if (this->_Det(this->_Main, this->_Size) == 0)
+	if (this->m_Det(this->m_Main, this->m_Size) == 0)
 		throw std::runtime_error("Inverse does not exist.");
 
 	//単位行列にする。
-	this->_To_Identity_Matrix(_Storage, _Size);
+	this->m_To_Identity_Matrix(a_Storage, a_Size);
 
 	//_pos:基準
-	for (Ulong _pos = 0; _pos < _Size.first; _pos++) {
-		for (Ulong y = 0; y < _Size.second; y++) {
+	for (Ulong _pos = 0; _pos < a_Size.first; _pos++) {
+		for (Ulong y = 0; y < a_Size.second; y++) {
 			if (_pos != y) {
-				_T div = 0;
+				T div = 0;
 
 				//基準が0の場合行を入れ替える。
-				if ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })] == 0) {
-					for (Ulong findy = 0; findy < _Size.second; findy++) {
-						if ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,findy })] != 0) {
-							this->_Swap_Line(_pos, findy, _Data, _Size);
-							this->_Swap_Line(_pos, findy, _Storage, _Size);
+				if ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,_pos })] == 0) {
+					for (Ulong findy = 0; findy < a_Size.second; findy++) {
+						if ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,findy })] != 0) {
+							this->m_Swap_Line(_pos, findy, a_Data, a_Size);
+							this->m_Swap_Line(_pos, findy, a_Storage, a_Size);
 						}
 					}
 				}
 
 				//ax+b=0 x -= b/a  
-				div = ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,y })] / (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })]);
+				div = ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,y })] / (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,_pos })]);
 
 				//その他列への適用
-				for (Ulong x = 0; x < _Size.first; x++) {
-					(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { x,y })] -= div * ((*_Data)[this->_Convert_to_ArrayNum(_Size.first, { x,_pos })]);
-					(*_Storage)[this->_Convert_to_ArrayNum(_Size.first, { x,y })] -= div * ((*_Storage)[this->_Convert_to_ArrayNum(_Size.first, { x,_pos })]);
+				for (Ulong x = 0; x < a_Size.first; x++) {
+					(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })] -= div * ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { x,_pos })]);
+					(*a_Storage)[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })] -= div * ((*a_Storage)[this->m_Convert_to_ArrayNum(a_Size.first, { x,_pos })]);
 				}
 			}
 		}
 	}
 
 	//基準が1になっていない場合その行へ適用し1にする。
-	for (Ulong _pos = 0; _pos < _Size.first; _pos++) {
-		for (Ulong _x = 0; _x < _Size.first; _x++) {
-			_T _is_zero_buf = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _pos,_pos })];
+	for (Ulong _pos = 0; _pos < a_Size.first; _pos++) {
+		for (Ulong _x = 0; _x < a_Size.first; _x++) {
+			T _is_zero_buf = (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,_pos })];
 			if (_is_zero_buf != 0)
-				(*_Storage)[this->_Convert_to_ArrayNum(_Size.first, { _x,_pos })] /= _is_zero_buf;
+				(*a_Storage)[this->m_Convert_to_ArrayNum(a_Size.first, { _x,_pos })] /= _is_zero_buf;
 		}
 	}
 
@@ -607,32 +607,32 @@ void Sanae::_Matrix_<_T>::_Inverse_matrix
 * Find the inner product.
 * 内積を求めます。
 ----------------------------------------------*/
-template<typename _T>
-void Sanae::_Matrix_<_T>::_Inner_Product
+template<typename T>
+void Sanae::MatrixT<T>::m_Inner_Product
 (
-	std::vector<_T>* _Data1,
-	SizeT* _Size1,
+	std::vector<T>* a_Data1,
+	SizeT*          a_Size1,
 
-	std::vector<_T>* _Data2,
-	SizeT* _Size2,
+	std::vector<T>* a_Data2,
+	SizeT*          a_Size2,
 
-	std::vector<_T>* _Store,
+	std::vector<T>* a_Store,
 
-	bool                 _Clear
+	bool            a_Clear
 )
 {
-	if (_Size1 == _Size2)
+	if (a_Size1 == a_Size2)
 		throw std::invalid_argument("Must be same size.");
 
-	Ulong Size = _Size1->first * _Size1->second;
+	Ulong Size = a_Size1->first * a_Size1->second;
 
-	if (_Clear) {
-		_Store->erase(_Store->begin(), _Store->end());
-		_Store->resize(Size);
+	if (a_Clear) {
+		a_Store->erase(a_Store->begin(), a_Store->end());
+		a_Store->resize(Size);
 	}
 
 	for (Ulong i = 0; i < Size; i++)
-		(*_Store)[i] = (*_Data1)[i] * (*_Data2)[i];
+		(*a_Store)[i] = (*a_Data1)[i] * (*a_Data2)[i];
 }
 
 
@@ -643,31 +643,31 @@ void Sanae::_Matrix_<_T>::_Inner_Product
 * Assignment.
 * 代入
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator=
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	this->_Size = _Data._Size;
-	this->_Main = _Data._Main;
+	this->m_Size = a_Data.m_Size;
+	this->m_Main = a_Data.m_Main;
 
 	return *this;
 }
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator=
 (
-	std::initializer_list<std::vector<_T>> _In
+	std::initializer_list<std::vector<T>> a_In
 )
 {
-	this->_Main.erase(this->_Main.begin(), this->_Main.end());
-	std::vector<std::vector<_T>> _buf = _In;
+	this->m_Main.erase(this->m_Main.begin(), this->m_Main.end());
+	std::vector<std::vector<T>> _buf = a_In;
 
-	this->_Size.second = _In.size();
-	this->_Size.first = _buf[0].size();
+	this->m_Size.second = a_In.size();
+	this->m_Size.first  = _buf[0].size();
 
-	for (Ulong line = 0; line < this->_Size.second; line++)
-		this->_Main.insert(this->_Main.end(), _buf[line].begin(), _buf[line].end());
+	for (Ulong line = 0; line < this->m_Size.second; line++)
+		this->m_Main.insert(this->m_Main.end(), _buf[line].begin(), _buf[line].end());
 
 	return *this;
 }
@@ -676,50 +676,50 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator=
 * Destructive processing
 * 破壊的処理
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator+=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator+=
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	this->_Add(_Data, &this->_Main, this->_Size);
+	this->m_Add(a_Data, &this->m_Main, this->m_Size);
 
 	return *this;
 }
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator-=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator-=
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	this->_Sub(_Data, &this->_Main, this->_Size);
+	this->m_Sub(a_Data, &this->m_Main, this->m_Size);
 
 	return *this;
 }
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator*=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator*=
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	std::vector<_T> _ret;
-	SizeT           _ret_size;
+	std::vector<T> _ret;
+	SizeT          _ret_size;
 
-	std::vector<_T> _buf      = this->_Main;
-	SizeT           _buf_size = this->_Size;
+	std::vector<T>  _buf      = this->m_Main;
+	SizeT           _buf_size = this->m_Size;
 
-	this->_Mul(_buf, _buf_size, (std::vector<_T>&)_Data._Main, _Data._Size, &this->_Main, &this->_Size);
+	this->m_Mul(_buf, _buf_size, (std::vector<T>&)a_Data.m_Main, a_Data.m_Size, &this->m_Main, &this->m_Size);
 
 	return *this;
 }
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator*=
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator*=
 (
-	_T _Num
+	T a_Num
 )
 {
-	for (Ulong i = 0; i < this->_Main.size(); i++)
-		this->_Main[i] *= _Num;
+	for (Ulong i = 0; i < this->m_Main.size(); i++)
+		this->m_Main[i] *= a_Num;
 
 	return *this;
 }
@@ -728,90 +728,90 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::operator*=
 * Non-destructive processing.
 * 非破壊的処理
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::operator+
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::operator+
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	std::vector<double> _ret = this->_Main;
-	this->_Add(_Data, &_ret, this->_Size);
+	std::vector<T> _ret = this->m_Main;
+	this->m_Add(a_Data, &_ret, this->m_Size);
 
-	return std::pair<SizeT, std::vector<double>>{this->_Size, _ret};
+	return std::pair<SizeT, std::vector<T>>{this->m_Size, _ret};
 }
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::operator-
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::operator-
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	std::vector<double> _ret = this->_Main;
-	this->_Sub(_Data, &_ret, this->_Size);
+	std::vector<T> _ret = this->m_Main;
+	this->m_Sub(a_Data, &_ret, this->m_Size);
 
-	return std::pair<SizeT, std::vector<double>>{this->_Size, _ret};
+	return std::pair<SizeT, std::vector<T>>{this->m_Size, _ret};
 }
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::operator*
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::operator*
 (
-	const _Matrix_& _Data
+	const MatrixT& a_Data
 )
 {
-	std::vector<double> _ret;
-	SizeT               _ret_size;
+	std::vector<T> _ret;
+	SizeT          _ret_size;
 
-	std::vector<double> _buf = this->_Main;
-	SizeT               _buf_size = this->_Size;
+	std::vector<T> _buf      = this->m_Main;
+	SizeT          _buf_size = this->m_Size;
 
-	this->_Mul(_buf, _buf_size, (std::vector<double>&)_Data._Main, _Data._Size, &_ret, &_ret_size);
+	this->m_Mul(_buf, _buf_size, (std::vector<T>&)a_Data.m_Main, a_Data.m_Size, &_ret, &_ret_size);
 
-	return std::pair<SizeT, std::vector<double>>{_ret_size, _ret};
+	return std::pair<SizeT, std::vector<T>>{_ret_size, _ret};
 }
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::operator*
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::operator*
 (
-	_T _Num
+	T a_Num
 )
 {
-	std::vector<double> _data = this->_Main;
+	std::vector<T> _data = this->m_Main;
 
 	for (Ulong i = 0; i < _data.size(); i++)
-		_data[i] *= _Num;
+		_data[i] *= a_Num;
 
-	return std::pair<SizeT, std::vector<double>>{this->_Size, _data};
+	return std::pair<SizeT, std::vector<T>>{this->m_Size, _data};
 }
 
 /*----------------------------------------------
 * (Destructive processing) Resize.
 * (破壊的処理)サイズ変更
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::SetSize
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::SetSize
 (
-	SizeT _Data,
-	bool  _Clear
+	SizeT a_Data,
+	bool  a_Clear
 )
 {
-	if (_Clear)
+	if (a_Clear)
 	{
-		this->_Main.erase(this->_Main.begin(), this->_Main.end());
+		this->m_Main.erase(this->m_Main.begin(), this->m_Main.end());
 	}
 	else
 	{
 		//サイズ増大
-		if (_Data.first > this->_Size.first) {
-			for (Ulong i = 1; i < _Data.second; i++)
-				this->_Main.insert(this->_Main.begin() + (this->_Size.first * i) + (i - 1), 0);
+		if (a_Data.first > this->m_Size.first) {
+			for (Ulong i = 1; i < a_Data.second; i++)
+				this->m_Main.insert(this->m_Main.begin() + (this->m_Size.first * i) + (i - 1), 0);
 		}
 
 		//サイズ減少
-		if (_Data.first < this->_Size.first) {
-			for (Ulong i = 1; i < _Data.second; i++)
-				this->_Main.erase(this->_Main.begin() + _Data.first, this->_Main.begin() + _Data.first + (this->_Size.first - _Data.first));
+		if (a_Data.first < this->_Size.first) {
+			for (Ulong i = 1; i < a_Data.second; i++)
+				this->_Main.erase(this->_Main.begin() + a_Data.first, this->_Main.begin() + a_Data.first + (this->_Size.first - a_Data.first));
 		}
 	}
 
-	this->_Main.resize(_Data.first * _Data.second);
-	this->_Size = _Data;
+	this->m_Main.resize(a_Data.first * a_Data.second);
+	this->m_Size = a_Data;
 
 	return *this;
 }
@@ -820,14 +820,14 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::SetSize
 * (Destructive processing) Swap lines.
 * (破壊的処理)行を入れ替える。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Swap_Line
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Swap_Line
 (
-	Ulong _Line1,
-	Ulong _Line2
+	Ulong a_Line1,
+	Ulong a_Line2
 )
 {
-	this->_Swap_Line(_Line1, _Line2, &this->_Main, this->_Size);
+	this->m_Swap_Line(a_Line1, a_Line2, &this->m_Main, this->m_Size);
 
 	return *this;
 }
@@ -836,14 +836,14 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Swap_Line
 * (Destructive processing) Swap Columns.
 * (破壊的処理)列を入れ替える。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Swap_Column
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Swap_Column
 (
-	Ulong _Column1,
-	Ulong _Column2
+	Ulong a_Column1,
+	Ulong a_Column2
 )
 {
-	this->_Swap_Column(_Column1, _Column2, &this->_Main, this->_Size);
+	this->m_Swap_Column(a_Column1, a_Column2, &this->m_Main, this->m_Size);
 
 	return *this;
 }
@@ -853,10 +853,10 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Swap_Column
 Make it an identity matrix.
 * (破壊的処理)単位行列にする。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Ident()
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Ident()
 {
-	this->_To_Identity_Matrix(&this->_Main, this->_Size);
+	this->m_To_Identity_Matrix(&this->m_Main, this->m_Size);
 
 	return *this;
 }
@@ -865,52 +865,52 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Ident()
 * (Non-destructive processing) Find the determinant.
 * (非破壊的処理)行列式を求めます。
 ----------------------------------------------*/
-template<typename _T>
-_T Sanae::_Matrix_<_T>::Det()
+template<typename T>
+T Sanae::MatrixT<T>::Det()
 {
-	return this->_Det(this->_Main, this->_Size);
+	return this->m_Det(this->m_Main, this->m_Size);
 }
 
 /*----------------------------------------------
 * (Non-destructive processing) Transposes a matrix.
 * (非破壊的処理)行列の転置を行います。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::Transpose()
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::Transpose()
 {
-	std::vector<double> _Data;
-	_Data.resize(this->_Size.first * this->_Size.second);
+	std::vector<T> _Data;
+	_Data.resize(this->m_Size.first * this->m_Size.second);
 
-	for (Ulong x = 0; x < this->_Size.first; x++)
-		for (Ulong y = 0; y < this->_Size.second; y++)
-			_Data[this->_Convert_to_ArrayNum(this->_Size.second, { y,x })] = this->_Main[this->_Convert_to_ArrayNum(this->_Size.first, { x,y })];
+	for (Ulong x = 0; x < this->m_Size.first; x++)
+		for (Ulong y = 0; y < this->m_Size.second; y++)
+			_Data[this->m_Convert_to_ArrayNum(this->m_Size.second, { y,x })] = this->m_Main[this->m_Convert_to_ArrayNum(this->m_Size.first, { x,y })];
 
-	return std::pair<SizeT, std::vector<double>>{ SizeT{this->_Size.second, this->_Size.first}, _Data };
+	return std::pair<SizeT, std::vector<T>>{ SizeT{this->m_Size.second, this->m_Size.first}, _Data };
 }
 
 /*----------------------------------------------
 * (Non-destructive processing) Returns the inverse of the matrix.
 * (非破壊的処理)逆行列を返します。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::Inverse()
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::Inverse()
 {
-	std::vector<double> _to;
-	std::vector<double> _buf = this->_Main;
+	std::vector<T> _to;
+	std::vector<T> _buf = this->m_Main;
 
-	this->_Inverse_matrix(&_buf, &_to, this->_Size);
+	this->m_Inverse_matrix(&_buf, &_to, this->m_Size);
 
-	return std::pair<SizeT, std::vector<double>>{ this->_Size, _to };
+	return std::pair<SizeT, std::vector<T>>{ this->m_Size, _to };
 }
 
 /*----------------------------------------------
 * Display the matrix.
 * 行列を表示します。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::View()
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::View()
 {
-	this->_View(&this->_Main, this->_Size);
+	this->m_View(&this->m_Main, this->m_Size);
 
 	return *this;
 }
@@ -919,8 +919,8 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::View()
 * Returns the size.
 * 大きさを返します。
 ----------------------------------------------*/
-template<typename _T>
-Ulong Sanae::_Matrix_<_T>::GetSize() {
+template<typename T>
+Ulong Sanae::MatrixT<T>::GetSize() {
 	return this->_Main.size();
 }
 
@@ -928,8 +928,8 @@ Ulong Sanae::_Matrix_<_T>::GetSize() {
 * Returns the size.  first:column second: row
 * 大きさを返します。 first:列     second: 行
 ----------------------------------------------*/
-template<typename _T>
-SizeT Sanae::_Matrix_<_T>::GetSizeWH() {
+template<typename T>
+SizeT Sanae::MatrixT<T>::GetSizeWH() {
 	return this->_Size;
 }
 
@@ -937,14 +937,14 @@ SizeT Sanae::_Matrix_<_T>::GetSizeWH() {
 * (Destructive processing) Find the dot product.
 * (破壊的処理)内積を求めます。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::Inner_Product
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::Inner_Product
 (
-	_Matrix_& _Data
+	MatrixT& a_Data
 )
 {
-	_Matrix_ Ret;
-	this->_Inner_Product(&this->_Main, &this->_Size, &_Data._Main, &_Data._Size, &Ret._Main, true);
+	MatrixT Ret;
+	this->m_Inner_Product(&this->_Main, &this->_Size, &a_Data._Main, &a_Data._Size, &Ret._Main, true);
 	Ret._Size = this->_Size;
 
 	return Ret;
@@ -954,13 +954,13 @@ Sanae::_Matrix_<_T> Sanae::_Matrix_<_T>::Inner_Product
 * (Destructive processing) Find the dot product.
 * (破壊的処理)内積を求めます。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Inner_Product_Destructive
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Inner_Product_Destructive
 (
-	_Matrix_& _Data
+	MatrixT& a_Data
 )
 {
-	this->_Inner_Product(&this->_Main, &this->_Size, &_Data._Main, &_Data._Size, &this->_Main, false);
+	this->m_Inner_Product(&this->_Main, &this->_Size, &a_Data._Main, &a_Data._Size, &this->_Main, false);
 	return *this;
 }
 
@@ -968,15 +968,15 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Inner_Product_Destructive
 * Transfer an array.
 * 配列を譲渡します。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Move
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Move
 (
-	std::vector<_T>* _Data,
-	SizeT                _Size
+	std::vector<T>* a_Data,
+	SizeT           a_Size
 )
 {
-	this->_Main = std::move(*_Data);
-	this->_Size = _Size;
+	this->_Main = std::move(*a_Data);
+	this->_Size = a_Size;
 
 	return *this;
 }
@@ -987,8 +987,8 @@ Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Move
 * _Mainのポインタを返します。
 (std::max_elementなどの関数で使用することができます。)
 ----------------------------------------------*/
-template<typename _T>
-const std::vector<_T>* Sanae::_Matrix_<_T>::GetVectorP()
+template<typename T>
+const std::vector<T>* Sanae::MatrixT<T>::GetVectorP()
 {
 	return &this->_Main;
 }
@@ -998,16 +998,16 @@ const std::vector<_T>* Sanae::_Matrix_<_T>::GetVectorP()
 (Can be used in functions such as std::max_element.)
 * 同じ大きさで形を変更します。
 ----------------------------------------------*/
-template<typename _T>
-Sanae::_Matrix_<_T>& Sanae::_Matrix_<_T>::Deformation
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::Deformation
 (
-	SizeT _To
+	SizeT a_To
 )
 {
-	if (this->GetSize() != (_To.first * _To.second))
+	if (this->GetSize() != (a_To.first * a_To.second))
 		throw std::invalid_argument("Array count must not change.");
 	else
-		this->_Size = _To;
+		this->_Size = a_To;
 
 	return *this;
 }

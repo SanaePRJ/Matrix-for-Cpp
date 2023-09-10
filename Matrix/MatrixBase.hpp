@@ -9,15 +9,15 @@
 
 
 /*-----Include Guard-----*/
-#ifndef _SANAE_MATRIXBASE_HPP_
-#define _SANAE_MATRIXBASE_HPP_
+#ifndef SANAE_MATRIXBASE_HPP
+#define SANAE_MATRIXBASE_HPP
 
 
 
 
 /*-----Check Version C++14 or more.-----*/
 #if (_cplusplus >= 201402L) || (defined(_MSVC_LANG)&&_MSVC_LANG >= 201402L)
-	#define _CPP_14_OR_MORE_
+	#define SANAE_CPP_14_OR_MORE
 #endif
 
 
@@ -25,13 +25,12 @@
 
 /*-----Is existing-----*/
 #if __has_include(<iostream>) && __has_include(<vector>) && __has_include(<utility>) && __has_include(<stdexcept>)
-	#define _SANAE_MATRIXBASE_HPP_ALL_INCLUDE_
+	#define SANAE_MATRIXBASE_HPP_ALL_INCLUDE
 #endif
 
 
+#if defined(SANAE_CPP_14_OR_MORE) && defined(SANAE_MATRIXBASE_HPP_ALL_INCLUDE)
 
-
-#if defined(_CPP_14_OR_MORE_) && defined(_SANAE_MATRIXBASE_HPP_ALL_INCLUDE_)
 
 /*-----Include-----*/
 #include <iostream>
@@ -54,10 +53,10 @@ namespace Sanae {
 	* Ignore errors less than 10^-6 during multiplication.
 	* 乗算時10^-6以下の誤差を無視する。
 	----------------------------------------------*/
-	constexpr auto _IGNORE_ERROR_ = 1e-6;
+	constexpr auto IGNORE_ERROR = 1e-6;
 
 
-	template<typename _T> class _MatrixBase;
+	template<typename T> class MatrixBase;
 }
 
 
@@ -70,7 +69,7 @@ namespace Sanae {
 -------------------------------------------------------------*/
 
 
-template<typename _T> class Sanae::_MatrixBase 
+template<typename T> class Sanae::MatrixBase 
 {
 	
 
@@ -82,13 +81,13 @@ protected:
 	* Store a Matrix.
 	* 行列を格納する可変長行列
 	----------------------------------------------*/
-	std::vector<_T>   _Main;
+	std::vector<T>   m_Main;
 
 	/*----------------------------------------------
 	* Store a size of Matrix. first:Column second:Row
 	* 行列のサイズを格納する。first:列     second:行
 	----------------------------------------------*/
-	SizeT             _Size = std::make_pair(0, 0);  //行列のサイズを格納する。 first:列 second:行
+	SizeT             m_Size = std::make_pair(0, 0);  //行列のサイズを格納する。 first:列 second:行
 
 
 /*-----Define Functions(protected)-----*/
@@ -99,7 +98,7 @@ protected:
 	* Convert {Columns , Rows} to array numbers.
 	* {列,行}を配列番号に変換する。
 	----------------------------------------------*/
-	Ulong _Convert_to_ArrayNum
+	Ulong m_Convert_to_ArrayNum
 	(
 		Ulong, SizeT
 	);
@@ -108,7 +107,7 @@ protected:
 	* Convert array number to {Columns , Rows}.
 	* 配列番号を{列,行}に変換する。
 	----------------------------------------------*/
-	SizeT _Convert_to_Position
+	SizeT m_Convert_to_Position
 	(
 		Ulong, Ulong
 	);
@@ -117,56 +116,56 @@ protected:
 	* Swaps the specified rows.
 	* 指定された行を入れ替えます。
 	----------------------------------------------*/
-	void _Swap_Line
+	void m_Swap_Line
 	(
-		Ulong, Ulong, std::vector<_T>*, SizeT
+		Ulong, Ulong, std::vector<T>*, SizeT
 	);
 
 	/*----------------------------------------------
 	* Swaps the specified column.
 	* 指定された列を入れ替えます。
 	----------------------------------------------*/
-	void _Swap_Column
+	void m_Swap_Column
 	(
-		Ulong, Ulong, std::vector<_T>*, SizeT
+		Ulong, Ulong, std::vector<T>*, SizeT
 	);
 
 	/*----------------------------------------------
 	* Addition.
 	* 足し算を行います。
 	----------------------------------------------*/
-	void _Add
+	void m_Add
 	(
-		const _MatrixBase&, std::vector<_T>*, SizeT
+		const MatrixBase&, std::vector<T>*, SizeT
 	);
 	
 	/*----------------------------------------------
 	* Subtraction.
 	* 引き算を行います。
 	----------------------------------------------*/
-	void _Sub
+	void m_Sub
 	(
-		const _MatrixBase&, std::vector<_T>*, SizeT
+		const MatrixBase&, std::vector<T>*, SizeT
 	);
 
 	/*----------------------------------------------
 	* Scalar Multiplication.
 	* スカラー倍を行います。
 	----------------------------------------------*/
-	void _Scalar_mul
+	void m_Scalar_mul
 	(
-		std::vector<_T>&, _T
+		std::vector<T>&, T
 	);
 
 	/*----------------------------------------------
 	* Multiplication.
 	* 乗算を行います。
 	----------------------------------------------*/
-	void _Mul
+	void m_Mul
 	(
-		std::vector<_T>&, SizeT,
-		std::vector<_T>&, SizeT,
-		std::vector<_T>*, SizeT*
+		std::vector<T>&, SizeT,
+		std::vector<T>&, SizeT,
+		std::vector<T>*, SizeT*
 	);
 
 
@@ -175,18 +174,18 @@ public:
 
 
 	/*-----Constructor-----*/
-	_MatrixBase();
-	_MatrixBase
+	MatrixBase();
+	MatrixBase
 	(
-		std::initializer_list<std::vector<_T>>
+		std::initializer_list<std::vector<T>>
 	);
-	_MatrixBase
+	MatrixBase
 	(
 		SizeT
 	);
-	_MatrixBase
+	MatrixBase
 	(
-		std::pair<SizeT, std::vector<_T>> _In
+		std::pair<SizeT, std::vector<T>> _In
 	);
 
 	/*-----Operator-----*/
@@ -196,14 +195,14 @@ public:
 	----------------------------------------------*/
 	bool operator==
 	(
-		const _MatrixBase<_T>&
+		const MatrixBase<T>&
 	);
 
 	/*----------------------------------------------
 	* Refer by array number.
 	* 配列番号で参照する。
 	----------------------------------------------*/
-	_T& operator[]
+	T& operator[]
 	(
 		Ulong
 	);
@@ -212,7 +211,7 @@ public:
 	* Refer by {Columns,Rows}.
 	* {列,行}で参照する。
 	----------------------------------------------*/
-	_T& operator[]
+	T& operator[]
 	(
 		SizeT
 	);
@@ -237,45 +236,45 @@ public:
 * Store a Matrix.
 * 行列を格納する可変長行列
 ----------------------------------------------*/
-template<typename _T> Ulong Sanae::_MatrixBase<_T>::_Convert_to_ArrayNum
+template<typename T> Ulong Sanae::MatrixBase<T>::m_Convert_to_ArrayNum
 (
-	Ulong _Width,
-	SizeT _Pos
+	Ulong a_Width,
+	SizeT a_Pos
 )
 {
-	return (_Width * _Pos.second) + _Pos.first;
+	return (a_Width * a_Pos.second) + a_Pos.first;
 }
 
 /*----------------------------------------------
 * Convert array number to {Columns , Rows}.
 * 配列番号を{列,行}に変換する。
 ----------------------------------------------*/
-template<typename _T> SizeT Sanae::_MatrixBase<_T>::_Convert_to_Position
+template<typename T> SizeT Sanae::MatrixBase<T>::m_Convert_to_Position
 (
-	Ulong _Width,
-	Ulong _Arraynum
+	Ulong a_Width,
+	Ulong a_Arraynum
 )
 {
-	return std::make_pair(_Arraynum % _Width, (_Arraynum - (_Arraynum % _Width)) / _Width);
+	return std::make_pair(a_Arraynum % a_Width, (a_Arraynum - (a_Arraynum % a_Width)) / a_Width);
 }
 
 /*----------------------------------------------
 * Swaps the specified rows.
 * 指定された行を入れ替えます。
 ----------------------------------------------*/
-template<typename _T> void Sanae::_MatrixBase<_T>::_Swap_Line
+template<typename T> void Sanae::MatrixBase<T>::m_Swap_Line
 (
-	Ulong             _Line1,
-	Ulong             _Line2,
-	std::vector<_T>* _Data,
-	SizeT             _Size
+	Ulong             a_Line1,
+	Ulong             a_Line2,
+	std::vector<T>*   a_Data,
+	SizeT             a_Size
 )
 {
-	for (Ulong i = 0; i < _Size.first; i++) {
-		_T _temp = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,_Line1 })];
+	for (Ulong i = 0; i < a_Size.first; i++) {
+		T _temp = (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { i,a_Line1 })];
 
-		(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,_Line1 })] = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,_Line2 })];
-		(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { i,_Line2 })] = _temp;
+		(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { i,a_Line1 })] = (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { i,a_Line2 })];
+		(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { i,a_Line2 })] = _temp;
 	}
 
 	return;
@@ -285,19 +284,19 @@ template<typename _T> void Sanae::_MatrixBase<_T>::_Swap_Line
 * Swaps the specified column.
 * 指定された列を入れ替えます。
 ----------------------------------------------*/
-template<typename _T> void Sanae::_MatrixBase<_T>::_Swap_Column
+template<typename T> void Sanae::MatrixBase<T>::m_Swap_Column
 (
-	Ulong            _Column1,
-	Ulong            _Column2,
-	std::vector<_T>* _Data,
-	SizeT            _Size
+	Ulong            a_Column1,
+	Ulong            a_Column2,
+	std::vector<T>*  a_Data,
+	SizeT            a_Size
 )
 {
-	for (Ulong i = 0; i < _Size.second; i++) {
-		_T _temp = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _Column1,i })];
+	for (Ulong i = 0; i < a_Size.second; i++) {
+		T _temp = (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { a_Column1,i })];
 
-		(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _Column1,i })] = (*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _Column2,i })];
-		(*_Data)[this->_Convert_to_ArrayNum(_Size.first, { _Column2,i })] = _temp;
+		(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { a_Column1,i })] = (*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { a_Column2,i })];
+		(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { a_Column2,i })] = _temp;
 	}
 
 	return;
@@ -306,41 +305,41 @@ template<typename _T> void Sanae::_MatrixBase<_T>::_Swap_Column
 
 /*------Functions(public)------*/
 /*---Constructor---*/
-template<typename _T> Sanae::_MatrixBase<_T>::_MatrixBase()
+template<typename T> Sanae::MatrixBase<T>::MatrixBase()
 {}
-template<typename _T> Sanae::_MatrixBase<_T>::_MatrixBase
+template<typename T> Sanae::MatrixBase<T>::MatrixBase
 (
-	std::initializer_list<std::vector<_T>> _In
+	std::initializer_list<std::vector<T>> a_Init
 )
 {
-	std::vector<std::vector<_T>> _buf = _In;
+	std::vector<std::vector<T>> _buf = a_Init;
 
-	this->_Size.second = _In.size();
-	this->_Size.first = _buf[0].size();
+	this->m_Size.second = a_Init.size();
+	this->m_Size.first = _buf[0].size();
 
-	for (Ulong line = 0; line < this->_Size.second; line++)
-		this->_Main.insert(this->_Main.end(), _buf[line].begin(), _buf[line].end());
+	for (Ulong line = 0; line < this->m_Size.second; line++)
+		this->m_Main.insert(this->m_Main.end(), _buf[line].begin(), _buf[line].end());
 
 	return;
 }
-template<typename _T> Sanae::_MatrixBase<_T>::_MatrixBase
+template<typename T> Sanae::MatrixBase<T>::MatrixBase
 (
-	SizeT _In_Size
+	SizeT a_Init_Size
 )
-	: _Size(_In_Size)
+	: m_Size(a_Init_Size)
 {
-	this->_Main.resize(_In_Size.first * _In_Size.second);
+	this->m_Main.resize(a_Init_Size.first * a_Init_Size.second);
 }
-template<typename _T> Sanae::_MatrixBase<_T>::_MatrixBase
+template<typename T> Sanae::MatrixBase<T>::MatrixBase
 (
-	std::pair<SizeT, std::vector<_T>> _In
+	std::pair<SizeT, std::vector<T>> a_Init
 )
 {
-	this->_Size = _In.first;
-	this->_Main = _In.second;
+	this->m_Size = a_Init.first;
+	this->m_Main = a_Init.second;
 
-	for (Ulong i = this->_Main.size(); i < (this->_Size.first * this->_Size.second); i++)
-		this->_Main[i] = 0;
+	for (Ulong i = this->m_Main.size(); i < (this->m_Size.first * this->m_Size.second); i++)
+		this->m_Main[i] = 0;
 
 	return;
 }
@@ -350,16 +349,16 @@ template<typename _T> Sanae::_MatrixBase<_T>::_MatrixBase
 * Comparison
 * 比較
 ----------------------------------------------*/
-template<typename _T> bool Sanae::_MatrixBase<_T>::operator==
+template<typename T> bool Sanae::MatrixBase<T>::operator==
 (
-	const _MatrixBase<_T>& _Data
+	const MatrixBase<T>& a_Data
 )
 {
-	if (_Data._Size.first != this->_Size.first || _Data._Size.second != this->_Size.second)
+	if (a_Data.m_Size.first != this->m_Size.first || a_Data.m_Size.second != this->m_Size.second)
 		return false;
 
-	for (Ulong i = 0; i < this->_Main.size(); i++)
-		if (_Data._Main[i] != this->_Main[i])
+	for (Ulong i = 0; i < this->m_Main.size(); i++)
+		if (a_Data.m_Main[i] != this->m_Main[i])
 			return false;
 
 	return true;
@@ -369,30 +368,30 @@ template<typename _T> bool Sanae::_MatrixBase<_T>::operator==
 * Refer by array number.
 * 配列番号で参照する。
 ----------------------------------------------*/
-template<typename _T> _T& Sanae::_MatrixBase<_T>::operator[]
+template<typename T> T& Sanae::MatrixBase<T>::operator[]
 (
-	Ulong _ArrayNum
+	Ulong a_ArrayNum
 )
 {
-	if (this->_Main.size() <= _ArrayNum)
+	if (this->m_Main.size() <= a_ArrayNum)
 		throw std::out_of_range("Tried to access out of range.");
 
-	return this->_Main[_ArrayNum];
+	return this->m_Main[a_ArrayNum];
 }
 
 /*----------------------------------------------
 * Refer by {Columns,Rows}.
 * {列,行}で参照する。
 ----------------------------------------------*/
-template<typename _T> _T& Sanae::_MatrixBase<_T>::operator[]
+template<typename T> T& Sanae::MatrixBase<T>::operator[]
 (
-	SizeT _Num
+	SizeT a_Num
 )
 {
-	if (this->_Main.size() <= this->_Convert_to_ArrayNum(this->_Size.first, _Num))
+	if (this->m_Main.size() <= this->m_Convert_to_ArrayNum(this->m_Size.first, a_Num))
 		throw std::out_of_range("Tried to access out of range.");
 
-	return this->_Main[this->_Convert_to_ArrayNum(this->_Size.first, _Num)];
+	return this->m_Main[this->m_Convert_to_ArrayNum(this->m_Size.first, a_Num)];
 }
 
 /*---Calc---*/
@@ -400,18 +399,18 @@ template<typename _T> _T& Sanae::_MatrixBase<_T>::operator[]
 * Addition.
 * 足し算を行います。
 ----------------------------------------------*/
-template<typename _T> void Sanae::_MatrixBase<_T>::_Add
+template<typename T> void Sanae::MatrixBase<T>::m_Add
 (
-	const _MatrixBase& _Data,
-	std::vector<_T>* _DataP,
-	SizeT            _Size
+	const MatrixBase& a_Data,
+	std::vector<T>*   a_DataP,
+	SizeT             a_Size
 )
 {
-	if (_DataP->size() != _Data._Main.size() || _Size.first != _Data._Size.first || _Size.second != _Data._Size.second)
+	if (a_DataP->size() != a_Data.m_Main.size() || a_Size.first != a_Data.m_Size.first || a_Size.second != a_Data.m_Size.second)
 		throw std::invalid_argument("Must be same size.");
 
-	for (Ulong i = 0; i < _DataP->size(); i++)
-		(*_DataP)[i] += _Data._Main[i];
+	for (Ulong i = 0; i < a_DataP->size(); i++)
+		(*a_DataP)[i] += a_Data.m_Main[i];
 
 	return;
 }
@@ -420,18 +419,18 @@ template<typename _T> void Sanae::_MatrixBase<_T>::_Add
 * Subtraction.
 * 引き算を行います。
 ----------------------------------------------*/
-template<typename _T> void  Sanae::_MatrixBase<_T>::_Sub
+template<typename T> void  Sanae::MatrixBase<T>::m_Sub
 (
-	const _MatrixBase& _Data,
-	std::vector<_T>* _DataP,
-	SizeT              _Size
+	const MatrixBase& a_Data,
+	std::vector<T>*	  a_DataP,
+	SizeT             a_Size
 )
 {
-	if (_DataP->size() != _Data._Main.size() || _Size.first != _Data._Size.first || _Size.second != _Data._Size.second)
+	if (a_DataP->size() != a_Data.m_Main.size() || a_Size.first != a_Data.m_Size.first || a_Size.second != a_Data.m_Size.second)
 		throw std::invalid_argument("Must be same size.");
 
-	for (Ulong i = 0; i < _DataP->size(); i++)
-		(*_DataP)[i] -= _Data._Main[i];
+	for (Ulong i = 0; i < a_DataP->size(); i++)
+		(*a_DataP)[i] -= a_Data.m_Main[i];
 
 	return;
 }
@@ -440,14 +439,14 @@ template<typename _T> void  Sanae::_MatrixBase<_T>::_Sub
 * Scalar Multiplication.
 * スカラー倍を行います。
 ----------------------------------------------*/
-template<typename _T> void Sanae::_MatrixBase<_T>::_Scalar_mul
+template<typename T> void Sanae::MatrixBase<T>::m_Scalar_mul
 (
-	std::vector<_T>& _Data,
-	_T               _Mul_num
+	std::vector<T>& a_Data,
+	T               a_Mul_num
 )
 {
-	for (Ulong i = 0; i < _Data.size(); i++)
-		_Data[i] *= _Mul_num;
+	for (Ulong i = 0; i < a_Data.size(); i++)
+		a_Data[i] *= a_Mul_num;
 
 	return;
 }
@@ -456,42 +455,42 @@ template<typename _T> void Sanae::_MatrixBase<_T>::_Scalar_mul
 * Multiplication.
 * 乗算を行います。
 ----------------------------------------------*/
-template<typename _T> void Sanae::_MatrixBase<_T>::_Mul
+template<typename T> void Sanae::MatrixBase<T>::m_Mul
 (
-	std::vector<_T>& _Data1,
-	SizeT            _Size1,
+	std::vector<T>& a_Data1,
+	SizeT           a_Size1,
 
-	std::vector<_T>& _Data2,
-	SizeT            _Size2,
+	std::vector<T>& a_Data2,
+	SizeT           a_Size2,
 
-	std::vector<_T>* _Storage,
-	SizeT* _SizeP
+	std::vector<T>* a_Storage,
+	SizeT*          a_SizeP
 )
 {
-	if (_Size1.first != _Size2.second) //列と行が同じでなければならない。
+	if (a_Size1.first != a_Size2.second) //列と行が同じでなければならない。
 		throw std::invalid_argument("Must be same line and column.");
 
-	_Storage->erase(_Storage->begin(), _Storage->end());
-	_Storage->resize(_Size1.second * _Size2.first);
+	a_Storage->erase(a_Storage->begin(), a_Storage->end());
+	a_Storage->resize(a_Size1.second * a_Size2.first);
 
-	(*_SizeP) = { _Size2.first,_Size1.second }; //計算結果格納先
+	(*a_SizeP) = { a_Size2.first,a_Size1.second }; //計算結果格納先
 
 	//{列,行}の乗算結果を求めます。
 	auto mul = [&](Ulong _i, Ulong _j) {
-		_T num = 0;
+		T num = 0;
 
-		for (Ulong k = 0; k < _Size2.second; k++)
-			num += _Data1[this->_Convert_to_ArrayNum(_Size1.first, { k,_i })] * _Data2[this->_Convert_to_ArrayNum(_Size2.first, { _j,k })];
+		for (Ulong k = 0; k < a_Size2.second; k++)
+			num += a_Data1[this->m_Convert_to_ArrayNum(a_Size1.first, { k,_i })] * a_Data2[this->m_Convert_to_ArrayNum(a_Size2.first, { _j,k })];
 
 		//誤差の修正
-		(*_Storage)[this->_Convert_to_ArrayNum(_SizeP->first, { _j,_i })] = abs(num - (Slong)num) <= _IGNORE_ERROR_ ? (Slong)num : num;
+		(*a_Storage)[this->m_Convert_to_ArrayNum(a_SizeP->first, { _j,_i })] = abs(num - (Slong)num) <= IGNORE_ERROR ? (Slong)num : num;
 
 		return;
 	};
 
 	//{列,行}の乗算処理を行う。
-	for (Ulong i = 0; i < _Size1.second; i++) {
-		for (Ulong j = 0; j < _Size2.first; j++) {
+	for (Ulong i = 0; i < a_Size1.second; i++) {
+		for (Ulong j = 0; j < a_Size2.first; j++) {
 			mul(i, j);
 		}
 	}

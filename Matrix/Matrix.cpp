@@ -1,4 +1,4 @@
-﻿#include "NewMatrix/Matrix.hpp"
+﻿#include "Matrix.hpp"
 #include <thread>
 #include <random>
 #include <time.h>
@@ -9,9 +9,9 @@ using namespace Sanae;
 int main()
 {
 /*-----Constructor-----*/
-	Matrix a;
+	Matrix_Lite a;
 	
-	Matrix b = 
+	Matrix_Lite b = 
 	{
 		{1,2,3},
 		{4,5,6},
@@ -23,15 +23,15 @@ int main()
 		7 8 9
 	----------*/
 
-	Matrix c = b;
+	Matrix_Lite c = b;
 	/*----------
 		1 2 3
 		4 5 6
 		7 8 9
 	----------*/
 
-	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
-	Matrix              d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
+	std::vector<float> d_v = {1,2,3,4,5,6,7,8,9};
+	Matrix_Lite         d   = std::pair<SizeT,std::vector<float>>{ {3,3},d_v };
 	/*----------
 		1 2 3
 		4 5 6
@@ -113,7 +113,7 @@ int main()
 	b[{1, 1}];	//5 [{列番号,行番号}]
 
 /*-----Function-----*/
-	Matrix func_var0 = 
+	Matrix_Lite func_var0 = 
 	{
 		{7,8,2},
 		{6,0,2},
