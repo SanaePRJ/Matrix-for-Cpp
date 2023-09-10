@@ -1,4 +1,4 @@
-﻿#include "Matrix.h"
+﻿#include "NewMatrix/Matrix.hpp"
 #include <thread>
 #include <random>
 #include <time.h>
@@ -8,12 +8,6 @@ using namespace Sanae;
 
 int main()
 {
-	std::vector<double> j = {1,2,3,4};
-	Matrix l;
-	l.Move(&j, SizeT{4,1});
-	l.View();
-	printf("\n\n");
-
 /*-----Constructor-----*/
 	Matrix a;
 	
@@ -157,7 +151,7 @@ int main()
 	//12
 
 	//逆行列を求める。
-	func_var0.Inverse();
+	func_var0.Inverse().View();
 	/*----------
 	 0.166667 -0.166667 -0.0833333
 	-0.333333  1.33333  -0.333333
