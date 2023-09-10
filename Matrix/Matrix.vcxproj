@@ -135,11 +135,8 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix\Matrix.hpp" />
-    <ClInclude Include="Matrix\MatrixBase\MatrixBase.hpp" />
-    <ClInclude Include="Matrix\MatrixBase\MatrixBaseImpl.hpp" />
-    <ClInclude Include="Matrix\MatrixDet.hpp" />
-    <ClInclude Include="Matrix\MatrixImpl.hpp" />
+    <ClInclude Include="Matrix.hpp" />
+    <ClInclude Include="MatrixBase.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
