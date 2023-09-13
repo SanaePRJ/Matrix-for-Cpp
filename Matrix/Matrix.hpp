@@ -17,6 +17,8 @@
 
 /*-----Include-----*/
 #include "MatrixBase.hpp"
+#include <math.h>
+
 
 /*-----Check Version C++14 or more and Is existing-----*/
 #if defined(SANAE_CPP_14_OR_MORE) && defined(SANAE_MATRIXBASE_HPP_ALL_INCLUDE)

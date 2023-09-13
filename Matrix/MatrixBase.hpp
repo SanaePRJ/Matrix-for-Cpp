@@ -16,7 +16,7 @@
 
 
 /*-----Check Version C++14 or more.-----*/
-#if (_cplusplus >= 201402L) || (defined(_MSVC_LANG)&&_MSVC_LANG >= 201402L)
+#if (__cplusplus >= 201402L) || (defined(_MSVC_LANG)&&_MSVC_LANG >= 201402L)
 	#define SANAE_CPP_14_OR_MORE
 #endif
 
@@ -43,8 +43,8 @@
 
 
 /*-----DEFINE CLASS-----*/
-using  Ulong = unsigned _int64;         //Unsigned long long
-using  Slong = signed   _int64;         //Signed   long long
+using  Ulong = unsigned long long;         //Unsigned long long
+using  Slong = signed   long long;         //Signed   long long
 using  SizeT = std::pair<Ulong, Ulong>; //Size
 
 
