@@ -806,7 +806,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::SetSize
 		}
 
 		//サイズ減少
-		if (a_Data.first < this->_Size.first) {
+		if (a_Data.first < this->m_Size.first) {
 			for (Ulong i = 1; i < a_Data.second; i++)
 				this->m_Main.erase(this->m_Main.begin() + a_Data.first, this->m_Main.begin() + a_Data.first + (this->m_Size.first - a_Data.first));
 		}
@@ -932,7 +932,7 @@ Ulong Sanae::MatrixT<T>::GetSize() {
 ----------------------------------------------*/
 template<typename T>
 SizeT Sanae::MatrixT<T>::GetSizeWH() {
-	return this->_Size;
+	return this->m_Size;
 }
 
 /*----------------------------------------------
@@ -947,7 +947,7 @@ Sanae::MatrixT<T> Sanae::MatrixT<T>::Inner_Product
 {
 	MatrixT Ret;
 	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &Ret.m_Main, true);
-	Ret._Size = this->_Size;
+	Ret.m_Size = this->m_Size;
 
 	return Ret;
 }
@@ -1009,7 +1009,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::Deformation
 	if (this->GetSize() != (a_To.first * a_To.second))
 		throw std::invalid_argument("Array count must not change.");
 	else
-		this->_Size = a_To;
+		this->m_Size = a_To;
 
 	return *this;
 }
