@@ -325,9 +325,9 @@ public:
 	);
 
 	/*----------------------------------------------
-	* Returns a pointer to _Main.
+	* Returns a pointer to m_Main.
 	(Can be used in functions such as std::max_element.)
-	* _Mainのポインタを返します。
+	* m_Mainのポインタを返します。
 	(std::max_elementなどの関数で使用することができます。)
 	----------------------------------------------*/
 	const std::vector<T>* GetVectorP();
@@ -808,7 +808,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::SetSize
 		//サイズ減少
 		if (a_Data.first < this->_Size.first) {
 			for (Ulong i = 1; i < a_Data.second; i++)
-				this->_Main.erase(this->_Main.begin() + a_Data.first, this->_Main.begin() + a_Data.first + (this->_Size.first - a_Data.first));
+				this->m_Main.erase(this->m_Main.begin() + a_Data.first, this->m_Main.begin() + a_Data.first + (this->m_Size.first - a_Data.first));
 		}
 	}
 
@@ -923,7 +923,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::View()
 ----------------------------------------------*/
 template<typename T>
 Ulong Sanae::MatrixT<T>::GetSize() {
-	return this->_Main.size();
+	return this->m_Main.size();
 }
 
 /*----------------------------------------------
@@ -946,7 +946,7 @@ Sanae::MatrixT<T> Sanae::MatrixT<T>::Inner_Product
 )
 {
 	MatrixT Ret;
-	this->m_Inner_Product(&this->_Main, &this->_Size, &a_Data._Main, &a_Data._Size, &Ret._Main, true);
+	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &Ret.m_Main, true);
 	Ret._Size = this->_Size;
 
 	return Ret;
@@ -962,7 +962,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::Inner_Product_Destructive
 	MatrixT& a_Data
 )
 {
-	this->m_Inner_Product(&this->_Main, &this->_Size, &a_Data._Main, &a_Data._Size, &this->_Main, false);
+	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &this->m_Main, false);
 	return *this;
 }
 
@@ -977,8 +977,8 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::Move
 	SizeT           a_Size
 )
 {
-	this->_Main = std::move(*a_Data);
-	this->_Size = a_Size;
+	this->m_Main = std::move(*a_Data);
+	this->m_Size = a_Size;
 
 	return *this;
 }
@@ -992,7 +992,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::Move
 template<typename T>
 const std::vector<T>* Sanae::MatrixT<T>::GetVectorP()
 {
-	return &this->_Main;
+	return &this->m_Main;
 }
 
 /*----------------------------------------------
