@@ -46,19 +46,22 @@ Author:		SanaeProject
 
 	Sanae::Matrix c = b;
 
+	//Vector type turn into Matrix type
 	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
 	Sanae::Matrix       d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
 
-	a += b;
-	a -= b;
-	a *= b;
-	a *= 3;
+	a += b; //a=a+b
+	a -= b; //a=a-b
+	a *= b; //a=a*b (Matrix)
+	a *= 3; //a=a*3 (Scalar mul)
+	a ^= b; //a=a*b (vector)
+	a << b; //a<-b  (a.m_Main = std::move(b.m_Main))
 
-	(b + c);
-	(b - c);
-	(b * c);
-	(b * 5);
-	
+	(b + c); //b+c 
+	(b - c); //b-c
+	(b * c); //b*c (Matrix)
+	(b * 5); //b*5 (Scalar mul)
+	(b ^ c); //b*c (vector)
 
 	b[4];
 	b[{1, 1}];

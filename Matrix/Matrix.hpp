@@ -210,6 +210,21 @@ public:
 	(
 		const MatrixT&
 	);
+	/*-MOVE-*/
+	MatrixT& operator <<
+	(
+		MatrixT&
+	);
+	/*-MOVE-*/
+	MatrixT& operator >>
+	(
+		MatrixT&
+	);
+	/*-MOVE-*/
+	MatrixT& operator >>
+	(
+		std::vector<T>&	
+	);
 
 	/*----------------------------------------------
 	*  Non-destructive processing.
@@ -801,6 +816,41 @@ Sanae::MatrixT<T> Sanae::MatrixT<T>::operator^
 	Ret.m_Size = this->m_Size;
 
 	return Ret;
+}
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator <<
+(
+	Sanae::MatrixT<T>& a_Data
+)
+{
+	this->m_Main  = std::move(a_Data.m_Main);
+	this->m_Size  = a_Data.m_Size;
+	a_Data.m_Size = {0,0};
+
+	return *this;
+}
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator >>
+(
+	Sanae::MatrixT<T>& a_Data
+)
+{
+	a_Data.m_Main = std::move(this->m_Main);
+	a_Data.m_Size = this->m_Size;
+	this->m_Size = {0,0};
+
+	return *this;
+}
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator >>
+(
+	std::vector<T>& a_Data
+)
+{
+	a_Data       = std::move(this->m_Main);
+	this->m_Size = {0,0};
+
+	return *this;
 }
 
 /*----------------------------------------------
