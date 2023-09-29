@@ -178,49 +178,67 @@ public:
 	);
 	MatrixT& operator=
 	(
-		std::initializer_list<std::vector<T>>
+		const std::initializer_list<std::vector<T>>
 	);
 
 	/*----------------------------------------------
 	* Destructive processing
 	* 破壊的処理
 	----------------------------------------------*/
+	/*-ADD-*/
 	MatrixT& operator+=
 	(
 		const MatrixT&
 	);
+	/*-SUB-*/
 	MatrixT& operator-=
 	(
 		const MatrixT&
 	);
+	/*-MUL-*/
 	MatrixT& operator*=
 	(
 		const MatrixT&
 	);
+	/*-Scalar MUL-*/
 	MatrixT& operator*=
 	(
 		T
+	);
+	/*-INNER PRODUCT-*/
+	MatrixT& operator^=
+	(
+		const MatrixT&
 	);
 
 	/*----------------------------------------------
 	*  Non-destructive processing.
 	* 非破壊的処理
 	----------------------------------------------*/
+	/*-ADD-*/
 	MatrixT  operator+
 	(
 		const MatrixT&
 	);
+	/*-SUB-*/
 	MatrixT  operator-
 	(
 		const MatrixT&
 	);
+	/*-MUL-*/
 	MatrixT  operator*
 	(
 		const MatrixT&
 	);
+	/*-Scalar MUL-*/
 	MatrixT  operator*
 	(
 		T
+	);
+	/*-INNER PRODUCT-*/
+	MatrixT operator^
+	(
+		const MatrixT&
 	);
 
 	/*----------------------------------------------
@@ -295,24 +313,6 @@ public:
 	* 大きさを返します。 first:列     second: 行
 	----------------------------------------------*/
 	SizeT GetSizeWH();
-
-	/*----------------------------------------------
-	* (Destructive processing) Find the dot product.
-	* (破壊的処理)内積を求めます。
-	----------------------------------------------*/
-	MatrixT Inner_Product
-	(
-		MatrixT&
-	);
-
-	/*----------------------------------------------
-	* (Destructive processing) Find the dot product.
-	* (破壊的処理)内積を求めます。
-	----------------------------------------------*/
-	MatrixT& Inner_Product_Destructive
-	(
-		MatrixT&
-	);
 
 	/*----------------------------------------------
 	* Transfer an array.
@@ -406,7 +406,7 @@ void Sanae::MatrixT<T>::m_To_Identity_Matrix
 )
 {
 	a_Data->erase(a_Data->begin(), a_Data->end());  //全データの削除
-	a_Data->resize(a_Size.first * a_Size.second);    //サイズの変更
+	a_Data->resize(a_Size.first  * a_Size.second);    //サイズの変更
 
 	for (Ulong i = 0; i < a_Size.first; i++)
 		for (Ulong j = 0; j < a_Size.second; j++)
@@ -659,7 +659,7 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator=
 template<typename T>
 Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator=
 (
-	std::initializer_list<std::vector<T>> a_In
+	const std::initializer_list<std::vector<T>> a_In
 )
 {
 	this->m_Main.erase(this->m_Main.begin(), this->m_Main.end());
@@ -725,6 +725,15 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator*=
 
 	return *this;
 }
+template<typename T>
+Sanae::MatrixT<T>& Sanae::MatrixT<T>::operator^=
+(
+	const MatrixT<T>& a_Data
+)
+{
+	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &this->m_Main, false);
+	return *this;
+}
 
 /*----------------------------------------------
 * Non-destructive processing.
@@ -780,6 +789,18 @@ Sanae::MatrixT<T> Sanae::MatrixT<T>::operator*
 		_data[i] *= a_Num;
 
 	return std::pair<SizeT, std::vector<T>>{this->m_Size, _data};
+}
+template<typename T>
+Sanae::MatrixT<T> Sanae::MatrixT<T>::operator^
+(
+	const MatrixT<T>& a_Data
+) 
+{
+	MatrixT Ret;
+	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &Ret.m_Main, true);
+	Ret.m_Size = this->m_Size;
+
+	return Ret;
 }
 
 /*----------------------------------------------
@@ -933,37 +954,6 @@ Ulong Sanae::MatrixT<T>::GetSize() {
 template<typename T>
 SizeT Sanae::MatrixT<T>::GetSizeWH() {
 	return this->m_Size;
-}
-
-/*----------------------------------------------
-* (Destructive processing) Find the dot product.
-* (破壊的処理)内積を求めます。
-----------------------------------------------*/
-template<typename T>
-Sanae::MatrixT<T> Sanae::MatrixT<T>::Inner_Product
-(
-	MatrixT& a_Data
-)
-{
-	MatrixT Ret;
-	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &Ret.m_Main, true);
-	Ret.m_Size = this->m_Size;
-
-	return Ret;
-}
-
-/*----------------------------------------------
-* (Destructive processing) Find the dot product.
-* (破壊的処理)内積を求めます。
-----------------------------------------------*/
-template<typename T>
-Sanae::MatrixT<T>& Sanae::MatrixT<T>::Inner_Product_Destructive
-(
-	MatrixT& a_Data
-)
-{
-	this->m_Inner_Product(&this->m_Main, &this->m_Size, &a_Data.m_Main, &a_Data.m_Size, &this->m_Main, false);
-	return *this;
 }
 
 /*----------------------------------------------

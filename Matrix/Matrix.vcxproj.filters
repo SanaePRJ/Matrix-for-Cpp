@@ -23,29 +23,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\README-JP.md" />
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MatrixDet.hpp">
-      <Filter>ヘッダー ファイル\Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrixImpl.hpp">
-      <Filter>ヘッダー ファイル\Matrix</Filter>
+    <ClInclude Include="Matrix.hpp">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="MatrixBase.hpp">
-      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrixBaseImpl.hpp">
-      <Filter>ヘッダー ファイル\Matrix\MatrixBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix2\Matrix.hpp">
-      <Filter>ヘッダー ファイル\Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="NewMatrix\MatrixBase.hpp">
-      <Filter>ヘッダー ファイル\NewMatrix</Filter>
-    </ClInclude>
-    <ClInclude Include="NewMatrix\Matrix.hpp">
-      <Filter>ヘッダー ファイル\NewMatrix</Filter>
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

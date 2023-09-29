@@ -1,9 +1,10 @@
-# Matrix-for-Cpp目標
-行列を扱う型を作成していく。
+# Matrix
+This repository has types that handle matrices.  
 
-# Coding convention
-関数の書き方を以下のように定める。
-    
+WebSite:	http://sanae.starfree.jp  
+Author:		SanaeProject
+
+# Coding Convention
     //Comment
     ReturnClass Func
     (
@@ -12,115 +13,69 @@
         ...
     )
     {
-        Process
-    }
-# ファイル構造
-ファイルをプロトタイプ宣言用と実装用の二つに分けて作成する。
-## 構造
-# メンバ一覧
-## 宣言
-### 引数なし
-    Matrix _var;
-### 配列
-    std::vector<double> var0 = {0,1,2,3};
-    Matrix              var1 = std::pair<SizeT,std::vector<double>>{ {2,2},var0 };
-### 3*3行列
-    Matrix _var
-    {
-      {1,2,3},
-      {4,5,6},
-      {7,8,9}
-    };
-### Matrix
-    //3*3行列を定義
-    Matrix var0 =
-    {
-      {0,1,2},
-      {3,4,5},
-      {6,7,8}
+        //Process
     }
     
-    Matrix var1 = var0;
-## 参照
-    Matrix var0 =
-    {
-      {0,1,2},
-      {3,4,5},
-      {6,7,8}
-    };
-    var0[4];    //4  [配列番号]
-    var0[{1,1}] //4  [{列番号,行番号}]
-## 代入
-以下の変数が定義されているものとする。
+# Declaration
+    
+    using  Ulong = unsigned long long;
+    using  Slong = signed   long long;
+    using  SizeT = std::pair<Ulong, Ulong>;
+    
 
-    Matrix var0;
+    namespace Sanae {
+	    constexpr auto IGNORE_ERROR = 1e-6;
 
-### Matrix
-    Matrix var1 =
-    {
-      {1,2,3},
-      {4,5,6},
-      {7,8,9}
-    };
-    var0 = var1;
-### 3*3行列
-    var0 = {
-        {1,2,3},
-        {4,5,6},
-        {7,8,9}
-    }; 
-## 演算
-以下の変数が定義されているものとする。
-    
-    Matrix var0 = 
-    {
-          {7,8,2},
-		  {6,0,2},
-		  {4,2,1}
-    };
-    
-    Matrix var1 =
-    {
-      {1,2,3},
-      {4,5,6},
-      {7,8,9}
-    };
-    
-### 足し算
-    //破壊的
-    var0 += var1;
-    
-    //非破壊的
-    (var0+var1);
-    
-### 引き算
-    //破壊的
-    var0 -= var1;
-    
-    //非破壊的
-    (var0+var1);
-    
-### 乗算
-    //破壊的
-    var0 *= var1;
-    
-    //非破壊的
-    (var0*var1);
-    
-### スカラー倍
-    //破壊的
-    var0 *= 5;
-    
-    //非破壊的
-    (var0*5);
-    
-### 行列式を求める
-    var0.Det(); //12
-    
-### 行列の転置
-    //非破壊的処理
-    var0.Transpose();
-    
-### 逆行列を返します
-    //非破壊的処理
-    var0.Inverse();
+	    template<typename T> class MatrixBase;
+	    template<typename T> class MatrixT;
+
+	    using Matrix      = MatrixT<double>;
+	    using Matrix_Lite = MatrixT<float >;
+    }
+
+# SampleCode
+
+    Sanae::Matrix a;
+	
+	Sanae::Matrix b =
+	{
+		{1,2,3},
+		{4,5,6},
+		{7,8,9}
+	};
+
+	Sanae::Matrix c = b;
+
+	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
+	Sanae::Matrix       d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
+
+	a += b;
+	a -= b;
+	a *= b;
+	a *= 3;
+
+	(b + c);
+	(b - c);
+	(b * c);
+	(b * 5);
+	
+
+	b[4];
+	b[{1, 1}];
+
+
+	Sanae::Matrix func_var0 =
+	{
+		{7,8,2},
+		{6,0,2},
+		{4,2,1}
+	};
+	
+
+	func_var0.Swap_Column(0,1);
+	func_var0.Swap_Line(1,2);
+
+	func_var0.Transpose();
+	func_var0.Det();
+	func_var0.Inverse();
+	

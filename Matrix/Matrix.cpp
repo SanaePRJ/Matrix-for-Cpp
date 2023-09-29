@@ -7,9 +7,9 @@
 int main()
 {
 /*-----Constructor-----*/
-	Sanae::Matrix_Lite a;
+	Sanae::Matrix a;
 	
-	Sanae::Matrix_Lite b =
+	Sanae::Matrix b =
 	{
 		{1,2,3},
 		{4,5,6},
@@ -21,15 +21,15 @@ int main()
 		7 8 9
 	----------*/
 
-	Sanae::Matrix_Lite c = b;
+	Sanae::Matrix c = b;
 	/*----------
 		1 2 3
 		4 5 6
 		7 8 9
 	----------*/
 
-	std::vector<float> d_v = {1,2,3,4,5,6,7,8,9};
-	Sanae::Matrix_Lite         d   = std::pair<SizeT,std::vector<float>>{ {3,3},d_v };
+	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
+	Sanae::Matrix       d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
 	/*----------
 		1 2 3
 		4 5 6
@@ -111,7 +111,7 @@ int main()
 	b[{1, 1}];	//5 [{列番号,行番号}]
 
 /*-----Function-----*/
-	Sanae::Matrix_Lite func_var0 =
+	Sanae::Matrix func_var0 =
 	{
 		{7,8,2},
 		{6,0,2},

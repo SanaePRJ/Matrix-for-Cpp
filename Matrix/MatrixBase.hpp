@@ -45,7 +45,7 @@
 /*-----DEFINE CLASS-----*/
 using  Ulong = unsigned long long;         //Unsigned long long
 using  Slong = signed   long long;         //Signed   long long
-using  SizeT = std::pair<Ulong, Ulong>; //Size
+using  SizeT = std::pair<Ulong, Ulong>;    //Size
 
 
 namespace Sanae {
