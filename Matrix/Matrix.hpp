@@ -590,7 +590,7 @@ void Sanae::MatrixT<T>::m_Inverse_matrix
 				if ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,_pos })] == 0) {
 					for (Ulong findy = 0; findy < a_Size.second; findy++) {
 						if ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { _pos,findy })] != 0) {
-							this->m_Swap_Line(_pos, findy, a_Data, a_Size);
+							this->m_Swap_Line(_pos, findy, a_Data   , a_Size);
 							this->m_Swap_Line(_pos, findy, a_Storage, a_Size);
 						}
 					}
@@ -601,7 +601,7 @@ void Sanae::MatrixT<T>::m_Inverse_matrix
 
 				//その他列への適用
 				for (Ulong x = 0; x < a_Size.first; x++) {
-					(*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })] -= div * ((*a_Data)[this->m_Convert_to_ArrayNum(a_Size.first, { x,_pos })]);
+					(*a_Data   )[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })] -= div * ((*a_Data   )[this->m_Convert_to_ArrayNum(a_Size.first, { x,_pos })]);
 					(*a_Storage)[this->m_Convert_to_ArrayNum(a_Size.first, { x,y })] -= div * ((*a_Storage)[this->m_Convert_to_ArrayNum(a_Size.first, { x,_pos })]);
 				}
 			}
@@ -1036,8 +1036,7 @@ const std::vector<T>* Sanae::MatrixT<T>::GetVectorP()
 }
 
 /*----------------------------------------------
-* Returns a pointer to _Main.
-(Can be used in functions such as std::max_element.)
+* Change the shape with the same size.
 * 同じ大きさで形を変更します。
 ----------------------------------------------*/
 template<typename T>
@@ -1052,6 +1051,29 @@ Sanae::MatrixT<T>& Sanae::MatrixT<T>::Deformation
 		this->m_Size = a_To;
 
 	return *this;
+}
+
+
+
+
+/*----------------------------------------------
+* For std::cout.
+* std::cout出力用。
+----------------------------------------------*/
+template<typename CharT,typename Traits,typename MatrixType = double>
+std::basic_ostream<CharT,Traits>& operator << 
+(
+	std  ::basic_ostream<CharT,Traits>& ost,
+	Sanae::MatrixT      <MatrixType  >& matrix
+) 
+{
+	SizeT size = matrix.GetSizeWH();
+
+	for (Ulong y = 0; y < size.second; y++)
+		for (Ulong x = 0; x < size.first;x++)
+			ost << matrix[{x, y}] << ((x+1)==size.first ? "\n" : " ");
+
+	return ost;
 }
 
 

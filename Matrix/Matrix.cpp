@@ -3,24 +3,8 @@
 #include <random>
 #include <time.h>
 
-int main() {
-	Sanae::Matrix test;
-	Sanae::Matrix b =
-	{
-		{1,2,3},
-		{4,5,6},
-		{7,8,9}
-	};
-	test << b;
-	std::vector<double> t;
-	test >> t;
 
-	for (double i:t) {
-		std::cout << i;
-	}
-	test.View();
-}
-int min()
+int main()
 {
 /*-----Constructor-----*/
 	Sanae::Matrix a;
