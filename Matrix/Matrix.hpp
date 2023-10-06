@@ -1064,7 +1064,7 @@ template<typename CharT,typename Traits,typename MatrixType = double>
 std::basic_ostream<CharT,Traits>& operator << 
 (
 	std  ::basic_ostream<CharT,Traits>& ost,
-	Sanae::MatrixT      <MatrixType  >& matrix
+	Sanae::MatrixT      <MatrixType  >  matrix
 ) 
 {
 	SizeT size = matrix.GetSizeWH();

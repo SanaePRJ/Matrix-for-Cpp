@@ -149,12 +149,13 @@ int main()
 	//12
 
 	//逆行列を求める。
-	func_var0.Inverse().View();
+	func_var0.Inverse();
 	/*----------
 	 0.166667 -0.166667 -0.0833333
 	-0.333333  1.33333  -0.333333
 	 1        -4         1.5
 	----------*/
+	std::cout << func_var0.Inverse();
 
 	return 0;
 }
