@@ -136,11 +136,16 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.hpp" />
-    <ClInclude Include="MatrixBase.hpp" />
+    <Text Include="..\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\LICENSE.txt" />
+    <ClInclude Include="Matrix\Matrix.h" />
+    <ClInclude Include="Matrix\Matrix.hpp" />
+    <ClInclude Include="Matrix\MatrixAdvCalc.hpp" />
+    <ClInclude Include="Matrix\MatrixCalc.hpp" />
+    <ClInclude Include="Matrix\MatrixConstructor.hpp" />
+    <ClInclude Include="Matrix\MatrixOperator.hpp" />
+    <ClInclude Include="Matrix\MatrixUtil.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

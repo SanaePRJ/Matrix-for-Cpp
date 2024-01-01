@@ -1,26 +1,10 @@
 # Matrix-for-Cpp目標
 行列を扱う型を作成していく。
 
-# Coding convention
-関数の書き方を以下のように定める。
-    
-    //Comment
-    ReturnClass Func
-    (
-        Argument1,
-        Argument2,
-        ...
-    )
-    {
-        Process
-    }
 # メンバ一覧
 ## 宣言
 ### 引数なし
-    Matrix _var;
-### 配列
-    std::vector<double> var0 = {0,1,2,3};
-    Matrix              var1 = std::pair<SizeT,std::vector<double>>{ {2,2},var0 };
+    Matrix<double> _var;
 ### 3*3行列
     Matrix _var
     {
@@ -30,30 +14,29 @@
     };
 ### Matrix
     //3*3行列を定義
-    Matrix var0 =
+    Matrix<double> var0 =
     {
       {0,1,2},
       {3,4,5},
       {6,7,8}
     }
     
-    Matrix var1 = var0;
+    Matrix<double> var1 = var0;
 ## 参照
-    Matrix var0 =
+    Matrix<double> var0 =
     {
       {0,1,2},
       {3,4,5},
       {6,7,8}
     };
-    var0[4];    //4  [配列番号]
-    var0[{1,1}] //4  [{列番号,行番号}]
+    var0[1][1]; //4
 ## 代入
 以下の変数が定義されているものとする。
 
-    Matrix var0;
+    Matrix<double> var0;
 
 ### Matrix
-    Matrix var1 =
+    Matrix<double> var1 =
     {
       {1,2,3},
       {4,5,6},
@@ -69,14 +52,14 @@
 ## 演算
 以下の変数が定義されているものとする。
     
-    Matrix var0 = 
+    Matrix<double> var0 = 
     {
           {7,8,2},
 		  {6,0,2},
 		  {4,2,1}
     };
     
-    Matrix var1 =
+    Matrix<double> var1 =
     {
       {1,2,3},
       {4,5,6},
@@ -112,8 +95,8 @@
     (var0*5);
     
 ### 行列式を求める
-    var0.Det(); //12
-    
+    var0.det();
+
 ### 行列の転置
     //非破壊的処理
     var0.Transpose();

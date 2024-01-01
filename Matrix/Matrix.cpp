@@ -1,15 +1,13 @@
-﻿#include "Matrix.hpp"
-#include <thread>
-#include <random>
-#include <time.h>
+﻿#include <iostream>
+#include "Matrix/Matrix.hpp"
 
 
 int main()
 {
 /*-----Constructor-----*/
-	Sanae::Matrix a;
+	Sanae::Matrix<double> a;
 	
-	Sanae::Matrix b =
+	Sanae::Matrix<double> b =
 	{
 		{1,2,3},
 		{4,5,6},
@@ -21,15 +19,7 @@ int main()
 		7 8 9
 	----------*/
 
-	Sanae::Matrix c = b;
-	/*----------
-		1 2 3
-		4 5 6
-		7 8 9
-	----------*/
-
-	std::vector<double> d_v = {1,2,3,4,5,6,7,8,9};
-	Sanae::Matrix       d   = std::pair<SizeT,std::vector<double>>{ {3,3},d_v };
+	Sanae::Matrix<double> c = b;
 	/*----------
 		1 2 3
 		4 5 6
@@ -92,13 +82,15 @@ int main()
 	21 24 27
 	----------*/
 
+	a ^= b; //dot mul
+
+
 //非破壊的
-	(b + c).View();
-	b.View();
-	c.View();
+	(b + c);
 	(b - c);
 	(b * c);
 	(b * 5);
+	(b ^ c); //dot mul
 
 //参照
 	/*----------
@@ -107,11 +99,10 @@ int main()
 	4 5 6
 	7 8 9
 	----------*/
-	b[4];		//5 [配列番号]
-	b[{1, 1}];	//5 [{列番号,行番号}]
+	b[1][1]; //5
 
 /*-----Function-----*/
-	Sanae::Matrix func_var0 =
+	Sanae::Matrix<double> func_var0 =
 	{
 		{7,8,2},
 		{6,0,2},
@@ -128,7 +119,7 @@ int main()
 	----------*/
 
 	//行と行を入れ替える。
-	func_var0.Swap_Line(1,2);
+	func_var0.Swap_Row(1,2);
 	/*----------
 		8 7 2
 		2 4 1
@@ -145,7 +136,7 @@ int main()
 	*/
 
 	//行列式を求める。
-	func_var0.Det();
+	func_var0.det();
 	//12
 
 	//逆行列を求める。
@@ -155,7 +146,8 @@ int main()
 	-0.333333  1.33333  -0.333333
 	 1        -4         1.5
 	----------*/
-	std::cout << func_var0.Inverse();
+
+	std::cout << func_var0;
 
 	return 0;
 }
