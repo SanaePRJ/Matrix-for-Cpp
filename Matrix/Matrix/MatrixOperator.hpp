@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixOperator.hpp
-* Version : Beta
+* Version : 4.0.0
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型のオペレータの実装

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixCalc.hpp
-* Version : Beta
+* Version : 4.0.0
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型の計算メソッドを実装

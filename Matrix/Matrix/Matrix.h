@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------
-* Name    : Matrix.hpp
-* Version : Beta
+* Name    : Matrix.h
+* Version : 4.0.0
 * Author  : SanaePRJ
 * Description:
-*  MatrixBase型の実装ファイル
+*  MatrixBase型の定義ファイル
 -------------------------------------------------------------*/
 
 

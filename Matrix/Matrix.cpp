@@ -1,5 +1,18 @@
-﻿#include <iostream>
+﻿/*-------------------------------------------------------------
+* Name    : Matrix.cpp
+* Version : 4.0.0
+* Author  : SanaePRJ
+* Description:
+*  テストプログラム
+-------------------------------------------------------------*/
+
+
+
+
+#include <iostream>
 #include "Matrix/Matrix.hpp"
+
+
 
 
 int main()
@@ -99,8 +112,8 @@ int main()
 		4 5 6
 		7 8 9
 		----------*/
-	b[1][1];         //5 : 行から取得 b[1]     = {4,5,6}
-	*(b[{0, 1}][1]); //5 : 列から取得 b[{0,1}] = {2,5,8}
+	b[1][1];         //5 : 行から取得 b[1]     = std::vector<ty >{4,5,6}
+	*(b[{0, 1}][1]); //5 : 列から取得 b[{0,1}] = std::vector<ty*>{2,5,8}
 
 /*-----Function-----*/
 	Sanae::Matrix<double> func_var0 =

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixDet.hpp
-* Version : Beta
+* Version : 4.0.0
 * * Author: SanaePRJ
 * Description:
 *  MatrixBaseŒ^‚Ìs—ñ®‚Æ‹ts—ñ‚ğ‹‚ß‚éŠÖ”‚ÌÀ‘•
