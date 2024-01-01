@@ -144,10 +144,53 @@ Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(ty arg) {
 }
 
 
+//譲渡
+template<typename ty>
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Sanae::Matrix<ty>& arg)
+{
+	//データ削除
+	this->matrix.erase(this->matrix.begin(),this->matrix.end());
+	//データmove
+	std::move(arg.matrix.begin(), arg.matrix.end(), std::back_inserter(this->matrix));
+
+	return *this;
+}
+
+
+//行での配列を取得します。
 template<typename ty>
 std::vector<ty>& Sanae::Matrix<ty>::operator [](size_t pos)
 {
 	return this->matrix[pos];
+}
+
+
+//列での配列を取得します。
+// *ポインタ型がvectorには格納されています。
+// *arg.first:開始行 arg.second:列
+template<typename ty>
+std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t,size_t> arg) 
+{
+	std::vector<ty*> ret;
+
+	for (size_t row = arg.first; row < this->get_row();row++)
+		ret.push_back(&this->matrix[row][arg.second]);
+	
+	return ret;
+}
+
+
+template<typename ty>
+bool Sanae::Matrix<ty>::operator==(Matrix<ty>& arg) 
+{
+	return (this->matrix == arg);
+}
+
+
+template<typename ty>
+bool Sanae::Matrix<ty>::operator!=(Matrix<ty>& arg)
+{
+	return (this->matrix != arg);
 }
 
 

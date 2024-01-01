@@ -12,8 +12,8 @@
 #ifndef SANAE_MATRIX_H
 #define SANAE_MATRIX_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <stdexcept>
 
 
@@ -25,7 +25,7 @@ namespace Sanae{
 	template<typename ty>
 	class Matrix
 	{
-	protected:
+	private:
 		//Variables
 		using MatrixT     = std::vector<std::vector<ty>>;
 		using MatrixInitT = std::initializer_list<std::initializer_list<ty>>;
@@ -75,21 +75,29 @@ namespace Sanae{
 		Matrix  operator * (Matrix&);
 		Matrix  operator * (ty);
 
+		Matrix& operator <<(Matrix&);
 		std::vector<ty>& operator [](size_t);
+		std::vector<ty*> operator [](std::pair<size_t,size_t>);
 
-		size_t get_row();
+		bool    operator ==(Matrix&);
+		bool    operator !=(Matrix&);
+
+		size_t get_row   ();
 		size_t get_column();
-
-		ty     det();
+		
+		ty     det    ();
 		Matrix Inverse();
 
 		Matrix& Swap_Column(size_t,size_t);
-		Matrix& Swap_Row   (size_t,size_t);
+		Matrix& Swap_Row   (size_t, size_t);
 
 		Matrix Transpose();
  	};
 
 
 }
+
+
+
 
 #endif
