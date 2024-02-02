@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : Matrix.h
-* Version : 4.0.0
+* Version : 4.0.1
 * Author  : SanaePRJ
 * Description:
 *  MatrixBase型の定義ファイル
@@ -55,7 +55,10 @@ namespace Sanae{
 
 
 	public:
+
+
 		Matrix();
+		Matrix(std::pair<size_t,size_t>);
 		Matrix(MatrixInitT);
 		Matrix(MatrixT&);
 		Matrix(const Matrix&);
@@ -90,6 +93,8 @@ namespace Sanae{
 
 		Matrix& Swap_Column(size_t,size_t);
 		Matrix& Swap_Row   (size_t, size_t);
+		
+		Matrix& resize     (std::pair<size_t,size_t>);
 
 		Matrix Transpose();
  	};

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixUtil.hpp
-* Version : 4.0.0
+* Version : 4.0.1
 * * Author: SanaePRJ
 * Description:
 *  MatrixBaseŒ^‚ÌGetter‚âo—ÍŠÖ”‚ÌÀ‘•
@@ -28,9 +28,12 @@ inline bool Sanae::Matrix<ty>::m_CheckColumn(MatrixT* arg) const
 {
 	size_t Column = this->m_GetColumnSize(arg);
 
-	if (Column == 0) return false;
+	if (Column == 0)
+		return false;
+
 	for (auto& Row : *arg)
-		if (Row.size() != Column) return true;
+		if (Row.size() != Column)
+			return true;
 	
 	return false;
 }
@@ -110,6 +113,15 @@ template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Row(size_t arg1,size_t arg2)
 {
 	std::swap(this->matrix[arg1],this->matrix[arg2]);
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::resize(std::pair<size_t, size_t> arg_Size)
+{
+	this->matrix.resize(arg_Size.first,std::vector<ty>(arg_Size.second,0));
 
 	return *this;
 }

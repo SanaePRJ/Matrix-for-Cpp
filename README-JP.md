@@ -22,6 +22,8 @@
     }
     
     Matrix<double> var1 = var0;
+
+    Matrix<double> var2 = std::pair<size_t,size_t>{1,2};//1*2行列を作成
 ## 参照
     Matrix<double> var0 =
     {

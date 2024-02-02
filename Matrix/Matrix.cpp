@@ -1,6 +1,6 @@
 ﻿/*-------------------------------------------------------------
 * Name    : Matrix.cpp
-* Version : 4.0.0
+* Version : 4.0.1
 * Author  : SanaePRJ
 * Description:
 *  テストプログラム
@@ -10,9 +10,9 @@
 
 
 #include <iostream>
+#include <random>
+#include <time.h>
 #include "Matrix/Matrix.hpp"
-
-
 
 
 int main()
@@ -142,7 +142,7 @@ int main()
 
 //非破壊的
 	//転置を行う。
-	func_var0.Transpose();
+	std::cout << func_var0.Transpose();
 	/*
 		8 2 0
 		7 4 6

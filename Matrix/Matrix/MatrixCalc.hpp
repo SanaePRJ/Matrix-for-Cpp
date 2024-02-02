@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixCalc.hpp
-* Version : 4.0.0
+* Version : 4.0.1
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型の計算メソッドを実装
@@ -89,7 +89,94 @@ inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) con
 }
 
 
-//行列の掛け算
+
+
+
+#ifndef SANAE_MATRIX_NOTHREADS
+#define SANAE_MATRIXCALC_THREADS 2
+
+#include <thread>
+
+
+
+
+//行列の掛け算(Threads)
+template<typename ty>
+inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) const
+{
+	//第一引数の列数と第二引数の行数は同じでなければならない。
+	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize(arg_data2))
+		throw std::invalid_argument("The number of columns in data1 must be the same as the number of rows in data2.");
+
+
+	//第一引数の行数と第二引数の列数を確保,0で初期化
+	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize(arg_data2), 0));
+
+
+	//行列サイズを取得
+	size_t Row    = this->m_GetRowSize   (&buf); //行数
+	size_t Column = this->m_GetColumnSize(&buf); //列数
+	
+	//計算数
+	size_t taskcount = Row * Column;
+
+
+	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
+	auto mul_lambda = [arg_data1, arg_data2, this](size_t arg_Row, size_t arg_Column)
+		{
+			const size_t size = this->m_GetColumnSize(arg_data1);
+			ty           sum = 0;
+
+			for (size_t Pos = 0; Pos < size; Pos++)
+				sum += (*arg_data1)[arg_Row][Pos] * (*arg_data2)[Pos][arg_Column];
+
+			return sum;
+		};
+
+	//threadで分割するためのラムダ式
+	auto mul_thread = [&Row,&Column,&buf,&mul_lambda](size_t from,size_t to) {
+			for (size_t pos = from; pos < to; pos++) 
+				buf[(pos / Column)][(pos % Column)] = mul_lambda((pos / Column),( pos % Column));
+		};
+	
+
+	//スレッド管理
+	std::vector<std::thread> threads;
+	for (size_t pos = 0; pos < taskcount;)
+	{
+		size_t from = pos;
+		size_t to   = pos + taskcount / SANAE_MATRIXCALC_THREADS;
+		
+		if (to > taskcount)
+			to = taskcount;
+
+		//スレッドを作成
+		threads.push_back(std::thread(mul_thread,from,to));
+
+		pos = to;
+	}
+
+	//タスク完了まで待つ
+	for (std::thread& th:threads)
+		th.join();
+
+	arg_data1->clear();
+
+	//bufを第一引数に譲渡
+	std::move(buf.begin(), buf.end(), std::back_inserter(*arg_data1));
+
+	return;
+}
+
+
+
+
+#else
+
+
+
+
+//行列の掛け算(NoThreads)
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) const
 {
@@ -130,6 +217,11 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 	return;
 }
+
+
+
+
+#endif
 
 
 
