@@ -23,6 +23,9 @@ Author:		SanaeProject
 
 	Sanae::Matrix<double> c = b;
 
+	//3*2Matrix
+	Sanae::Matrix<double> d = std::pair<size_t,size_t>{3,2};
+
 	a += b; //a=a+b
 	a -= b; //a=a-b
 	a *= b; //a=a*b (Matrix)
@@ -44,7 +47,7 @@ Author:		SanaeProject
 		{6,0,2},
 		{4,2,1}
 	};
-	
+
 
 	func_var0.Swap_Column(0,1);
 	func_var0.Swap_Row   (1,2);
@@ -53,3 +56,11 @@ Author:		SanaeProject
 	func_var0.Inverse  ();
 	func_var0.det      ();
 	
+	//Set 0
+	func_var0.Setter   ([]()->double{0});
+
+	//set random
+	std::default_random_engine       engine;
+	std::normal_distribution<double> dist(0, 1);
+
+	func_var0.Setter([&engine, &dist]() -> double {return dist(engine); });

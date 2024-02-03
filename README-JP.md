@@ -106,3 +106,12 @@
 ### 逆行列を返します
     //非破壊的処理
     var0.Inverse();
+
+### 0で埋める
+    var0.Setter([]()->double{0});
+
+### 乱数で埋める
+    std::default_random_engine       engine;
+	std::normal_distribution<double> dist(0, 1);
+
+	var0.Setter([&engine, &dist]() -> double {return dist(engine); });
