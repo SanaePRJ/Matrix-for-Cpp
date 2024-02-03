@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixConstructor.hpp
-* Version : 4.0.1
+* Version : 4.0.2
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型のコンストラクタの実装
@@ -62,6 +62,13 @@ template<typename ty>
 Sanae::Matrix<ty>::Matrix(const Matrix& arg)
 {
 	std::move(arg.matrix.begin(), arg.matrix.end(), std::back_inserter(matrix));
+}
+
+
+//デストラクタ
+template<typename ty>
+inline Sanae::Matrix<ty>::~Matrix()
+{
 }
 
 

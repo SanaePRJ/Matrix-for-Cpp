@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : Matrix.h
-* Version : 4.0.1
+* Version : 4.0.2
 * Author  : SanaePRJ
 * Description:
 *  MatrixBase型の定義ファイル
@@ -15,6 +15,7 @@
 #include <iostream>
 #include <vector>
 #include <stdexcept>
+#include <functional>
 
 
 
@@ -39,7 +40,7 @@ namespace Sanae{
 		inline size_t m_GetRowSize   (MatrixT*) const;
 		inline size_t m_GetColumnSize(MatrixT*) const;
 
-		inline void m_calc     (MatrixT*, MatrixT*,ty (*)(ty,ty)) const;
+		inline void m_calc     (MatrixT*, MatrixT*,std::function<ty(ty,ty)>) const;
 
 		inline void m_add      (MatrixT*, MatrixT*) const;
 		inline void m_sub      (MatrixT*, MatrixT*) const;
@@ -55,13 +56,14 @@ namespace Sanae{
 
 
 	public:
+		size_t thread = 2;
 
-
-		Matrix();
-		Matrix(std::pair<size_t,size_t>);
-		Matrix(MatrixInitT);
-		Matrix(MatrixT&);
-		Matrix(const Matrix&);
+		Matrix ();
+		Matrix (std::pair<size_t,size_t>);
+		Matrix (MatrixInitT);
+		Matrix (MatrixT&);
+		Matrix (const Matrix&);
+		~Matrix();
 
 		Matrix& operator =(MatrixInitT);
 		Matrix& operator =(Matrix&);
@@ -88,15 +90,16 @@ namespace Sanae{
 		size_t get_row   ();
 		size_t get_column();
 		
-		ty     det    ();
-		Matrix Inverse();
+		ty     det       ();
+		Matrix Inverse   ();
 
-		Matrix& Swap_Column(size_t,size_t);
+		Matrix& Swap_Column(size_t, size_t);
 		Matrix& Swap_Row   (size_t, size_t);
 		
 		Matrix& resize     (std::pair<size_t,size_t>);
+		Matrix& Setter     (std::function<ty()>     );
 
-		Matrix Transpose();
+		Matrix  Transpose  ();
  	};
 
 

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixDet.hpp
-* Version : 4.0.1
+* Version : 4.0.2
 * * Author: SanaePRJ
 * Description:
 *  MatrixBaseŒ^‚Ìs—ñ®‚Æ‹ts—ñ‚ğ‹‚ß‚éŠÖ”‚ÌÀ‘•
@@ -35,7 +35,7 @@ inline void Sanae::Matrix<ty>::m_sweepout(MatrixT* arg_from, MatrixT* arg_store)
 	auto Operation = [arg_from, arg_store, this, size](size_t from, size_t to, ty num)
 		{
 			for (size_t Column = 0; Column < m_GetColumnSize(arg_from); Column++) {
-				(*arg_from)[to][Column] += (*arg_from)[from][Column] * num;
+				(*arg_from )[to][Column] += (*arg_from )[from][Column] * num;
 				(*arg_store)[to][Column] += (*arg_store)[from][Column] * num;
 			}
 		};

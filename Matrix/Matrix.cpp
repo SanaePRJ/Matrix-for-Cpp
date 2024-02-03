@@ -7,16 +7,59 @@
 -------------------------------------------------------------*/
 
 
-
-
+#include <functional>
 #include <iostream>
 #include <random>
 #include <time.h>
 #include "Matrix/Matrix.hpp"
 
 
+
+
+//行列積高速化テストプログラム
+int mul()
+{
+	std::default_random_engine       engine;      //エンジン
+	std::normal_distribution<double> dist(0, 1);  //平均0,標準偏差1
+
+	size_t n = 999;
+
+	//n*n行列を作成
+	Sanae::Matrix<double> buf0 = std::pair<size_t, size_t>{ n,n };
+	Sanae::Matrix<double> buf1 = std::pair<size_t, size_t>{ n,n };
+
+	//乱数をセット
+	buf0.Setter([&engine, &dist]() -> double {return dist(engine); });
+	buf1.Setter([&engine, &dist]() -> double {return dist(engine); });
+
+	//行列積計算用スレッドを設定
+	buf0.thread = std::thread::hardware_concurrency();
+
+	system("pause");
+
+	//タイム計測スタート
+	time_t now = time(NULL);
+
+	buf0 *= buf1;
+
+	//終了
+	time_t past = time(NULL) - now;
+
+	std::cout << past << "秒かかりました。" << std::endl;
+
+	system("pause");
+	std::cout << buf0; //計算結果
+
+	return 0;
+}
+
+
+
+
 int main()
 {
+	mul();
+
 	/*-----Constructor-----*/
 	Sanae::Matrix<double> a;
 

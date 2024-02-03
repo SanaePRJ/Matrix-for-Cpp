@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------
 * Name    : MatrixUtil.hpp
-* Version : 4.0.1
+* Version : 4.0.2
 * * Author: SanaePRJ
 * Description:
-*  MatrixBaseŒ^‚ÌGetter‚âo—ÍŠÖ”‚ÌÀ‘•
+*  MatrixŒ^‚ÌutilityŠÖ”‚ÌÀ‘•
 -------------------------------------------------------------*/
 
 
@@ -15,6 +15,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include <functional>
 
 #include "Matrix.h"
 
@@ -128,6 +129,17 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::resize(std::pair<size_t, size_t> ar
 
 
 template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty()> arg_func)
+{
+	for (std::vector<ty>& Rows : matrix)
+		for (ty& Columns : Rows)
+			Columns = arg_func();
+
+	return *this;
+}
+
+
+template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose() 
 {
 	MatrixT ret;
@@ -148,6 +160,8 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 
 	return ret;
 }
+
+
 
 
 //std::couto—Í—p
