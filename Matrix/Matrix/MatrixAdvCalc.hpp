@@ -113,7 +113,7 @@ inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
 	//次元を落としまくる。
 	auto dec_dim = [this, pull, det_2](MatrixT& arg_lambda, ty coeff, auto f)
 		{
-			const size_t size = arg_lambda.size(); //元のサイズ
+			const size_t size     = arg_lambda.size(); //元のサイズ
 			const size_t new_size = size - 1;          //落とした後のサイズ
 
 			ty ret = 0; //返り値
@@ -135,8 +135,11 @@ inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
 
 			return ret;
 		};
+	
+	//元の係数
+	const ty From_Coff = 1;
 
-	return dec_dim(*arg, 1, dec_dim);
+	return dec_dim(*arg, From_Coff, dec_dim);
 }
 
 

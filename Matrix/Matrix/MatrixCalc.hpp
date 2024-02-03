@@ -110,8 +110,14 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 	const size_t Column = this->m_GetColumnSize(&buf); //列数
 	
 	//計算数
-	const size_t taskcount = Row * Column;
-	
+	const size_t alltaskcount = Row * Column;
+	const size_t taskcount    = alltaskcount / this->thread;
+
+
+	//スレッド数が多すぎ!
+	if (taskcount == 0)
+		throw std::invalid_argument("There are too many threads.");
+
 
 	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
 	auto mul_lambda = [arg_data1, arg_data2, this](size_t arg_Row, size_t arg_Column)
@@ -135,13 +141,13 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 	//スレッド管理
 	std::vector<std::thread> threads;
-	for (size_t pos = 0; pos < taskcount;)
+	for (size_t pos = 0; pos < alltaskcount;)
 	{
 		size_t from = pos;
-		size_t to   = pos + taskcount / this->thread;
+		size_t to   = pos + taskcount;
 		
-		if (to > taskcount)
-			to = taskcount;
+		if (to > alltaskcount)
+			to = alltaskcount;
 
 		//スレッドを作成
 		threads.push_back(std::thread(mul_thread,from,to));
@@ -157,6 +163,7 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 	//bufを第一引数に譲渡
 	*arg_data1 = std::move(buf);
+
 
 	return;
 }
