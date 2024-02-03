@@ -78,9 +78,7 @@ inline void Sanae::Matrix<ty>::m_dotmul(MatrixT* arg_data1, MatrixT* arg_data2) 
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) const
 {
-	MatrixT dummy(arg_data1->size(),std::vector<ty>((*arg_data1)[0].size(),0));
-
-	this->m_calc(arg_data1, &dummy, [&arg_data2](ty d1, ty d2)->ty {return d1 * arg_data2; });
+	this->m_calc(arg_data1, arg_data1, [&arg_data2](ty d1, ty d2)->ty {return d1 * arg_data2; });
 
 	return;
 }
@@ -130,8 +128,6 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 	//thread‚Å•ªŠ„‚·‚é‚½‚ß‚Ìƒ‰ƒ€ƒ_Ž®
 	auto mul_thread = [&Row,&Column,&buf,&mul_lambda](size_t from,size_t to) {
-			printf("%llu,%llu\n",from,to);
-
 			for (size_t pos = from; pos < to; pos++) 
 				buf[(pos / Column)][(pos % Column)] = mul_lambda((pos / Column),( pos % Column));
 		};
