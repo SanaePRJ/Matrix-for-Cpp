@@ -169,7 +169,7 @@ template<typename CharT, typename Traits, typename MatrixType = double>
 std::basic_ostream<CharT, Traits>& operator <<
 (
 	std::basic_ostream<CharT, Traits>& ost,
-	Sanae::Matrix <MatrixType>  matrix
+	Sanae::Matrix<MatrixType>          matrix
 )
 {
 	for (size_t row = 0; row < matrix.get_row();row++) {

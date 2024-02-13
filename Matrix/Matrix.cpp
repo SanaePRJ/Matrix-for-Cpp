@@ -11,6 +11,10 @@
 #include <iostream>
 #include <random>
 #include <time.h>
+#include <thread>
+
+#define SANAE_MATRIX_NOTHREADS
+
 #include "Matrix/Matrix.hpp"
 
 

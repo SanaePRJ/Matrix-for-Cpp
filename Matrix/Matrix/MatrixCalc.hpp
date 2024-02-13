@@ -17,7 +17,7 @@
 
 
 
-//渡された関数をすべての要素に対して実行します。
+//渡された関数をすべての要素に対して実行します。arg_data1 = Function(arg_data1,arg_data2)
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1,const MatrixT* arg_data2, std::function<ty(ty,ty)> Func) const
 {
@@ -87,6 +87,7 @@ inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) con
 
 
 #ifndef SANAE_MATRIX_NOTHREADS
+
 
 #include <thread>
 
@@ -181,11 +182,11 @@ template<typename ty>
 inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	//第一引数の列数と第二引数の行数は同じでなければならない。
-	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize(arg_data2))
+	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2))
 		throw std::invalid_argument("The number of columns in data1 must be the same as the number of rows in data2.");
 
 	//第一引数の行数と第二引数の列数を確保,0で初期化
-	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize(arg_data2), 0));
+	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize((MatrixT*)arg_data2), 0));
 
 	const size_t Row    = this->m_GetRowSize(&buf);    //行数
 	const size_t Column = this->m_GetColumnSize(&buf); //列数

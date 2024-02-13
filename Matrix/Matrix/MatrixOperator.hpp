@@ -183,14 +183,14 @@ std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t,size_t> arg)
 template<typename ty>
 bool Sanae::Matrix<ty>::operator==(const Matrix<ty>& arg) 
 {
-	return (this->matrix == arg);
+	return (this->matrix == arg.matrix);
 }
 
 
 template<typename ty>
 bool Sanae::Matrix<ty>::operator!=(const Matrix<ty>& arg)
 {
-	return (this->matrix != arg);
+	return (this->matrix != arg.matrix);
 }
 
 
