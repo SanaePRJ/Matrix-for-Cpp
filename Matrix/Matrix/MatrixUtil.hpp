@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixUtil.hpp
-* Version : 4.0.2
+* Version : 4.0.3
 * * Author: SanaePRJ
 * Description:
 *  MatrixŒ^‚ÌutilityŠÖ”‚ÌÀ‘•

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : Matrix.h
-* Version : 4.0.2
+* Version : 4.0.3
 * Author  : SanaePRJ
 * Description:
 *  MatrixBase型の定義ファイル
@@ -40,14 +40,14 @@ namespace Sanae{
 		inline size_t m_GetRowSize   (MatrixT*) const;
 		inline size_t m_GetColumnSize(MatrixT*) const;
 
-		inline void m_calc     (MatrixT*, MatrixT*,std::function<ty(ty,ty)>) const;
+		inline void m_calc     (MatrixT*, const MatrixT*,std::function<ty(ty,ty)>) const;
 
-		inline void m_add      (MatrixT*, MatrixT*) const;
-		inline void m_sub      (MatrixT*, MatrixT*) const;
-		inline void m_dotmul   (MatrixT*, MatrixT*) const;
+		inline void m_add      (MatrixT*, const MatrixT*) const;
+		inline void m_sub      (MatrixT*, const MatrixT*) const;
+		inline void m_dotmul   (MatrixT*, const MatrixT*) const;
 		inline void m_scalarmul(MatrixT*, ty      ) const;
 
-		inline void m_mul      (MatrixT*, MatrixT*) const;
+		inline void m_mul      (MatrixT*, const MatrixT*) const;
 
 		inline void m_to_identity(MatrixT*) const;
 
@@ -61,31 +61,31 @@ namespace Sanae{
 		Matrix ();
 		Matrix (std::pair<size_t,size_t>);
 		Matrix (MatrixInitT);
-		Matrix (MatrixT&);
+		Matrix (const MatrixT&);
 		Matrix (const Matrix&);
 		~Matrix();
 
 		Matrix& operator =(MatrixInitT);
-		Matrix& operator =(Matrix&);
+		Matrix& operator =(const Matrix&);
 
-		Matrix& operator +=(Matrix&);
-		Matrix& operator -=(Matrix&);
-		Matrix& operator ^=(Matrix&);
-		Matrix& operator *=(Matrix&);
+		Matrix& operator +=(const Matrix&);
+		Matrix& operator -=(const Matrix&);
+		Matrix& operator ^=(const Matrix&);
+		Matrix& operator *=(const Matrix&);
 		Matrix& operator *=(ty);
 
-		Matrix  operator + (Matrix&);
-		Matrix  operator - (Matrix&);
-		Matrix  operator ^ (Matrix&);
-		Matrix  operator * (Matrix&);
+		Matrix  operator + (const Matrix&);
+		Matrix  operator - (const Matrix&);
+		Matrix  operator ^ (const Matrix&);
+		Matrix  operator * (const Matrix&);
 		Matrix  operator * (ty);
 
 		Matrix& operator <<(Matrix&);
 		std::vector<ty>& operator [](size_t);
 		std::vector<ty*> operator [](std::pair<size_t,size_t>);
 
-		bool    operator ==(Matrix&);
-		bool    operator !=(Matrix&);
+		bool    operator ==(const Matrix&);
+		bool    operator !=(const Matrix&);
 
 		size_t get_row   ();
 		size_t get_column();

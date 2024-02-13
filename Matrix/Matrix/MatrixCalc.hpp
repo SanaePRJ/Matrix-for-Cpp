@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixCalc.hpp
-* Version : 4.0.2
+* Version : 4.0.3
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型の計算メソッドを実装
@@ -19,14 +19,14 @@
 
 //渡された関数をすべての要素に対して実行します。
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1, MatrixT* arg_data2, std::function<ty(ty,ty)> Func) const
+inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1,const MatrixT* arg_data2, std::function<ty(ty,ty)> Func) const
 {
 	//サイズが0の場合計算できない...
 	if (arg_data1->size() == 0 || arg_data2->size() == 0)
 		throw std::invalid_argument("You must have some data.");
 
 	//第一第二引数の行と列数が違う場合エラー
-	if (this->m_GetRowSize(arg_data1) != this->m_GetRowSize(arg_data2) || this->m_GetColumnSize(arg_data1) != this->m_GetColumnSize(arg_data2))
+	if (this->m_GetRowSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2) || this->m_GetColumnSize(arg_data1) != this->m_GetColumnSize((MatrixT*)arg_data2))
 		throw std::invalid_argument("The number of rows and columns of data1 and data2 must be equal.");
 
 	const size_t Row    = this->m_GetRowSize   (arg_data1);  //計算する行数
@@ -49,7 +49,7 @@ inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1, MatrixT* arg_data2, st
 
 //加算
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_add(MatrixT* arg_data1, MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_add(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 + d2; });
 	return;
@@ -58,7 +58,7 @@ inline void Sanae::Matrix<ty>::m_add(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 //減算
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_sub(MatrixT* arg_data1, MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_sub(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 - d2; });
 	return;
@@ -67,7 +67,7 @@ inline void Sanae::Matrix<ty>::m_sub(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 //dot
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_dotmul(MatrixT* arg_data1, MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_dotmul(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 * d2; });
 	return;
@@ -78,7 +78,7 @@ inline void Sanae::Matrix<ty>::m_dotmul(MatrixT* arg_data1, MatrixT* arg_data2) 
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) const
 {
-	this->m_calc(arg_data1, arg_data1, [&arg_data2](ty d1, ty d2)->ty {return d1 * arg_data2; });
+	this->m_calc(arg_data1, (const MatrixT*)arg_data1, [&arg_data2](ty d1, ty d2)->ty {return d1 * arg_data2; });
 
 	return;
 }
@@ -95,15 +95,15 @@ inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) con
 
 //行列の掛け算(Threads)
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	//第一引数の列数と第二引数の行数は同じでなければならない。
-	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize(arg_data2))
+	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2))
 		throw std::invalid_argument("The number of columns in data1 must be the same as the number of rows in data2.");
 
 
 	//第一引数の行数と第二引数の列数を確保,0で初期化
-	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize(arg_data2), 0));
+	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize((MatrixT*)arg_data2), 0));
 
 	//行列サイズを取得
 	const size_t Row    = this->m_GetRowSize   (&buf); //行数
@@ -178,7 +178,7 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) con
 
 //行列の掛け算(NoThreads)
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data2) const
 {
 	//第一引数の列数と第二引数の行数は同じでなければならない。
 	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize(arg_data2))

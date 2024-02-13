@@ -1,6 +1,6 @@
 ﻿/*-------------------------------------------------------------
 * Name    : Matrix.cpp
-* Version : 4.0.1
+* Version : 4.0.3
 * Author  : SanaePRJ
 * Description:
 *  テストプログラム
@@ -140,6 +140,7 @@ int main()
 
 	a ^= b; //dot mul
 
+	Sanae::Matrix<double> test = b * c;
 
 	//非破壊的
 	(b + c);

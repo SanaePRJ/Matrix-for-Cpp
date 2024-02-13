@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixOperator.hpp
-* Version : 4.0.2
+* Version : 4.0.3
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型のオペレータの実装
@@ -33,7 +33,7 @@ Sanae::Matrix<ty>&Sanae::Matrix<ty>::operator =(MatrixInitT arg_InitValue) {
 
 
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix& arg)
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(const Matrix& arg)
 {
 	//データをクリア
 	this->matrix.clear();
@@ -49,7 +49,7 @@ Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix& arg)
 
 
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=(Matrix<ty>& arg) {
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=(const Matrix<ty>& arg) {
 	this->m_add(&this->matrix, &arg.matrix);
 
 	return *this;
@@ -57,7 +57,7 @@ Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=(Matrix<ty>& arg) {
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=(const Matrix<ty>& arg) {
 	this->m_sub(&this->matrix, &arg.matrix);
 
 	return *this;
@@ -65,7 +65,7 @@ Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=(Matrix<ty>& arg) {
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=(const Matrix<ty>& arg) {
 	this->m_dotmul(&this->matrix, &arg.matrix);
 
 	return *this;
@@ -73,7 +73,7 @@ Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=(Matrix<ty>& arg) {
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=(const Matrix<ty>& arg) {
 	this->m_mul(&this->matrix, &arg.matrix);
 
 	return *this;
@@ -89,7 +89,7 @@ Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=(ty arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +(Matrix<ty>& arg) {
+Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +(const Matrix<ty>& arg) {
 	MatrixT buf;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
 
@@ -100,7 +100,7 @@ Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -(Matrix<ty>& arg) {
+Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -(const Matrix<ty>& arg) {
 	MatrixT buf;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
 
@@ -111,7 +111,7 @@ Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^(Matrix<ty>& arg) {
+Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^(const Matrix<ty>& arg) {
 	MatrixT buf;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
 
@@ -122,7 +122,7 @@ Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^(Matrix<ty>& arg) {
 
 
 template<typename ty>
-Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(Matrix<ty>& arg)
+Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(const Matrix<ty>& arg)
 {
 	MatrixT buf;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
@@ -146,7 +146,7 @@ Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(ty arg) {
 
 //譲渡
 template<typename ty>
-Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Sanae::Matrix<ty>& arg)
+Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Matrix<ty>& arg)
 {
 	//データ削除
 	this->matrix.erase(this->matrix.begin(),this->matrix.end());
@@ -181,14 +181,14 @@ std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t,size_t> arg)
 
 
 template<typename ty>
-bool Sanae::Matrix<ty>::operator==(Matrix<ty>& arg) 
+bool Sanae::Matrix<ty>::operator==(const Matrix<ty>& arg) 
 {
 	return (this->matrix == arg);
 }
 
 
 template<typename ty>
-bool Sanae::Matrix<ty>::operator!=(Matrix<ty>& arg)
+bool Sanae::Matrix<ty>::operator!=(const Matrix<ty>& arg)
 {
 	return (this->matrix != arg);
 }

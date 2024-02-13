@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixConstructor.hpp
-* Version : 4.0.2
+* Version : 4.0.3
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型のコンストラクタの実装
@@ -48,7 +48,7 @@ Sanae::Matrix<ty>::Matrix(MatrixInitT arg_InitValue)
 
 //std::vector<std::vector<ty>>で入れられた時用
 template<typename ty>
-Sanae::Matrix<ty>::Matrix(MatrixT& arg_InitValue)
+Sanae::Matrix<ty>::Matrix(const MatrixT& arg_InitValue)
 	:matrix(arg_InitValue.begin(), arg_InitValue.end())
 {
 	//列数は等しくなければならない。
