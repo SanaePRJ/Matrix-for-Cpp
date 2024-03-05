@@ -64,3 +64,4 @@ Author:		SanaeProject
 	std::normal_distribution<double> dist(0, 1);
 
 	func_var0.Setter([&engine, &dist]() -> double {return dist(engine); });
+	func_var0.Setter([](size_t row,size_t column,double& value) -> double {return value*row*column; });

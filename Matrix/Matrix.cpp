@@ -1,6 +1,6 @@
 ﻿/*-------------------------------------------------------------
 * Name    : Matrix.cpp
-* Version : 4.0.3
+* Version : 4.0.4
 * Author  : SanaePRJ
 * Description:
 *  テストプログラム
@@ -13,7 +13,6 @@
 #include <time.h>
 #include <thread>
 
-#define SANAE_MATRIX_NOTHREADS
 
 #include "Matrix/Matrix.hpp"
 
@@ -52,7 +51,7 @@ int mul()
 	std::cout << past << "秒かかりました。" << std::endl;
 
 	system("pause");
-	std::cout << buf0; //計算結果
+	//std::cout << buf0; //計算結果
 
 	return 0;
 }
@@ -85,6 +84,13 @@ int main()
 		4 5 6
 		7 8 9
 	----------*/
+
+	//比較演算子
+	if (b == c)
+		std::cout << "Same" << std::endl;
+
+	else if (c != c)
+		std::cout << "not Same" << std::endl;
 
 	/*-----Operator-----*/
 	//破壊的
@@ -220,6 +226,11 @@ int main()
 
 	Sanae::Matrix<double> moveto;
 	moveto << from;
+
+	//行列の値を行数,列数,元の値によって変更する。
+	Sanae::Matrix<double> test2 = std::pair<size_t, size_t>{3,3};
+	test2.Setter([](size_t row, size_t column, double& value)->double {return row + column + value; });
+	std::cout << test2;
 
 	return 0;
 }

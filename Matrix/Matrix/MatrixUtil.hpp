@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixUtil.hpp
-* Version : 4.0.3
+* Version : 4.0.4
 * * Author: SanaePRJ
 * Description:
 *  Matrixå^ÇÃutilityä÷êîÇÃé¿ëï
@@ -131,9 +131,20 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::resize(std::pair<size_t, size_t> ar
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty()> arg_func)
 {
-	for (std::vector<ty>& Rows : matrix)
-		for (ty& Columns : Rows)
-			Columns = arg_func();
+	for (size_t row = 0; row < matrix.size(); row++)
+		for (size_t column = 0; column < matrix[row].size(); column++)
+			matrix[row][column] = arg_func();
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty(size_t,size_t,ty&)> arg_func)
+{
+	for (size_t row = 0; row < matrix.size(); row++)
+		for (size_t column = 0; column < matrix[row].size(); column++)
+			matrix[row][column] = arg_func(row,column,matrix[row][column]);
 
 	return *this;
 }
