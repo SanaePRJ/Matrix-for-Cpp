@@ -47,7 +47,7 @@ namespace Sanae{
 		inline void m_dotmul   (MatrixT*, const MatrixT*) const;   //内積      :第一引数 ^= 第二引数
 		inline void m_scalarmul(MatrixT*, ty      ) const;         //スカラー倍:第一引数 *= 第二引数
 
-		inline void m_mul      (MatrixT*, const MatrixT*) const;   //積　      :第一引数 *= 第二引数
+		inline void m_mul      (MatrixT*, const MatrixT*)      ;   //積　      :第一引数 *= 第二引数
 
 		inline void m_to_identity(MatrixT*) const;                 //単位行列にする。
 

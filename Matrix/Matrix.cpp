@@ -58,7 +58,6 @@ int mul()
 
 
 
-
 int main()
 {
 	mul();
