@@ -86,7 +86,9 @@ namespace Sanae{
 
 		inline Matrix& operator <<(Matrix&);         //÷“n
 		inline std::vector<ty>& operator [](size_t); //—v‘f‚ÖƒAƒNƒZƒX
-		inline std::vector<ty*> operator [](std::pair<size_t,size_t>);
+
+		//”ñ„§
+		inline [[deprecated("This method has been deprecated as of version 4.0.5.")]] std::vector<ty*> operator [](std::pair<size_t,size_t>);
 
 		inline bool    operator ==(const Matrix&);  //”äŠr==
 		inline bool    operator !=(const Matrix&);  //”äŠr!=

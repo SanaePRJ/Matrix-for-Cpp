@@ -165,11 +165,12 @@ inline std::vector<ty>& Sanae::Matrix<ty>::operator [](size_t pos)
 }
 
 
+//[[非推奨]]
 //列での配列を取得します。
 // *ポインタ型がvectorには格納されています。
 // *arg.first:開始行 arg.second:列
 template<typename ty>
-inline std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t,size_t> arg)
+inline std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t, size_t> arg)
 {
 	std::vector<ty*> ret;
 
