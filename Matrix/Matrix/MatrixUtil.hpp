@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixUtil.hpp
-* Version : 4.0.4
+* Version : 4.0.5
 * * Author: SanaePRJ
 * Description:
 *  Matrix型のutility関数の実装
@@ -16,6 +16,7 @@
 #include <vector>
 #include <stdexcept>
 #include <functional>
+#include <iomanip>
 
 #include "Matrix.h"
 
@@ -63,7 +64,7 @@ inline size_t Sanae::Matrix<ty>::m_GetColumnSize(MatrixT* arg) const
 
 //行数を返します。
 template<typename ty>
-size_t Sanae::Matrix<ty>::get_row()
+inline size_t Sanae::Matrix<ty>::get_row()
 {
 	return this->m_GetRowSize(&matrix);
 }
@@ -71,7 +72,7 @@ size_t Sanae::Matrix<ty>::get_row()
 
 //列数を返します。
 template<typename ty>
-size_t Sanae::Matrix<ty>::get_column() 
+inline size_t Sanae::Matrix<ty>::get_column()
 {
 	return this->m_GetColumnSize(&matrix);
 }
@@ -175,6 +176,11 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 
 
 
+namespace Sanae {
+	std::streamsize FontWeight = 4;
+}
+
+
 //std::cout出力用
 template<typename CharT, typename Traits, typename MatrixType = double>
 std::basic_ostream<CharT, Traits>& operator <<
@@ -183,12 +189,28 @@ std::basic_ostream<CharT, Traits>& operator <<
 	Sanae::Matrix<MatrixType>          matrix
 )
 {
+	//left&改行しておく
+	ost << std::left << std::endl;
+	
+	//仕切りのサイズ
+	std::streamsize shuttersize = Sanae::FontWeight * (matrix.get_column() - 1) + 1;
+
+	//仕切り
+	ost << std::setfill('-') << std::setw(shuttersize) << "-";
+
+	//setfill解除
+	ost << std::setfill(' ') << std::endl;
+
 	for (size_t row = 0; row < matrix.get_row();row++) {
 		for (MatrixType buf : matrix[row])
-			ost << buf << " ";
+			ost << std::setw(Sanae::FontWeight) << buf;
 
 		ost << std::endl;
 	}
+
+	//仕切り
+	ost << std::setfill('-') << std::setw(shuttersize) << "-";
+	ost << std::endl;
 
 	return ost;
 }

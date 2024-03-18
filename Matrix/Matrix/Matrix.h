@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : Matrix.h
-* Version : 4.0.4
+* Version : 4.0.5
 * Author  : SanaePRJ
 * Description:
 *  MatrixBase型の定義ファイル
@@ -57,7 +57,7 @@ namespace Sanae{
 
 	public:
 		//行列積で使用するスレッド数
-		size_t thread = 2;
+		size_t thread = std::thread::hardware_concurrency();
 
 		//コンストラクタ
 		Matrix ();
@@ -67,43 +67,45 @@ namespace Sanae{
 		Matrix (const Matrix&);             //コピーコンストラクタ
 		~Matrix();                          //デストラクタ
 
-		Matrix& operator =(MatrixInitT);
-		Matrix& operator =(const Matrix&);
+		inline Matrix& operator =(MatrixInitT);
+		inline Matrix& operator =(const Matrix&);
 
-		Matrix& operator +=(const Matrix&); //加算
-		Matrix& operator -=(const Matrix&); //減算
-		Matrix& operator ^=(const Matrix&); //内積
-		Matrix& operator *=(const Matrix&); //行列積
-		Matrix& operator *=(ty);            //スカラー倍
+		inline Matrix& operator +=(const Matrix&); //加算
+		inline Matrix& operator -=(const Matrix&); //減算
+		inline Matrix& operator ^=(const Matrix&); //内積
+		inline Matrix& operator *=(const Matrix&); //行列積
+		inline Matrix& operator *=(ty);            //スカラー倍
 
-		Matrix  operator + (const Matrix&); //加算
-		Matrix  operator - (const Matrix&); //減算
-		Matrix  operator ^ (const Matrix&); //内積
-		Matrix  operator * (const Matrix&); //行列積
-		Matrix  operator * (ty);            //スカラー倍
+		inline Matrix  operator + (const Matrix&); //加算
+		inline Matrix  operator - (const Matrix&); //減算
+		inline Matrix  operator ^ (const Matrix&); //内積
+		inline Matrix  operator * (const Matrix&); //行列積
+		inline Matrix  operator * (ty);            //スカラー倍
+		template<typename CastTy>
+		operator Sanae::Matrix<CastTy>();   //キャスト
 
-		Matrix& operator <<(Matrix&);         //譲渡
-		std::vector<ty>& operator [](size_t); //要素へアクセス
-		std::vector<ty*> operator [](std::pair<size_t,size_t>);
+		inline Matrix& operator <<(Matrix&);         //譲渡
+		inline std::vector<ty>& operator [](size_t); //要素へアクセス
+		inline std::vector<ty*> operator [](std::pair<size_t,size_t>);
 
-		bool    operator ==(const Matrix&);  //比較==
-		bool    operator !=(const Matrix&);  //比較!=
+		inline bool    operator ==(const Matrix&);  //比較==
+		inline bool    operator !=(const Matrix&);  //比較!=
 
-		size_t get_row   ();  //行数を取得
-		size_t get_column();  //列数を取得
+		inline size_t get_row   ();  //行数を取得
+		inline size_t get_column();  //列数を取得
 		
-		ty     det       ();  //行列式を求める。
-		Matrix Inverse   ();  //逆行列を求める。
+		inline ty     det       ();  //行列式を求める。
+		inline Matrix Inverse   ();  //逆行列を求める。
 
-		Matrix& Swap_Column(size_t, size_t);  //第一引数列と第二引数列を入れ替える。
-		Matrix& Swap_Row   (size_t, size_t);  //第一引数行と第二引数行を入れ替える。
+		inline Matrix& Swap_Column(size_t, size_t);  //第一引数列と第二引数列を入れ替える。
+		inline Matrix& Swap_Row   (size_t, size_t);  //第一引数行と第二引数行を入れ替える。
 		
-		Matrix& resize     (std::pair<size_t,size_t>);  //サイズを変更する。
+		inline Matrix& resize     (std::pair<size_t,size_t>);  //サイズを変更する。
 
-		Matrix& Setter     (std::function<ty()>);                 //引数の関数を呼び出し各要素へ返り値を代入する。
-		Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>);//引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
+		inline Matrix& Setter     (std::function<ty()>);                 //引数の関数を呼び出し各要素へ返り値を代入する。
+		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>);//引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
 
-		Matrix  Transpose  ();  //転置する。
+		inline Matrix  Transpose  ();  //転置する。
  	};
 
 

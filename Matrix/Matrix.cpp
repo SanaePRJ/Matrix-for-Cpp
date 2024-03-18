@@ -1,10 +1,12 @@
 ﻿/*-------------------------------------------------------------
 * Name    : Matrix.cpp
-* Version : 4.0.4
+* Version : 4.0.5
 * Author  : SanaePRJ
 * Description:
 *  テストプログラム
 -------------------------------------------------------------*/
+
+
 
 
 #include <functional>
@@ -12,7 +14,6 @@
 #include <random>
 #include <time.h>
 #include <thread>
-
 
 #include "Matrix/Matrix.hpp"
 

@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixDet.hpp
-* Version : 4.0.3
+* Version : 4.0.5
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型の行列式と逆行列を求める関数の実装
@@ -59,7 +59,7 @@ inline void Sanae::Matrix<ty>::m_sweepout(MatrixT* arg_from, MatrixT* arg_store)
 
 //逆行列を求める。
 template<typename ty>
-Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse() 
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
 {
 	//列数は等しくなければならない。
 	if (this->m_CheckColumn(&this->matrix))
@@ -145,7 +145,7 @@ inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
 
 //行列式を求める。
 template<typename ty>
-ty Sanae::Matrix<ty>::det() 
+inline ty Sanae::Matrix<ty>::det()
 {
 	//列数は等しくなければならない。
 	if (this->m_CheckColumn(&this->matrix))

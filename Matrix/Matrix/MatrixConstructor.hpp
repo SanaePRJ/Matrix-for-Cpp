@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------
 * Name    : MatrixConstructor.hpp
-* Version : 4.0.4
+* Version : 4.0.5
 * * Author: SanaePRJ
 * Description:
 *  MatrixBase型のコンストラクタの実装
