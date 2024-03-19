@@ -113,15 +113,15 @@ inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data
 	//計算数
 	const size_t alltaskcount = Row * Column;
 
+	//this->threadが0の場合
 	if (this->thread <= 0)
 		this->thread = 1;
 
 	size_t taskcount    = alltaskcount / this->thread;
 
-
-	//最低のタスク数は5
-	if (taskcount == 0 || taskcount < 5)
-		taskcount = 5;
+	//最低のタスク数
+	if (taskcount == 0 || taskcount < this->threshold)
+		taskcount = this->threshold;
 
 
 	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式

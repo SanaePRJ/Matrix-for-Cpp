@@ -57,7 +57,9 @@ namespace Sanae{
 
 	public:
 		//行列積で使用するスレッド数
-		size_t thread = std::thread::hardware_concurrency();
+		size_t thread    = std::thread::hardware_concurrency();
+		//行列積でのタスク最低値
+		size_t threshold = 5;
 
 		//コンストラクタ
 		Matrix ();
