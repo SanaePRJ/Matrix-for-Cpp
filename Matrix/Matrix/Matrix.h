@@ -108,6 +108,9 @@ namespace Sanae{
 		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>);//引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
 
 		inline Matrix  Transpose  ();  //転置する。
+
+		static inline Matrix<ty> Identity(size_t);
+		static inline Matrix<ty> Zero(size_t);
  	};
 
 

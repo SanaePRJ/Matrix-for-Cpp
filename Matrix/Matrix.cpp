@@ -232,5 +232,11 @@ int main()
 	test2.Setter([](size_t row, size_t column, double& value)->double {return row + column + value; });
 	std::cout << test2;
 
+	//3*3単位行列
+	test2 = Sanae::Matrix<double>::Identity(3);
+
+	//3*3のゼロ行列
+	test2 = Sanae::Matrix<double>::Zero(3);
+
 	return 0;
 }

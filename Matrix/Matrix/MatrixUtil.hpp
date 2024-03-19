@@ -82,19 +82,19 @@ inline size_t Sanae::Matrix<ty>::get_column()
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_to_identity(MatrixT* arg) const
 {
+	//正方行列であるか
 	if (this->m_GetRowSize(arg) != this->m_GetColumnSize(arg))
 		throw std::invalid_argument("It must be a square matrix.");
 
-	for (size_t Row = 0; Row < this->m_GetRowSize(arg);Row++) 
-	{
-		for (size_t Column = 0; Column < this->m_GetColumnSize(arg);Column++) 
-		{
-			if (Row == Column)
-				(*arg)[Row][Column] = 1;
-			else
-				(*arg)[Row][Column] = 0;
-		}
-	}
+	//サイズの取得
+	size_t size = this->m_GetRowSize(arg);
+	//ゼロ行列にする
+	arg->resize(size,std::vector<ty>(size,0));
+
+	for (size_t pos = 0; pos < size;pos++)
+		(*arg)[pos][pos] = 1;
+	
+	return;
 }
 
 
@@ -171,6 +171,25 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 	}
 
 	return ret;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
+{
+	MatrixT buf(arg_size,std::vector<ty>(arg_size,0));
+
+	for (size_t pos = 0; pos < arg_size;pos++)
+		buf[pos][pos] = 1;
+	
+	return (Sanae::Matrix<ty>)buf;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero(size_t arg_size)
+{
+	return Matrix<ty>(std::pair<size_t,size_t>(arg_size,arg_size));
 }
 
 
