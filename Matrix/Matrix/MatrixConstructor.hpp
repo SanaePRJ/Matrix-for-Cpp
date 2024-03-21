@@ -12,6 +12,8 @@
 #ifndef SANAE_MATRIXCONSTRUCTOR_HPP
 #define SANAE_MATRIXCONSTRUCTOR_HPP
 
+
+#include <algorithm>
 #include "Matrix.h"
 
 
@@ -61,7 +63,10 @@ Sanae::Matrix<ty>::Matrix(const MatrixT& arg_InitValue)
 template<typename ty>
 Sanae::Matrix<ty>::Matrix(const Matrix& arg)
 {
-	std::move(arg.matrix.begin(), arg.matrix.end(), std::back_inserter(matrix));
+	//サイズ設定
+	matrix.resize(arg.matrix.size());
+	//コピー
+	std::copy(arg.matrix.begin(),arg.matrix.end(),matrix.begin());
 }
 
 

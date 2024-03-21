@@ -86,13 +86,13 @@ inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
 		throw std::invalid_argument("It must be a square matrix.");
 
 	//サラスの方式で解きます。
-	auto det_2 = [](MatrixT& arg_lambda)
+	const auto det_2 = [](const MatrixT& arg_lambda)
 		{
 			return arg_lambda[0][0] * arg_lambda[1][1] - arg_lambda[1][0] * arg_lambda[0][1];
 		};
 
 	//[Pos][0]-[0][Pos]を含まない行列を抜き取ります。
-	auto pull = [](MatrixT& arg_lambda, MatrixT& storage, size_t Pos)
+	const auto pull = [](const MatrixT& arg_lambda, MatrixT& storage, size_t Pos)
 		{
 			const size_t size = arg_lambda.size();
 
@@ -111,7 +111,7 @@ inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
 		};
 
 	//次元を落としまくる。
-	auto dec_dim = [this, pull, det_2](MatrixT& arg_lambda, ty coeff, auto f)
+	const auto dec_dim = [this, pull, det_2](const MatrixT& arg_lambda, ty coeff, auto f)
 		{
 			const size_t size     = arg_lambda.size(); //元のサイズ
 			const size_t new_size = size - 1;          //落とした後のサイズ

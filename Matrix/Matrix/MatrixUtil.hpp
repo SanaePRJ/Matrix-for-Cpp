@@ -16,6 +16,7 @@
 #include <vector>
 #include <stdexcept>
 #include <functional>
+#include <algorithm>
 #include <iomanip>
 
 #include "Matrix.h"
@@ -30,14 +31,7 @@ inline bool Sanae::Matrix<ty>::m_CheckColumn(MatrixT* arg) const
 {
 	size_t Column = this->m_GetColumnSize(arg);
 
-	if (Column == 0)
-		return false;
-
-	for (auto& Row : *arg)
-		if (Row.size() != Column)
-			return true;
-	
-	return false;
+	return std::any_of(arg->begin(), arg->end(), [&Column](const std::vector<ty>& x) {return x.size() != Column; });
 }
 
 
@@ -89,20 +83,20 @@ inline void Sanae::Matrix<ty>::m_to_identity(MatrixT* arg) const
 	//サイズの取得
 	size_t size = this->m_GetRowSize(arg);
 	//ゼロ行列にする
-	arg->resize(size,std::vector<ty>(size,0));
+	arg->resize(size, std::vector<ty>(size, 0));
 
-	for (size_t pos = 0; pos < size;pos++)
+	for (size_t pos = 0; pos < size; pos++)
 		(*arg)[pos][pos] = 1;
-	
+
 	return;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Column(size_t arg1,size_t arg2) 
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Column(size_t arg1, size_t arg2)
 {
 	for (std::vector<ty>& array : this->matrix) {
-		ty buf      = array[arg1];
+		ty buf = array[arg1];
 		array[arg1] = array[arg2];
 		array[arg2] = buf;
 	}
@@ -112,9 +106,9 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Column(size_t arg1,size_t arg2
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Row(size_t arg1,size_t arg2)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Row(size_t arg1, size_t arg2)
 {
-	std::swap(this->matrix[arg1],this->matrix[arg2]);
+	std::swap(this->matrix[arg1], this->matrix[arg2]);
 
 	return *this;
 }
@@ -123,7 +117,7 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Row(size_t arg1,size_t arg2)
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::resize(std::pair<size_t, size_t> arg_Size)
 {
-	this->matrix.resize(arg_Size.first,std::vector<ty>(arg_Size.second,0));
+	this->matrix.resize(arg_Size.first, std::vector<ty>(arg_Size.second, 0));
 
 	return *this;
 }
@@ -141,23 +135,23 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty()> arg_func
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty(size_t,size_t,ty&)> arg_func)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty(size_t, size_t, ty&)> arg_func)
 {
 	for (size_t row = 0; row < matrix.size(); row++)
 		for (size_t column = 0; column < matrix[row].size(); column++)
-			matrix[row][column] = arg_func(row,column,matrix[row][column]);
+			matrix[row][column] = arg_func(row, column, matrix[row][column]);
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose() 
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 {
 	MatrixT ret;
-	
+
 	// this->matrixの行数と列数を取得
-	size_t Row    = this->m_GetRowSize   (&this->matrix);
+	size_t Row = this->m_GetRowSize(&this->matrix);
 	size_t Column = this->m_GetColumnSize(&this->matrix);
 
 	// bのサイズをaの列数と行数に設定
@@ -177,11 +171,11 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
 {
-	MatrixT buf(arg_size,std::vector<ty>(arg_size,0));
+	MatrixT buf(arg_size, std::vector<ty>(arg_size, 0));
 
-	for (size_t pos = 0; pos < arg_size;pos++)
+	for (size_t pos = 0; pos < arg_size; pos++)
 		buf[pos][pos] = 1;
-	
+
 	return (Sanae::Matrix<ty>)buf;
 }
 
@@ -189,7 +183,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero(size_t arg_size)
 {
-	return Matrix<ty>(std::pair<size_t,size_t>(arg_size,arg_size));
+	return Matrix<ty>(std::pair<size_t, size_t>(arg_size, arg_size));
 }
 
 
@@ -206,11 +200,11 @@ std::basic_ostream<CharT, Traits>& operator <<
 (
 	std::basic_ostream<CharT, Traits>& ost,
 	Sanae::Matrix<MatrixType>          matrix
-)
+	)
 {
 	//left&改行しておく
 	ost << std::left << std::endl;
-	
+
 	//仕切りのサイズ
 	std::streamsize shuttersize = Sanae::FontWeight * (matrix.get_column() - 1) + 1;
 
@@ -220,7 +214,7 @@ std::basic_ostream<CharT, Traits>& operator <<
 	//setfill解除
 	ost << std::setfill(' ') << std::endl;
 
-	for (size_t row = 0; row < matrix.get_row();row++) {
+	for (size_t row = 0; row < matrix.get_row(); row++) {
 		for (MatrixType buf : matrix[row])
 			ost << std::setw(Sanae::FontWeight) << buf;
 

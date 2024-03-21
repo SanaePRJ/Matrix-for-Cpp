@@ -12,21 +12,18 @@
 #ifndef SANAE_MATRIXOPERATOR_HPP
 #define SANAE_MATRIXOPERATOR_HPP
 
+#include <algorithm>
 #include "Matrix.h"
-
 
 
 
 template<typename ty>
 inline Sanae::Matrix<ty>&Sanae::Matrix<ty>::operator =(MatrixInitT arg_InitValue) {
-	MatrixT buf = { arg_InitValue.begin(),arg_InitValue.end() };
+	this->matrix = { arg_InitValue.begin(),arg_InitValue.end() };
 
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&buf))
+	if (this->m_CheckColumn(&matrix))
 		throw std::invalid_argument("All the columns must be equal.");
-
-	//matrixに譲渡
-	matrix = { arg_InitValue.begin(), arg_InitValue.end() };
 
 	return *this;
 }
@@ -35,10 +32,10 @@ inline Sanae::Matrix<ty>&Sanae::Matrix<ty>::operator =(MatrixInitT arg_InitValue
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(const Matrix& arg)
 {
-	//データをクリア
-	this->matrix.clear();
+	//サイズ変更
+	this->matrix.resize(arg.matrix.size());
 	//コピー
-	std::copy(arg.matrix.begin(), arg.matrix.end(), std::back_inserter(matrix));
+	std::copy(arg.matrix.begin(), arg.matrix.end(), this->matrix.begin());
 
 	//列数は等しくなければならない。
 	if (this->m_CheckColumn(&this->matrix))
@@ -148,10 +145,8 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(ty arg) {
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Matrix<ty>& arg)
 {
-	//データ削除
-	this->matrix.erase(this->matrix.begin(),this->matrix.end());
 	//データmove
-	std::move(arg.matrix.begin(), arg.matrix.end(), std::back_inserter(this->matrix));
+	this->matrix = std::move(arg.matrix);
 
 	return *this;
 }
