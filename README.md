@@ -57,7 +57,7 @@ Author:		SanaeProject
 	func_var0.det      ();
 	
 	//Set 0
-	func_var0.Setter   ([]()->double{0});
+	func_var0.Setter   ([]()->double{return 0;});
 
 	//set random
 	std::default_random_engine       engine;
