@@ -19,6 +19,7 @@
 
 template<typename ty>
 inline Sanae::Matrix<ty>&Sanae::Matrix<ty>::operator =(MatrixInitT arg_InitValue) {
+	//std::initializer_list<std::initialize_list<ty>>をstd::vector<std::vector<ty>>へ
 	this->matrix = { arg_InitValue.begin(),arg_InitValue.end() };
 
 	//列数は等しくなければならない。
@@ -196,11 +197,13 @@ Sanae::Matrix<ty>::operator Sanae::Matrix<CastTy>()
 {
 	using CastMatrixT = std::vector<std::vector<CastTy>>;
 	
+	//キャスト結果を保存
 	CastMatrixT ret;
 	ret.reserve(this->get_row());
 
 	for (std::vector<ty>& row : this->matrix) 
 	{
+		//キャスト結果を一行保存
 		std::vector<CastTy> buf_row;
 		buf_row.reserve(this->get_column());
 

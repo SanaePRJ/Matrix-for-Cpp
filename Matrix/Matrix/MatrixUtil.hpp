@@ -168,11 +168,14 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 }
 
 
+//単位行列を生成します。
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
 {
+	//arg_size*arg_size行列の0行列を生成
 	MatrixT buf(arg_size, std::vector<ty>(arg_size, 0));
 
+	//単位行列へ
 	for (size_t pos = 0; pos < arg_size; pos++)
 		buf[pos][pos] = 1;
 
@@ -180,6 +183,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
 }
 
 
+//指定されたサイズのゼロ行列を生成します。
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero(size_t arg_size)
 {
