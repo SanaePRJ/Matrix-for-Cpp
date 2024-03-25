@@ -45,6 +45,9 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(const Matrix& arg)
 	return *this;
 }
 
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix<ty>&& arg) = default;
+
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=(const Matrix<ty>& arg) {

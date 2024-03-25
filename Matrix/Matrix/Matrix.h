@@ -69,6 +69,7 @@ namespace Sanae{
 
 		inline Matrix& operator =(MatrixInitT);
 		inline Matrix& operator =(const Matrix&);
+		inline Matrix& operator =(Matrix&&);
 
 		inline Matrix& operator +=(const Matrix&); //‰ÁŽZ
 		inline Matrix& operator -=(const Matrix&); //Œ¸ŽZ
