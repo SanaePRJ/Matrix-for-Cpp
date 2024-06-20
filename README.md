@@ -49,12 +49,12 @@ Author:		SanaeProject
 	};
 
 
-	func_var0.Swap_Column(0,1);
-	func_var0.Swap_Row   (1,2);
+	func_var0.SwapColumn(0,1);
+	func_var0.SwapRow   (1,2);
 
 	func_var0.Transpose();
 	func_var0.Inverse  ();
-	func_var0.det      ();
+	func_var0.Det      ();
 	
 	//Set 0
 	func_var0.Setter   ([]()->double{return 0;});
