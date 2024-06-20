@@ -9,10 +9,14 @@
 
 
 
-#ifndef SANAE_MATRIXCALC_HPP
-#define SANAE_MATRIXCALC_HPP
+#ifndef _INCLUDEGUARD_MATRIXCALC_HPP_
+#define _INCLUDEGUARD_MATRIXCALC_HPP_
+
+
+
 
 #include <algorithm>
+#include <type_traits>
 #include "Matrix.h"
 
 
@@ -20,25 +24,34 @@
 
 //渡された関数をすべての要素に対して実行します。arg_data1 = Function(arg_data1,arg_data2)
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1,const MatrixT* arg_data2, std::function<ty(ty,ty)> Func) const
+template<typename FuncType>
+inline void Sanae::Matrix<ty>::m_Calc
+(
+	Matrix_t&       ArgMatrix1,
+	const Matrix_t& ArgMatrix2,
+
+	FuncType Func
+)
+	const
 {
 	//サイズが0の場合計算できない...
-	if (arg_data1->size() == 0 || arg_data2->size() == 0)
-		throw std::invalid_argument("You must have some data.");
+	if (m_IsEmpty(ArgMatrix1) || m_IsEmpty(ArgMatrix2))
+		throw InvalidMatrix("You must have some data.");
 
 	//第一第二引数の行と列数が違う場合エラー
-	if (this->m_GetRowSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2) || this->m_GetColumnSize(arg_data1) != this->m_GetColumnSize((MatrixT*)arg_data2))
-		throw std::invalid_argument("The number of rows and columns of data1 and data2 must be equal.");
+	if (!m_IsSameSize(ArgMatrix1,ArgMatrix2))
+		throw InvalidMatrix("The number of rows and columns of data1 and data2 must be equal.");
 
-	const size_t Row    = this->m_GetRowSize   (arg_data1);  //計算する行数
-	const size_t Column = this->m_GetColumnSize(arg_data1);  //計算する列数
+	const size_t Row    = this->m_GetRowSize   (ArgMatrix1);  //計算する行数
+	const size_t Column = this->m_GetColumnSize(ArgMatrix1);  //計算する列数
 
-	for (size_t pos_row = 0; pos_row < Row; pos_row++)
+	//全要素に対して処理を行う
+	for (size_t PosRow = 0; PosRow < Row; PosRow++)
 	{
-		for (size_t pos_column = 0; pos_column < Column; pos_column++)
+		for (size_t PosColumn = 0; PosColumn < Column; PosColumn++)
 		{
 			//arg_data1に計算結果を入れていく
-			(*arg_data1)[pos_row][pos_column] = Func((*arg_data1)[pos_row][pos_column], (*arg_data2)[pos_row][pos_column]);
+			ArgMatrix1[PosRow][PosColumn] = Func(ArgMatrix1[PosRow][PosColumn], ArgMatrix2[PosRow][PosColumn]);
 		}
 	}
 
@@ -46,40 +59,58 @@ inline void Sanae::Matrix<ty>::m_calc(MatrixT* arg_data1,const MatrixT* arg_data
 }
 
 
-
-
 //加算
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_add(MatrixT* arg_data1, const MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_Add
+(
+	Matrix_t&       ArgData1, 
+	const Matrix_t& ArgData2
+) 
+	const
 {
-	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 + d2; });
+	this->m_Calc(ArgData1, ArgData2, std::plus<ty>());
 	return;
 }
 
 
 //減算
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_sub(MatrixT* arg_data1, const MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_Sub
+(
+	Matrix_t&       ArgData1, 
+	const Matrix_t& ArgData2
+)
+	const
 {
-	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 - d2; });
+	this->m_Calc(ArgData1, ArgData2, std::minus<ty>());
 	return;
 }
 
 
-//dot
+//アダマール積を行う。
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_dotmul(MatrixT* arg_data1, const MatrixT* arg_data2) const
+inline void Sanae::Matrix<ty>::m_HadamardMul
+(
+	Matrix_t&       ArgData1, 
+	const Matrix_t& ArgData2
+)
+	const
 {
-	this->m_calc(arg_data1, arg_data2, [](ty d1, ty d2)->ty {return d1 * d2; });
+	this->m_Calc(ArgData1, ArgData2, std::multiplies<ty>());
 	return;
 }
 
 
 //スカラー倍
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) const
+inline void Sanae::Matrix<ty>::m_ScalarMul
+(
+	Matrix_t& ArgData1, 
+	ty        ArgData2
+)
+	const
 {
-	this->m_calc(arg_data1, (const MatrixT*)arg_data1, [&arg_data2](ty d1, ty d2)->ty {return d1 * arg_data2; });
+	this->m_Calc(ArgData1, ArgData1, [&ArgData2](ty d1, ty d2)->ty {return d1 * ArgData2; });
 
 	return;
 }
@@ -87,143 +118,112 @@ inline void Sanae::Matrix<ty>::m_scalarmul(MatrixT* arg_data1, ty arg_data2) con
 
 
 
+//マルチスレッドで動作するので thread を include しておく
 #ifndef SANAE_MATRIX_NOTHREADS
-
-
-#include <thread>
+	#include <thread>
+#endif
 
 
 
 
 //行列の掛け算(Threads)
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data2)
+inline void Sanae::Matrix<ty>::m_Mul
+(
+	Matrix_t&       ArgData1,
+	const Matrix_t& ArgData2
+)
 {
 	//第一引数の列数と第二引数の行数は同じでなければならない。
-	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2))
+	if (m_GetColumnSize(ArgData1) != m_GetRowSize(ArgData2))
 		throw std::invalid_argument("The number of columns in data1 must be the same as the number of rows in data2.");
 
 
 	//第一引数の行数と第二引数の列数を確保,0で初期化
-	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize((MatrixT*)arg_data2), 0));
+	Matrix_t Result(this->m_GetRowSize(ArgData1), Row_t<ty>(m_GetColumnSize(ArgData2), 0));
 
 	//行列サイズを取得
-	const size_t Row    = this->m_GetRowSize   (&buf); //行数
-	const size_t Column = this->m_GetColumnSize(&buf); //列数
+	const size_t Row    = this->m_GetRowSize   (Result); //行数
+	const size_t Column = this->m_GetColumnSize(Result); //列数
 	
-	//計算数
-	const size_t alltaskcount = Row * Column;
+	//計算するタスク数を求める。
+	const size_t AllTaskCount = Row * Column;
 
+	//最低1スレッドを使う。
 	if (this->thread == 0)
 		this->thread = 1;
 
-	size_t taskcount    = alltaskcount / this->thread;
+	//1スレッド当たりのタスクを求める。
+	size_t OneTaskCount    = AllTaskCount / this->thread;
 
 	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
-	auto mul_lambda = [arg_data1, arg_data2, this](size_t arg_Row, size_t arg_Column)
+	auto MulLambda = [ArgData1, ArgData2, this](size_t arg_Row, size_t arg_Column)
 		{
-			const size_t size = this->m_GetColumnSize(arg_data1);
-			ty           sum  = 0;
+			const size_t Size = m_GetColumnSize(ArgData1);
+			ty           Sum  = 0;
 
 			//Σk = 0, n(m[i][k] * n[k][j])
-			for (size_t Pos = 0; Pos < size; Pos++)
-				sum += (*arg_data1)[arg_Row][Pos] * (*arg_data2)[Pos][arg_Column];
+			for (size_t Pos = 0; Pos < Size; Pos++)
+				Sum += ArgData1[arg_Row][Pos] * ArgData2[Pos][arg_Column];
 
-			return sum;
+			return Sum;
 		};
 
+//マルチスレッドで計算させる。
+#ifndef SANAE_MATRIX_NOTHREADS
+
 	//threadで分割するためのラムダ式
-	auto mul_thread = [&Row,&Column,&buf,&mul_lambda](size_t from,size_t to) {
+	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t from,size_t to) {
 			for (size_t pos = from; pos < to; pos++) 
-				buf[(pos / Column)][(pos % Column)] = mul_lambda((pos / Column),( pos % Column));
+				Result[(pos / Column)][(pos % Column)] = MulLambda((pos / Column),( pos % Column));
 		};
 	
 
 	//スレッド管理
-	std::vector<std::thread> threads;
-	for (size_t pos = 0; pos < alltaskcount;)
+	std::vector<std::thread> Threads;
+	for (size_t Pos = 0; Pos < AllTaskCount;)
 	{
-		size_t from = pos;
-		size_t to   = pos + taskcount;
+		size_t from = Pos;
+		size_t to   = Pos + OneTaskCount;
 		
-		if (to > alltaskcount)
-			to = alltaskcount;
+		//タスク数が超えた場合
+		if (to > AllTaskCount)
+			to = AllTaskCount;
 
+		//タスクがもうない
 		if (from == to)
 			break;
 
 		//スレッドを作成
-		threads.push_back(std::thread(mul_thread,from,to));
-		pos = to;
+		Threads.push_back(std::thread(MulThread,from,to));
+		Pos = to;
 	}
 
 	//タスク完了まで待つ
-	for (std::thread& th:threads)
+	for (std::thread& th:Threads)
 		th.join();
 
-	arg_data1->clear();
-
-	//bufを第一引数に譲渡
-	*arg_data1 = std::move(buf);
-
-
-	return;
-}
-
-
-
-
+//単独のスレッドで計算させる。
 #else
 
-
-
-
-//行列の掛け算(NoThreads)
-template<typename ty>
-inline void Sanae::Matrix<ty>::m_mul(MatrixT* arg_data1, const MatrixT* arg_data2) const
-{
-	//第一引数の列数と第二引数の行数は同じでなければならない。
-	if (this->m_GetColumnSize(arg_data1) != this->m_GetRowSize((MatrixT*)arg_data2))
-		throw std::invalid_argument("The number of columns in data1 must be the same as the number of rows in data2.");
-
-	//第一引数の行数と第二引数の列数を確保,0で初期化
-	MatrixT buf(this->m_GetRowSize(arg_data1), std::vector<ty>(this->m_GetColumnSize((MatrixT*)arg_data2), 0));
-
-	const size_t Row    = this->m_GetRowSize(&buf);    //行数
-	const size_t Column = this->m_GetColumnSize(&buf); //列数
-
-	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
-	auto mul_lambda = [arg_data1, arg_data2, this](size_t arg_Row, size_t arg_Column)
-		{
-
-			const size_t size = this->m_GetColumnSize(arg_data1);
-			ty           sum = 0;
-
-			for (size_t Pos = 0; Pos < size; Pos++)
-				sum += (*arg_data1)[arg_Row][Pos] * (*arg_data2)[Pos][arg_Column];
-
-			return sum;
-		};
-
-	for (size_t pos_row = 0; pos_row < Row; pos_row++)
+	//単独スレッドで計算させる。
+	for (size_t PosRow = 0; PosRow < Row; PosRow++)
 	{
-		for (size_t pos_column = 0; pos_column < Column; pos_column++)
+		for (size_t PosColumn = 0; PosColumn < Column; PosColumn++)
 		{
-			buf[pos_row][pos_column] = mul_lambda(pos_row, pos_column);
+			Result[PosRow][PosColumn] = MulLambda(PosRow, PosColumn);
 		}
 	}
 
-	arg_data1->clear();
+#endif
+
+	ArgData1.clear();
+
 	//bufを第一引数に譲渡
-	std::move(buf.begin(), buf.end(), std::back_inserter(*arg_data1));
+	ArgData1 = std::move(Result);
 
 	return;
 }
-
-
-
-
-#endif
 
 
 

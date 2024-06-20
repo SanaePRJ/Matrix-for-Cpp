@@ -9,8 +9,8 @@
 
 
 
-#ifndef SANAE_MATRIXCONSTRUCTOR_HPP
-#define SANAE_MATRIXCONSTRUCTOR_HPP
+#ifndef _INCLUDEGUARD_MATRIXCONSTRUCTOR_HPP_
+#define _INCLUDEGUARD_MATRIXCONSTRUCTOR_HPP_
 
 
 #include <algorithm>
@@ -25,8 +25,11 @@ Sanae::Matrix<ty>::Matrix() {}
 
 
 template<typename ty>
-Sanae::Matrix<ty>::Matrix(std::pair<size_t,size_t> arg_Size) 
-	:matrix(arg_Size.first, std::vector<ty>(arg_Size.second, 0))
+Sanae::Matrix<ty>::Matrix
+(
+	std::pair<size_t,size_t> ArgSize
+) 
+	:matrix(ArgSize.first, std::vector<ty>(ArgSize.second, 0))
 {}
 
 
@@ -39,34 +42,41 @@ Sanae::Matrix<ty>::Matrix(std::pair<size_t,size_t> arg_Size)
 3 * 2行列のように定義することができる。
 ------------------------------------------*/
 template<typename ty>
-Sanae::Matrix<ty>::Matrix(MatrixInitT arg_InitValue)
-	:matrix(arg_InitValue.begin(), arg_InitValue.end())
+Sanae::Matrix<ty>::Matrix
+(
+	MatrixInit_t ArgInitValue
+)
+	:matrix(ArgInitValue.begin(), ArgInitValue.end())
 {
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&this->matrix))
-		throw std::invalid_argument("All the columns must be equal.");
+	this->m_ValidateMatrix(this->matrix);
 }
 
 
 //std::vector<std::vector<ty>>で入れられた時用
 template<typename ty>
-Sanae::Matrix<ty>::Matrix(const MatrixT& arg_InitValue)
-	:matrix(arg_InitValue.begin(), arg_InitValue.end())
+Sanae::Matrix<ty>::Matrix
+(
+	const Matrix_t& ArgInitValue
+)
+	:matrix(ArgInitValue.begin(), ArgInitValue.end())
 {
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&this->matrix))
-		throw std::invalid_argument("All the columns must be equal.");
+	this->m_ValidateMatrix(this->matrix);
 }
 
 
 //コピーコンストラクタ
 template<typename ty>
-Sanae::Matrix<ty>::Matrix(const Matrix& arg)
+Sanae::Matrix<ty>::Matrix
+(
+	const Matrix& ArgMatrix
+)
 {
 	//サイズ設定
-	matrix.resize(arg.matrix.size());
+	matrix.resize(ArgMatrix.matrix.size());
 	//コピー
-	std::copy(arg.matrix.begin(),arg.matrix.end(),matrix.begin());
+	std::copy(ArgMatrix.matrix.begin(),ArgMatrix.matrix.end(),matrix.begin());
 }
 
 

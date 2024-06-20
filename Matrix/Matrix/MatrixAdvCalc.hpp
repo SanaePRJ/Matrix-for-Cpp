@@ -9,34 +9,51 @@
 
 
 
-#ifndef SANAE_MATRIXADV_HPP
-#define SANAE_MATRIXADV_HPP
+#ifndef _INCLUDEGUARD_MATRIXADV_HPP_
+#define _INCLUDEGUARD_MATRIXADV_HPP_
+
+
+
 
 #include "Matrix.h"
 
 
 
 
-//掃き出し法
+/*-------------------------------------------------------------
+* 掃き出し法により求めた結果をarg_storeに格納します。
+* 
+* arg_store:領域を確保する必要はありません。
+-------------------------------------------------------------*/
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_sweepout(MatrixT* arg_from, MatrixT* arg_store)
+inline void Sanae::Matrix<ty>::m_SweepOut
+(
+	Matrix_t& ArgFrom, 
+	Matrix_t& ArgStore
+)
 {
-	if (m_GetRowSize(arg_from) != m_GetColumnSize(arg_from))
-		throw std::invalid_argument("It must be a square matrix.");
+	//入力された行列が正方行列かどうか調べる。
+	m_ValidateSquareMatrix(ArgFrom);
 
-	size_t size = m_GetColumnSize(arg_from);
+	//arg_fromをコピーする。
+	Matrix_t from_copy(m_GetRowSize(ArgFrom),std::vector<ty>(m_GetColumnSize(ArgFrom),0));
+	//コピー
+	std::copy(ArgFrom.begin(), ArgFrom.end(),from_copy.begin());
+
+	//サイズを格納
+	const size_t size = m_GetRowSize(from_copy);
 
 	//確保
-	arg_store->resize(size, std::vector<ty>(size, 0));
+	ArgStore.resize(size, std::vector<ty>(size, 0));
 	//単位行列へ
-	this->m_to_identity(arg_store);
+	this->m_ToIdentity(ArgStore);
 
 	//ある行の定数倍をほかの行へ加算する。
-	auto Operation = [arg_from, arg_store, this, size](size_t from, size_t to, ty num)
+	auto Operation = [&from_copy, &ArgStore, this, size](size_t from, size_t to, ty num)
 		{
-			for (size_t Column = 0; Column < m_GetColumnSize(arg_from); Column++) {
-				(*arg_from )[to][Column] += (*arg_from )[from][Column] * num;
-				(*arg_store)[to][Column] += (*arg_store)[from][Column] * num;
+			for (size_t Column = 0; Column < m_GetColumnSize(from_copy); Column++) {
+				from_copy[to][Column] += from_copy[from][Column] * num;
+				ArgStore [to][Column] += ArgStore [from][Column] * num;
 			}
 		};
 
@@ -46,9 +63,9 @@ inline void Sanae::Matrix<ty>::m_sweepout(MatrixT* arg_from, MatrixT* arg_store)
 			ty num = 0;
 
 			if (Row == Column)
-				num = (1 - 1 * (*arg_from)[Row][Column]) / (*arg_from)[Column][Column]; //対角成分を1にする。
+				num = (1 - 1 * ( from_copy)[Row][Column]) / ( from_copy)[Column][Column]; //対角成分を1にする。
 			else
-				num = -1 * (*arg_from)[Row][Column] / (*arg_from)[Column][Column];      //他の成分を0にする。
+				num = -1 * ( from_copy)[Row][Column] / ( from_copy)[Column][Column];      //他の成分を0にする。
 
 			//ある行の定数倍をほかの行へ加算する。
 			Operation(Column, Row, num);
@@ -57,22 +74,24 @@ inline void Sanae::Matrix<ty>::m_sweepout(MatrixT* arg_from, MatrixT* arg_store)
 }
 
 
-//逆行列を求める。
+/*-------------------------------------------------------------
+* 逆行列を求める。
+-------------------------------------------------------------*/
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
 {
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&this->matrix))
-		throw std::invalid_argument("All the columns must be equal.");
+	this->m_ValidateMatrix(this->matrix);
 
-	if (this->det() == 0)
+	//行列式が0の場合解なし
+	if (this->Det() == 0)
 		throw std::invalid_argument("It is not a regular matrix.");
 
-	MatrixT buf;
-	std::copy(this->matrix.begin(),this->matrix.end(),std::back_inserter(buf));
+	Matrix_t CopyMatrix;
+	std::copy(this->matrix.begin(),this->matrix.end(),std::back_inserter(CopyMatrix));
 
-	MatrixT Inv;
-	this->m_sweepout(&buf,&Inv);
+	Matrix_t Inv;
+	this->m_SweepOut(CopyMatrix,Inv);
 	
 	return Inv;
 }
@@ -80,78 +99,78 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
 
 //行列式:ライプニッツの行列式
 template<typename ty>
-inline ty Sanae::Matrix<ty>::m_det(MatrixT* arg)
+inline ty Sanae::Matrix<ty>::m_Det
+(
+	Matrix_t& Arg
+)
 {
-	if (this->get_row() != this->get_column())
-		throw std::invalid_argument("It must be a square matrix.");
+	//正方行列かどうか調べる。
+	this->m_ValidateSquareMatrix(Arg);
 
 	//サラスの方式で解きます。
-	const auto det_2 = [](const MatrixT& arg_lambda)
+	const auto DetBy2D = [](const Matrix_t& Matrix2D)
 		{
-			return arg_lambda[0][0] * arg_lambda[1][1] - arg_lambda[1][0] * arg_lambda[0][1];
+			return Matrix2D[0][0] * Matrix2D[1][1] - Matrix2D[1][0] * Matrix2D[0][1];
 		};
 
 	//[Pos][0]-[0][Pos]を含まない行列を抜き取ります。
-	const auto pull = [](const MatrixT& arg_lambda, MatrixT& storage, size_t Pos)
+	const auto Extraction = [](const Matrix_t& From, Matrix_t& Storage, size_t Pos)
 		{
-			const size_t size = arg_lambda.size();
+			//正方行列ナノは確定しているので次元を求める。
+			const size_t Dim = From.size();
 
-			for (size_t row = 0, storage_row = 0; row < size; row++) {
+			for (size_t Row = 0, StorageRow = 0; Row < Dim; Row++) {
 				//0の列を基準としている。
-				for (size_t column = 1; column < size; column++) {
-					if (row != Pos)
-						storage[storage_row][column - 1] = arg_lambda[row][column];
+				for (size_t Column = 1; Column < Dim; Column++) {
+					if (Row != Pos)
+						Storage[StorageRow][Column - 1] = From[Row][Column];
 				}
 				//基準の高さ以外の場合は次へ
-				if (Pos != row)
-					storage_row++;
+				if (Pos != Row)
+					StorageRow++;
 			}
 
 			return;
 		};
 
 	//次元を落としまくる。
-	const auto dec_dim = [this, pull, det_2](const MatrixT& arg_lambda, ty coeff, auto f)
+	const auto DecDim = [this, Extraction, DetBy2D](const Matrix_t& From, ty Coeff, auto Func)
 		{
-			const size_t size     = arg_lambda.size(); //元のサイズ
-			const size_t new_size = size - 1;          //落とした後のサイズ
+			const size_t size     = From.size(); //元のサイズ
+			const size_t new_size = size - 1;    //落とした後のサイズ
 
 			ty ret = 0; //返り値
 
 			//2*2行列にまで落ちたらサラスの方式で解いて返す。
 			if (size == 2)
-				return coeff * det_2(arg_lambda);
+				return Coeff * DetBy2D(From);
 
 			//[0][0]~[n][0]まで
 			for (size_t Pos = 0; Pos < size; Pos++)
 			{
-				MatrixT buf(new_size, std::vector<ty>(new_size, 0)); //格納用
-				pull(arg_lambda, buf, Pos);                          //縮小した行列を取得
+				Matrix_t buf(new_size, std::vector<ty>(new_size, 0)); //格納用
+				Extraction(From, buf, Pos);                           //縮小した行列を取得
 
-				ty coeff_buf = arg_lambda[Pos][0] * (Pos % 2 == 0 ? 1 : -1); //新しい係数
+				ty coeff_buf = From[Pos][0] * (Pos % 2 == 0 ? 1 : -1); //新しい係数
 
-				ret += f(buf, coeff_buf * coeff, f); //再帰させ結果をすべて加算
+				ret += Func(buf, coeff_buf * Coeff, Func); //再帰させ結果をすべて加算
 			}
 
 			return ret;
 		};
 	
 	//元の係数
-	const ty From_Coff = 1;
+	const ty FromCoff = 1;
 
-	return dec_dim(*arg, From_Coff, dec_dim);
+	return DecDim(Arg, FromCoff, DecDim);
 }
 
 
 //行列式を求める。
 template<typename ty>
-inline ty Sanae::Matrix<ty>::det()
+inline ty Sanae::Matrix<ty>::Det()
 {
-	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&this->matrix))
-		throw std::invalid_argument("All the columns must be equal.");
-
-	return this->m_det(&this->matrix);
+	return this->m_Det(this->matrix);
 }
 
 

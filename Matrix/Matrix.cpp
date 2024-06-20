@@ -8,6 +8,7 @@
 
 
 
+//#define SANAE_MATRIX_NOTHREADS
 
 #include <functional>
 #include <iostream>
@@ -16,7 +17,7 @@
 #include <chrono>
 #include <thread>
 
-#include "Matrix/Matrix.hpp"
+#include "Matrix/Matrix"
 
 
 
@@ -84,8 +85,6 @@ int mul()
 
 	return 0;
 }
-
-
 
 int main()
 {
@@ -208,7 +207,7 @@ int main()
 	
 //破壊的
 	//列と列を入れ替える。
-	func_var0.Swap_Column(0,1);
+	func_var0.SwapColumn(0,1);
 	/*----------
 		8 7 2
 		0 6 2
@@ -216,7 +215,7 @@ int main()
 	----------*/
 
 	//行と行を入れ替える。
-	func_var0.Swap_Row(1,2);
+	func_var0.SwapRow(1,2);
 	/*----------
 		8 7 2
 		2 4 1
@@ -233,11 +232,11 @@ int main()
 	*/
 
 	//行列式を求める。
-	func_var0.det();
+	func_var0.Det();
 	//12
 
 	//逆行列を求める。
-	func_var0.Inverse();
+	std::cout<<func_var0.Inverse();
 	/*----------
 	 0.166667 -0.166667 -0.0833333
 	-0.333333  1.33333  -0.333333

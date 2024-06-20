@@ -9,8 +9,10 @@
 
 
 
-#ifndef SANAE_MATRIXUTIL_HPP
-#define SANAE_MATRIXUTIL_HPP
+#ifndef _INCLUDEGUARD_MATRIXUTIL_HPP_
+#define _INCLUDEGUARD_MATRIXUTIL_HPP_
+
+
 
 
 #include <vector>
@@ -25,80 +27,142 @@
 
 
 //列数がすべて等しいかどうかを調べます。
-//* 問題があった場合trueを返します。
+//* 問題があった場合 InvalidMatrix を throw します。
 template<typename ty>
-inline bool Sanae::Matrix<ty>::m_CheckColumn(MatrixT* arg) const
+inline void Sanae::Matrix<ty>::m_ValidateMatrix
+(
+	const Matrix_t& Arg
+)
+	const
 {
-	size_t Column = this->m_GetColumnSize(arg);
+	//列数を取得
+	size_t Column = this->m_GetColumnSize(Arg);
 
-	return std::any_of(arg->begin(), arg->end(), [&Column](const std::vector<ty>& x) {return x.size() != Column; });
+	//すべての行に於いて列が等しくない場合throwする。
+	if (std::any_of(Arg.begin(), Arg.end(), [&Column](const std::vector<ty>& x) {return x.size() != Column; }))
+		throw InvalidMatrix("All rows must have the same number of columns.");
+}
+
+
+//正方行列だったら true を返し違えば false を返す。
+template<typename ty>
+inline void Sanae::Matrix<ty>::m_ValidateSquareMatrix
+(
+	const Matrix_t& Arg
+)
+	const
+{
+	//列数と行数が等しい場合正方行列
+	if (m_GetColumnSize(Arg) != m_GetRowSize(Arg))
+		throw InvalidMatrix("It must be a square matrix.");
+}
+
+
+template<typename ty>
+inline bool Sanae::Matrix<ty>::m_IsEmpty
+(
+	const Matrix_t& Arg
+)
+	const
+{
+	if (m_GetRowSize(Arg) == 0)
+		return true;
+
+	return false;
+}
+
+
+template<typename ty>
+inline bool Sanae::Matrix<ty>::m_IsSameSize(const Matrix_t& Arg1,const Matrix_t& Arg2) const
+{
+	//行数が等しい
+	if (m_GetRowSize(Arg1) != m_GetRowSize(Arg2))
+		return false;
+
+	//列数が等しい
+	if (m_GetColumnSize(Arg1) != m_GetColumnSize(Arg2))
+		return false;
+
+	return true;
 }
 
 
 //行数を取得します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::m_GetRowSize(MatrixT* arg) const
+inline size_t Sanae::Matrix<ty>::m_GetRowSize
+(
+	const Matrix_t& Arg
+)
+	const
 {
-	return arg->size();
+	return Arg.size();
 }
 
 
 //列数を取得します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::m_GetColumnSize(MatrixT* arg) const
+inline size_t Sanae::Matrix<ty>::m_GetColumnSize(const Matrix_t& arg) const
 {
 	//行数が0のとき列数もなし
-	if (arg->size() == 0)
+	if (arg.size() == 0)
 		return 0;
 
 	//行番号0の列数が基準
-	return arg->at(0).size();
+	return arg[0].size();
 }
 
 
 //行数を返します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::get_row()
+inline size_t Sanae::Matrix<ty>::GetRow()
 {
-	return this->m_GetRowSize(&matrix);
+	return this->m_GetRowSize(matrix);
 }
 
 
 //列数を返します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::get_column()
+inline size_t Sanae::Matrix<ty>::GetColumn()
 {
-	return this->m_GetColumnSize(&matrix);
+	return this->m_GetColumnSize(matrix);
 }
 
 
 //単位行列にする。
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_to_identity(MatrixT* arg) const
+inline void Sanae::Matrix<ty>::m_ToIdentity
+(
+	Matrix_t& Arg
+)
+	const
 {
 	//正方行列であるか
-	if (this->m_GetRowSize(arg) != this->m_GetColumnSize(arg))
+	if (this->m_GetRowSize(Arg) != this->m_GetColumnSize(Arg))
 		throw std::invalid_argument("It must be a square matrix.");
 
 	//サイズの取得
-	size_t size = this->m_GetRowSize(arg);
+	size_t size = this->m_GetRowSize(Arg);
 	//ゼロ行列にする
-	arg->resize(size, std::vector<ty>(size, 0));
+	Arg.resize(size, std::vector<ty>(size, 0));
 
 	for (size_t pos = 0; pos < size; pos++)
-		(*arg)[pos][pos] = 1;
+		Arg[pos][pos] = 1;
 
 	return;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Column(size_t arg1, size_t arg2)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapColumn
+(
+	size_t Arg1, 
+	size_t Arg2
+)
 {
 	for (std::vector<ty>& array : this->matrix) {
-		ty buf = array[arg1];
-		array[arg1] = array[arg2];
-		array[arg2] = buf;
+		ty buf = array[Arg1];
+		array[Arg1] = array[Arg2];
+		array[Arg2] = buf;
 	}
 
 	return *this;
@@ -106,40 +170,53 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Column(size_t arg1, size_t arg
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Swap_Row(size_t arg1, size_t arg2)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapRow
+(
+	size_t Arg1,
+	size_t Arg2
+)
 {
-	std::swap(this->matrix[arg1], this->matrix[arg2]);
+	std::swap(this->matrix[Arg1], this->matrix[Arg2]);
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::resize(std::pair<size_t, size_t> arg_Size)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::ReSize
+(
+	std::pair<size_t, size_t> ArgSize
+)
 {
-	this->matrix.resize(arg_Size.first, std::vector<ty>(arg_Size.second, 0));
+	this->matrix.resize(ArgSize.first, std::vector<ty>(ArgSize.second, 0));
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty()> arg_func)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
+(
+	std::function<ty()> ArgFunc
+)
 {
-	for (size_t row = 0; row < matrix.size(); row++)
-		for (size_t column = 0; column < matrix[row].size(); column++)
-			matrix[row][column] = arg_func();
+	for (size_t Row = 0; Row < matrix.size(); Row++)
+		for (size_t Column = 0; Column < matrix[Row].size(); Column++)
+			matrix[Row][Column] = ArgFunc();
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty(size_t, size_t, ty&)> arg_func)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
+(
+	std::function<ty(size_t, size_t, ty&)> ArgFunc
+)
 {
-	for (size_t row = 0; row < matrix.size(); row++)
-		for (size_t column = 0; column < matrix[row].size(); column++)
-			matrix[row][column] = arg_func(row, column, matrix[row][column]);
+	for (size_t Row = 0; Row < matrix.size(); Row++)
+		for (size_t Column = 0; Column < matrix[Row].size(); Column++)
+			matrix[Row][Column] = ArgFunc(Row, Column, matrix[Row][Column]);
 
 	return *this;
 }
@@ -148,46 +225,52 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter(std::function<ty(size_t, siz
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 {
-	MatrixT ret;
+	Matrix_t Result;
 
 	// this->matrixの行数と列数を取得
-	size_t Row = this->m_GetRowSize(&this->matrix);
-	size_t Column = this->m_GetColumnSize(&this->matrix);
+	size_t Row    = this->m_GetRowSize(this->matrix);
+	size_t Column = this->m_GetColumnSize(this->matrix);
 
 	// bのサイズをaの列数と行数に設定
-	ret.resize(Column, std::vector<ty>(Row));
+	Result.resize(Column, std::vector<ty>(Row));
 
 	// this->matrixの各要素をretに転置してコピー
 	for (size_t i = 0; i < Row; i++) {
 		for (size_t j = 0; j < Column; j++) {
-			ret[j][i] = matrix[i][j];
+			Result[j][i] = matrix[i][j];
 		}
 	}
 
-	return ret;
+	return Result;
 }
 
 
 //単位行列を生成します。
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity(size_t arg_size)
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity
+(
+	size_t ArgSize
+)
 {
 	//arg_size*arg_size行列の0行列を生成
-	MatrixT buf(arg_size, std::vector<ty>(arg_size, 0));
+	Matrix_t Result(ArgSize, std::vector<ty>(ArgSize, 0));
 
 	//単位行列へ
-	for (size_t pos = 0; pos < arg_size; pos++)
-		buf[pos][pos] = 1;
+	for (size_t pos = 0; pos < ArgSize; pos++)
+		Result[pos][pos] = 1;
 
-	return (Sanae::Matrix<ty>)buf;
+	return (Sanae::Matrix<ty>)Result;
 }
 
 
 //指定されたサイズのゼロ行列を生成します。
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero(size_t arg_size)
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
+(
+	size_t ArgSize
+)
 {
-	return Matrix<ty>(std::pair<size_t, size_t>(arg_size, arg_size));
+	return Matrix<ty>(std::pair<size_t, size_t>(ArgSize, ArgSize));
 }
 
 
@@ -210,7 +293,7 @@ std::basic_ostream<CharT, Traits>& operator <<
 	ost << std::left << std::endl;
 
 	//仕切りのサイズ
-	std::streamsize shuttersize = Sanae::FontWeight * (matrix.get_column() - 1) + 1;
+	std::streamsize shuttersize = Sanae::FontWeight * (matrix.GetColumn() - 1) + 1;
 
 	//仕切り
 	ost << std::setfill('-') << std::setw(shuttersize) << "-";
@@ -218,7 +301,7 @@ std::basic_ostream<CharT, Traits>& operator <<
 	//setfill解除
 	ost << std::setfill(' ') << std::endl;
 
-	for (size_t row = 0; row < matrix.get_row(); row++) {
+	for (size_t row = 0; row < matrix.GetRow(); row++) {
 		for (MatrixType buf : matrix[row])
 			ost << std::setw(Sanae::FontWeight) << buf;
 

@@ -9,14 +9,18 @@
 
 
 
-#ifndef SANAE_MATRIX_H
-#define SANAE_MATRIX_H
+#ifndef _INCLUDEGUARD_MATRIX_H_
+#define _INCLUDEGUARD_MATRIX_H_
+
+
+
 
 #include <iostream>
 #include <vector>
 #include <stdexcept>
 #include <functional>
 #include <thread>
+#include <type_traits>
 
 
 
@@ -28,47 +32,58 @@ namespace Sanae{
 	class Matrix
 	{
 	private:
-		//Variables
-		using MatrixT     = std::vector<std::vector<ty>>;
-		using MatrixInitT = std::initializer_list<std::initializer_list<ty>>;
+		template<typename RowType    > using Row_t     = std::vector<RowType>;
+		template<typename RowInitType> using RowInit_t = std::initializer_list<RowInitType>;
 
-		MatrixT matrix;
+		using Matrix_t     = std::vector          <Row_t<ty>>;
+		using MatrixInit_t = std::initializer_list<RowInit_t<ty>>;
+
+	
+		//Variables
+		Matrix_t matrix;
 
 
 		//Private Methods
-		inline bool   m_CheckColumn  (MatrixT*) const;   //列数が正しいかどうか確認する。
+		inline void   m_ValidateMatrix      (const Matrix_t&) const;  //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
+		inline void   m_ValidateSquareMatrix(const Matrix_t&) const;  //正方行列かどうかを取得する。              @列数が等しくない場合 throw します。
+		
+		inline bool   m_IsEmpty   (const Matrix_t&) const;
 
-		inline size_t m_GetRowSize   (MatrixT*) const;   //行数を取得
-		inline size_t m_GetColumnSize(MatrixT*) const;   //列数を取得
+		inline bool   m_IsSameSize(const Matrix_t&,const Matrix_t&) const;
 
-		inline void m_calc     (MatrixT*, const MatrixT*,std::function<ty(ty,ty)>) const;   //std::functionで受け取った関数で演算
+		inline size_t m_GetRowSize   (const Matrix_t&) const;   //行数を取得
+		inline size_t m_GetColumnSize(const Matrix_t&) const;   //列数を取得
+		
 
-		inline void m_add      (MatrixT*, const MatrixT*) const;   //加算      :第一引数 += 第二引数
-		inline void m_sub      (MatrixT*, const MatrixT*) const;   //減算      :第一引数 -= 第二引数
-		inline void m_dotmul   (MatrixT*, const MatrixT*) const;   //内積      :第一引数 ^= 第二引数
-		inline void m_scalarmul(MatrixT*, ty      ) const;         //スカラー倍:第一引数 *= 第二引数
+		template<typename FuncType>
+		inline void m_Calc       (Matrix_t&, const Matrix_t&,FuncType) const;   //std::functionで受け取った関数で演算
 
-		inline void m_mul      (MatrixT*, const MatrixT*)      ;   //積　      :第一引数 *= 第二引数
+		inline void m_Add        (Matrix_t&, const Matrix_t&) const;   //加算      :第一引数 += 第二引数
+		inline void m_Sub        (Matrix_t&, const Matrix_t&) const;   //減算      :第一引数 -= 第二引数
+		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const;   //内積      :第一引数 ^= 第二引数
+		inline void m_ScalarMul  (Matrix_t&, ty             ) const;   //スカラー倍:第一引数 *= 第二引数
 
-		inline void m_to_identity(MatrixT*) const;                 //単位行列にする。
+		inline void m_Mul        (Matrix_t&, const Matrix_t&)      ;   //積　      :第一引数 *= 第二引数
 
-		inline void m_sweepout(MatrixT* arg_from, MatrixT* arg_store);   //掃き出し法により逆行列を求める。
-		inline ty   m_det     (MatrixT* arg);                            //行列式を求める。
+		inline void m_ToIdentity(Matrix_t&) const;                 //単位行列にする。
+
+		inline void m_SweepOut(Matrix_t& arg_from, Matrix_t& arg_store);   //掃き出し法により逆行列を求める。
+		inline ty   m_Det     (Matrix_t& arg);                            //行列式を求める。
 
 
 	public:
 		//行列積で使用するスレッド数(初期値は最大のスレッド数の半分)
-		size_t thread = std::thread::hardware_concurrency() / 2;
+		size_t thread = std::thread::hardware_concurrency()/2;
 
 		//コンストラクタ
 		Matrix ();
-		Matrix (std::pair<size_t,size_t>);  //サイズ指定
-		Matrix (MatrixInitT);               //{{0,0},{0,0}}...2*2行列
-		Matrix (const MatrixT&);            //std::vector<std::vector<ty>>
-		Matrix (const Matrix&);             //コピーコンストラクタ
-		~Matrix();                          //デストラクタ
+		Matrix (std::pair<size_t,size_t>);   //サイズ指定
+		Matrix (MatrixInit_t);               //{{0,0},{0,0}}...2*2行列
+		Matrix (const Matrix_t&);            //std::vector<std::vector<ty>>
+		Matrix (const Matrix&);              //コピーコンストラクタ
+		~Matrix();                           //デストラクタ
 
-		inline Matrix& operator =(MatrixInitT);
+		inline Matrix& operator =(MatrixInit_t);
 		inline Matrix& operator =(const Matrix&);
 		inline Matrix& operator =(Matrix&&);
 
@@ -83,40 +98,55 @@ namespace Sanae{
 		inline Matrix  operator ^ (const Matrix&); //内積
 		inline Matrix  operator * (const Matrix&); //行列積
 		inline Matrix  operator * (ty);            //スカラー倍
-		template<typename CastTy>
-		operator Sanae::Matrix<CastTy>();   //キャスト
+
+		template<typename CastTy> operator Sanae::Matrix<CastTy>();   //キャスト
 
 		inline Matrix& operator <<(Matrix&);         //譲渡
 		inline std::vector<ty>& operator [](size_t); //要素へアクセス
 
-		//非推奨
-		inline [[deprecated("This method has been deprecated as of version 4.0.5.")]] std::vector<ty*> operator [](std::pair<size_t,size_t>);
-
 		inline bool    operator ==(const Matrix&);  //比較==
 		inline bool    operator !=(const Matrix&);  //比較!=
 
-		inline size_t get_row   ();  //行数を取得
-		inline size_t get_column();  //列数を取得
+		inline size_t GetRow   ();  //行数を取得
+		inline size_t GetColumn();  //列数を取得
 		
-		inline ty     det       ();  //行列式を求める。
+		inline ty     Det       ();  //行列式を求める。
 		inline Matrix Inverse   ();  //逆行列を求める。
 
-		inline Matrix& Swap_Column(size_t, size_t);  //第一引数列と第二引数列を入れ替える。
-		inline Matrix& Swap_Row   (size_t, size_t);  //第一引数行と第二引数行を入れ替える。
-		
-		inline Matrix& resize     (std::pair<size_t,size_t>);  //サイズを変更する。
+		inline Matrix& SwapRow   (size_t, size_t);  //第一引数行と第二引数行を入れ替える。
+		inline Matrix& SwapColumn(size_t, size_t);  //第一引数列と第二引数列を入れ替える。
+
+		inline Matrix& ReSize     (std::pair<size_t,size_t>);  //サイズを変更する。
 
 		inline Matrix& Setter     (std::function<ty()>);                 //引数の関数を呼び出し各要素へ返り値を代入する。
 		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>);//引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
 
 		inline Matrix  Transpose  ();  //転置する。
 
-		static inline Matrix<ty> Identity(size_t);
-		static inline Matrix<ty> Zero(size_t);
+		static inline Matrix<ty> Identity(size_t);  //指定された行,列数の単位行列を作成します。
+		static inline Matrix<ty> Zero    (size_t);  //指定された行,列数の0行列を作成します。
  	};
 
 
 }
+
+
+
+
+/*無効な行列を示す例外クラス*/
+class InvalidMatrix : std::exception{
+protected:
+	std::string m_ErrorMessage = "It is an invalid matrix.";
+
+public:
+	InvalidMatrix() {}
+	
+	//メッセージを入力
+	InvalidMatrix(const char* ArgMessage) : m_ErrorMessage(ArgMessage) {}
+
+	//エラーメッセージを返す。
+	const char* what() const noexcept override {return m_ErrorMessage.c_str();}
+};
 
 
 

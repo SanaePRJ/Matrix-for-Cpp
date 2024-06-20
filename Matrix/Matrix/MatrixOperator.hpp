@@ -9,8 +9,11 @@
 
 
 
-#ifndef SANAE_MATRIXOPERATOR_HPP
-#define SANAE_MATRIXOPERATOR_HPP
+#ifndef _INCLUDEGUARD_MATRIXOPERATOR_HPP_
+#define _INCLUDEGUARD_MATRIXOPERATOR_HPP_
+
+
+
 
 #include <algorithm>
 #include "Matrix.h"
@@ -18,29 +21,34 @@
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>&Sanae::Matrix<ty>::operator =(MatrixInitT arg_InitValue) {
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
+(
+	MatrixInit_t ArgInitValue
+)
+{
 	//std::initializer_list<std::initialize_list<ty>>をstd::vector<std::vector<ty>>へ
-	this->matrix = { arg_InitValue.begin(),arg_InitValue.end() };
+	this->matrix = { ArgInitValue.begin(),ArgInitValue.end() };
 
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&matrix))
-		throw std::invalid_argument("All the columns must be equal.");
+	this->m_ValidateMatrix(this->matrix);
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(const Matrix& arg)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
+(
+	const Matrix& Arg
+)
 {
 	//サイズ変更
-	this->matrix.resize(arg.matrix.size());
+	this->matrix.resize(Arg.matrix.size());
 	//コピー
-	std::copy(arg.matrix.begin(), arg.matrix.end(), this->matrix.begin());
+	std::copy(Arg.matrix.begin(), Arg.matrix.end(), this->matrix.begin());
 
 	//列数は等しくなければならない。
-	if (this->m_CheckColumn(&this->matrix))
-		throw std::invalid_argument("All the columns must be equal.");
+	this->m_ValidateMatrix(this->matrix);
 
 	return *this;
 }
@@ -50,107 +58,148 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix<ty>&& arg) = defa
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=(const Matrix<ty>& arg) {
-	this->m_add(&this->matrix, &arg.matrix);
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=
+(
+	const Matrix<ty>& Arg
+) {
+	this->m_Add(this->matrix, Arg.matrix);
 
 	return *this;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=(const Matrix<ty>& arg) {
-	this->m_sub(&this->matrix, &arg.matrix);
-
-	return *this;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=(const Matrix<ty>& arg) {
-	this->m_dotmul(&this->matrix, &arg.matrix);
-
-	return *this;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=(const Matrix<ty>& arg) {
-	this->m_mul(&this->matrix, &arg.matrix);
-
-	return *this;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=(ty arg) {
-	this->m_scalarmul(&this->matrix,arg);
-
-	return *this;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +(const Matrix<ty>& arg) {
-	MatrixT buf;
-	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
-
-	this->m_add(&buf, &arg.matrix);
-
-	return buf;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -(const Matrix<ty>& arg) {
-	MatrixT buf;
-	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
-
-	this->m_sub(&buf, &arg.matrix);
-
-	return buf;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^(const Matrix<ty>& arg) {
-	MatrixT buf;
-	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
-
-	this->m_dotmul(&buf, &arg.matrix);
-
-	return buf;
-}
-
-
-template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(const Matrix<ty>& arg)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=
+(
+	const Matrix<ty>& Arg
+)
 {
-	MatrixT buf;
+	this->m_Sub(this->matrix, Arg.matrix);
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=
+(
+	const Matrix<ty>& Arg
+)
+{
+	this->m_HadamardMul(this->matrix, Arg.matrix);
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
+(
+	const Matrix<ty>& Arg
+)
+{
+	this->m_Mul(this->matrix, Arg.matrix);
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
+(
+	ty Arg
+)
+{
+	this->m_ScalarMul(this->matrix,Arg);
+
+	return *this;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +
+(
+	const Matrix<ty>& Arg
+)
+{
+	Matrix_t buf;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
 
-	this->m_mul(&buf, &arg.matrix);
+	this->m_Add(buf, Arg.matrix);
 
 	return buf;
 }
 
 
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *(ty arg) {
-	MatrixT buf;
-	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -
+(
+	const Matrix<ty>& Arg
+)
+{
+	Matrix_t Result;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
-	this->m_scalarmul(&buf, arg);
+	this->m_Sub(Result, Arg.matrix);
 
-	return buf;
+	return Result;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^
+(
+	const Matrix<ty>& Arg
+)
+{
+	Matrix_t Result;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
+
+	this->m_HadamardMul(Result, Arg.matrix);
+
+	return Result;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
+(
+	const Matrix<ty>& Arg
+)
+{
+	Matrix_t Result;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
+
+	this->m_Mul(Result, Arg.matrix);
+
+	return Result;
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
+(
+	ty Arg
+)
+{
+	Matrix_t Result;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
+
+	this->m_ScalarMul(Result, Arg);
+
+	return Result;
 }
 
 
 //譲渡
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Matrix<ty>& arg)
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<
+(
+	Matrix<ty>& Arg
+)
 {
 	//データmove
-	this->matrix = std::move(arg.matrix);
+	this->matrix = std::move(Arg.matrix);
 
 	return *this;
 }
@@ -158,39 +207,32 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<(Matrix<ty>& arg)
 
 //行での配列を取得します。
 template<typename ty>
-inline std::vector<ty>& Sanae::Matrix<ty>::operator [](size_t pos)
+inline std::vector<ty>& Sanae::Matrix<ty>::operator []
+(
+	size_t ArgPos
+)
 {
-	return this->matrix[pos];
-}
-
-
-//[[非推奨]]
-//列での配列を取得します。
-// *ポインタ型がvectorには格納されています。
-// *arg.first:開始行 arg.second:列
-template<typename ty>
-inline std::vector<ty*> Sanae::Matrix<ty>::operator [](std::pair<size_t, size_t> arg)
-{
-	std::vector<ty*> ret;
-
-	for (size_t row = arg.first; row < this->get_row();row++)
-		ret.push_back(&this->matrix[row][arg.second]);
-	
-	return ret;
+	return this->matrix[ArgPos];
 }
 
 
 template<typename ty>
-inline bool Sanae::Matrix<ty>::operator==(const Matrix<ty>& arg)
+inline bool Sanae::Matrix<ty>::operator==
+(
+	const Matrix<ty>& ArgMatrix
+)
 {
-	return (this->matrix == arg.matrix);
+	return (this->matrix == ArgMatrix.matrix);
 }
 
 
 template<typename ty>
-inline bool Sanae::Matrix<ty>::operator!=(const Matrix<ty>& arg)
+inline bool Sanae::Matrix<ty>::operator!=
+(
+	const Matrix<ty>& ArgMatrix
+)
 {
-	return (this->matrix != arg.matrix);
+	return (this->matrix != ArgMatrix.matrix);
 }
 
 
@@ -202,13 +244,13 @@ Sanae::Matrix<ty>::operator Sanae::Matrix<CastTy>()
 	
 	//キャスト結果を保存
 	CastMatrixT ret;
-	ret.reserve(this->get_row());
+	ret.reserve(this->GetRow());
 
 	for (std::vector<ty>& row : this->matrix) 
 	{
 		//キャスト結果を一行保存
 		std::vector<CastTy> buf_row;
-		buf_row.reserve(this->get_column());
+		buf_row.reserve(this->GetColumn());
 
 		for (ty& column:row)
 			buf_row.push_back(static_cast<CastTy>(column));

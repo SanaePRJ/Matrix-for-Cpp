@@ -1,5 +1,5 @@
 /*-------------------------------------------------------------
-* Name    : Matrix.hpp
+* Name    : Matrix
 * Version : 4.0.5
 * Author  : SanaePRJ
 * Description:
@@ -9,8 +9,8 @@
 
 
 
-#ifndef SANAE_MATRIX_HPP
-#define SANAE_MATRIX_HPP
+#ifndef _INCLUDEGUARD_MATRIX_HPP_
+#define _INCLUDEGUARD_MATRIX_HPP_
 
 
 

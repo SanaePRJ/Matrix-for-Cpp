@@ -26,7 +26,7 @@
     <ClInclude Include="Matrix\Matrix.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Matrix\Matrix.hpp">
+    <ClInclude Include="Matrix\Matrix">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Matrix\MatrixAdvCalc.hpp">
