@@ -20,7 +20,6 @@
 #include <stdexcept>
 #include <functional>
 #include <thread>
-#include <type_traits>
 
 
 
@@ -135,7 +134,7 @@ namespace Sanae{
 
 
 		//MatrixAdvCalc.hpp
-		inline ty     Det(); //行列式を求める。
+		inline ty     Det();     //行列式を求める。
 		inline Matrix Inverse(); //逆行列を求める。
 
 

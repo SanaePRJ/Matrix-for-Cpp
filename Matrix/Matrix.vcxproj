@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README-JP.md" />

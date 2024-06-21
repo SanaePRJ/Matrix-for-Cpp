@@ -117,33 +117,33 @@ inline ty Sanae::Matrix<ty>::m_Det
 	//次元を落としまくる。
 	const auto DecDim = [this, Extraction, DetBy2D](const Matrix_t& From, ty Coeff, auto Func)
 		{
-			const size_t size     = From.size(); //元のサイズ
-			const size_t new_size = size - 1;    //落とした後のサイズ
+			const size_t Size    = From.size(); //元のサイズ
+			const size_t NewSize = Size - 1;    //落とした後のサイズ
 
-			ty ret = 0; //返り値
+			ty Result = 0; //返り値
 
 			//2*2行列にまで落ちたらサラスの方式で解いて返す。
-			if (size == 2)
+			if (Size == 2)
 				return Coeff * DetBy2D(From);
 
 			//[0][0]~[n][0]まで
-			for (size_t Pos = 0; Pos < size; Pos++)
+			for (size_t Position = 0; Position < Size; Position++)
 			{
-				Matrix_t buf(new_size, std::vector<ty>(new_size, 0)); //格納用
-				Extraction(From, buf, Pos);                           //縮小した行列を取得
+				Matrix_t Buffer(NewSize, std::vector<ty>(NewSize, 0)); //格納用
+				Extraction(From, Buffer, Position);                    //縮小した行列を取得
 
-				ty coeff_buf = From[Pos][0] * (Pos % 2 == 0 ? 1 : -1); //新しい係数
+				ty CoeffBuffer = From[Position][0] * (Position % 2 == 0 ? 1 : -1); //新しい係数
 
-				ret += Func(buf, coeff_buf * Coeff, Func); //再帰させ結果をすべて加算
+				Result += Func(Buffer, CoeffBuffer * Coeff, Func); //再帰させ結果をすべて加算
 			}
 
-			return ret;
+			return Result;
 		};
 	
 	//元の係数
-	const ty FromCoff = 1;
+	const ty FromCoeff = 1;
 
-	return DecDim(Arg, FromCoff, DecDim);
+	return DecDim(Arg, FromCoeff, DecDim);
 }
 
 
@@ -173,7 +173,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
 
 	//行列式が0の場合解なし
 	if (this->Det() == 0)
-		throw std::invalid_argument("It is not a regular matrix.");
+		throw InvalidMatrix("It is not a regular matrix.");
 
 	Matrix_t CopyMatrix;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(CopyMatrix));

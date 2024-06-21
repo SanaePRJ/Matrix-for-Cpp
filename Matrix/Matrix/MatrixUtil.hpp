@@ -311,7 +311,9 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 
 
 namespace Sanae {
-	std::streamsize FontWeight = 4;
+	const static std::streamsize DefaultWeight = 4;
+
+	static       std::streamsize FontWeight = DefaultWeight;
 }
 
 
