@@ -20,6 +20,13 @@
 
 
 
+
+//以下のように定義することができる。
+//{
+//	{0, 0},
+//	{0, 0},
+//	{0, 0}
+//}
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 (
@@ -53,6 +60,8 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 	return *this;
 }
 
+
+//move用
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix<ty>&& arg) = default;
 
@@ -198,7 +207,7 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<
 	Matrix<ty>& Arg
 )
 {
-	//データmove
+	//データ move
 	this->matrix = std::move(Arg.matrix);
 
 	return *this;

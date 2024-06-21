@@ -43,7 +43,7 @@ int mul()
 	std::default_random_engine       engine;      //エンジン
 	std::normal_distribution<double> dist(0, 1);  //平均0,標準偏差1
 
-	size_t n = 500;
+	size_t n = 2500;
 
 	//n*n行列を作成
 	Sanae::Matrix<double> buf0 = std::pair<size_t, size_t>{ n,n };

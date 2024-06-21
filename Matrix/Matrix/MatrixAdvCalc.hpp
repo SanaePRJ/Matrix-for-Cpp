@@ -20,11 +20,15 @@
 
 
 
-/*-------------------------------------------------------------
-* 掃き出し法により求めた結果をarg_storeに格納します。
-* 
-* arg_store:領域を確保する必要はありません。
--------------------------------------------------------------*/
+/*------------------------------------------------------
+* プライベートメソッド
+------------------------------------------------------*/
+
+
+
+
+// 掃き出し法により求めた結果を arg_store に格納します。
+// * ArgStore を確保している必要はありません。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_SweepOut
 (
@@ -74,30 +78,7 @@ inline void Sanae::Matrix<ty>::m_SweepOut
 }
 
 
-/*-------------------------------------------------------------
-* 逆行列を求める。
--------------------------------------------------------------*/
-template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
-{
-	//列数は等しくなければならない。
-	this->m_ValidateMatrix(this->matrix);
-
-	//行列式が0の場合解なし
-	if (this->Det() == 0)
-		throw std::invalid_argument("It is not a regular matrix.");
-
-	Matrix_t CopyMatrix;
-	std::copy(this->matrix.begin(),this->matrix.end(),std::back_inserter(CopyMatrix));
-
-	Matrix_t Inv;
-	this->m_SweepOut(CopyMatrix,Inv);
-	
-	return Inv;
-}
-
-
-//行列式:ライプニッツの行列式
+// 行列式:ライプニッツの行列式
 template<typename ty>
 inline ty Sanae::Matrix<ty>::m_Det
 (
@@ -166,11 +147,41 @@ inline ty Sanae::Matrix<ty>::m_Det
 }
 
 
-//行列式を求める。
+
+
+/*------------------------------------------------------
+* パブリックメソッド
+------------------------------------------------------*/
+
+
+
+
+// 行列式を求める。
 template<typename ty>
 inline ty Sanae::Matrix<ty>::Det()
 {
 	return this->m_Det(this->matrix);
+}
+
+
+// 逆行列を求める。
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse()
+{
+	//列数は等しくなければならない。
+	this->m_ValidateMatrix(this->matrix);
+
+	//行列式が0の場合解なし
+	if (this->Det() == 0)
+		throw std::invalid_argument("It is not a regular matrix.");
+
+	Matrix_t CopyMatrix;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(CopyMatrix));
+
+	Matrix_t Inv;
+	this->m_SweepOut(CopyMatrix, Inv);
+
+	return Inv;
 }
 
 

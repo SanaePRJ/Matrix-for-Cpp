@@ -22,7 +22,8 @@
 
 
 
-//渡された関数をすべての要素に対して実行します。arg_data1 = Function(arg_data1,arg_data2)
+// 渡された関数をすべての要素に対して実行します。
+// arg_data1 = Function(arg_data1,arg_data2)
 template<typename ty>
 template<typename FuncType>
 inline void Sanae::Matrix<ty>::m_Calc
@@ -59,7 +60,7 @@ inline void Sanae::Matrix<ty>::m_Calc
 }
 
 
-//加算
+// 加算
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Add
 (
@@ -73,7 +74,7 @@ inline void Sanae::Matrix<ty>::m_Add
 }
 
 
-//減算
+// 減算
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Sub
 (
@@ -87,7 +88,7 @@ inline void Sanae::Matrix<ty>::m_Sub
 }
 
 
-//アダマール積を行う。
+// アダマール積を行う。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_HadamardMul
 (
@@ -101,7 +102,7 @@ inline void Sanae::Matrix<ty>::m_HadamardMul
 }
 
 
-//スカラー倍
+// スカラー倍
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_ScalarMul
 (
@@ -118,7 +119,7 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 
 
 
-//マルチスレッドで動作するので thread を include しておく
+// マルチスレッドで動作するので thread を include しておく
 #ifndef SANAE_MATRIX_NOTHREADS
 	#include <thread>
 #endif
@@ -126,7 +127,7 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 
 
 
-//行列の掛け算(Threads)
+// 行列の掛け算を行います。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Mul
 (
@@ -157,46 +158,46 @@ inline void Sanae::Matrix<ty>::m_Mul
 	size_t OneTaskCount    = AllTaskCount / this->thread;
 
 	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
-	auto MulLambda = [ArgData1, ArgData2, this](size_t arg_Row, size_t arg_Column)
+	auto MulLambda = [ArgData1, ArgData2, this](size_t ArgRow, size_t ArgColumn)
 		{
 			const size_t Size = m_GetColumnSize(ArgData1);
 			ty           Sum  = 0;
 
 			//Σk = 0, n(m[i][k] * n[k][j])
-			for (size_t Pos = 0; Pos < Size; Pos++)
-				Sum += ArgData1[arg_Row][Pos] * ArgData2[Pos][arg_Column];
+			for (size_t Position = 0; Position < Size; Position++)
+				Sum += ArgData1[ArgRow][Position] * ArgData2[Position][ArgColumn];
 
 			return Sum;
 		};
 
-//マルチスレッドで計算させる。
+// マルチスレッドで計算させる。
 #ifndef SANAE_MATRIX_NOTHREADS
 
 	//threadで分割するためのラムダ式
-	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t from,size_t to) {
-			for (size_t pos = from; pos < to; pos++) 
-				Result[(pos / Column)][(pos % Column)] = MulLambda((pos / Column),( pos % Column));
+	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t ArgFrom,size_t ArgTo) {
+			for (size_t Position = ArgFrom; Position < ArgTo; Position++) 
+				Result[(Position / Column)][(Position % Column)] = MulLambda((Position / Column),( Position % Column));
 		};
 	
 
 	//スレッド管理
 	std::vector<std::thread> Threads;
-	for (size_t Pos = 0; Pos < AllTaskCount;)
+	for (size_t Position = 0; Position < AllTaskCount;)
 	{
-		size_t from = Pos;
-		size_t to   = Pos + OneTaskCount;
+		size_t From = Position;
+		size_t To   = Position + OneTaskCount;
 		
 		//タスク数が超えた場合
-		if (to > AllTaskCount)
-			to = AllTaskCount;
+		if (To > AllTaskCount)
+			To = AllTaskCount;
 
 		//タスクがもうない
-		if (from == to)
+		if (From == To)
 			break;
 
 		//スレッドを作成
-		Threads.push_back(std::thread(MulThread,from,to));
-		Pos = to;
+		Threads.push_back(std::thread(MulThread,From,To));
+		Position = To;
 	}
 
 	//タスク完了まで待つ
@@ -216,8 +217,6 @@ inline void Sanae::Matrix<ty>::m_Mul
 	}
 
 #endif
-
-	ArgData1.clear();
 
 	//bufを第一引数に譲渡
 	ArgData1 = std::move(Result);

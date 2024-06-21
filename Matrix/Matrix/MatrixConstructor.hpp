@@ -13,6 +13,8 @@
 #define _INCLUDEGUARD_MATRIXCONSTRUCTOR_HPP_
 
 
+
+
 #include <algorithm>
 #include "Matrix.h"
 
@@ -24,6 +26,7 @@ template<typename ty>
 Sanae::Matrix<ty>::Matrix() {}
 
 
+//サイズを指定して0行列を生成する。
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
 (
@@ -33,14 +36,12 @@ Sanae::Matrix<ty>::Matrix
 {}
 
 
-/*------------------------------------------
-{
-	{0, 0},
-	{0, 0},
-	{0, 0}
-}
-3 * 2行列のように定義することができる。
-------------------------------------------*/
+//以下のように定義することができる。
+//{
+//	{0, 0},
+//	{0, 0},
+//	{0, 0}
+//}
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
 (
@@ -53,7 +54,7 @@ Sanae::Matrix<ty>::Matrix
 }
 
 
-//std::vector<std::vector<ty>>で入れられた時用
+//std::vector<std::vector<ty>>
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
 (
