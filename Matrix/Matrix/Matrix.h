@@ -63,7 +63,7 @@ namespace Sanae{
 		inline void m_ScalarMul  (Matrix_t&, ty             ) const; //スカラー倍  :第一引数 *= 第二引数
 		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const; //アダマール積:第一引数 ^= 第二引数
 
-		inline void m_Mul        (Matrix_t&, const Matrix_t&) const; //積　        :第一引数 *= 第二引数
+		inline void m_Mul        (Matrix_t&, const Matrix_t&); //積　        :第一引数 *= 第二引数
 
 
 		//MatrixAdvCalc.hpp

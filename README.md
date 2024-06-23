@@ -1,67 +1,114 @@
-# Matrix
-This repository has types that handle matrices.  
+# Matrix型の紹介
+Matrix型は、行列を表現するためのテンプレートクラスであり、行列の作成、操作、計算を行うための機能を提供します。以下にMatrix型の主な特徴と機能を説明します。  
 
 WebSite:	http://sanae.starfree.jp  
 Author:		SanaeProject
 
-* Made for experiment of neural network.
+- この説明文は`ChatGpt(Gpt3.5)`により生成しました。
 
-# Programming Language
-![C++](data:image/png;base64,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)
-* Version: c++14 or more
+## 特徴
+- **テンプレートクラス**: 要素の型(`ty`)に依存して定義されるため、任意のデータ型で行列を扱えます。
+- **動的サイズ**: 行数と列数が動的に決定され、サイズの変更や初期化が可能です。
+- **行列演算のサポート**: 加算、減算、スカラー倍、行列積などの演算が実装されています。
+- **高度な行列計算**: 逆行列の計算やLU分解に基づく行列式の計算など、高度な数学的操作がサポートされています。
+- **エラーハンドリング**: 不正な行列操作に対する例外処理が組み込まれています。
 
-# SampleCode
+## 主なファイル構成
+- **Matrix.h**: Matrix型の定義が含まれており、クラスメンバー、テンプレート、行列演算、高度な行列計算などの実装が記述されています。
+- **MatrixUtil.hpp**: 行列操作に関するユーティリティ関数が宣言され、行列の基本的な操作をサポートします。
+- **MatrixCalc.hpp**: 行列演算に関する関数が宣言され、加算、減算、スカラー倍、アダマール積、行列積などの演算を定義します。
+- **MatrixAdvCalc.hpp**: 高度な行列計算に関する関数が宣言され、逆行列の計算、LU分解、行列式の計算などを実装します。
 
-    Sanae::Matrix<double> a;
-	
-	Sanae::Matrix<double> b =
-	{
-		{1,2,3},
-		{4,5,6},
-		{7,8,9}
-	};
+## 利用方法
+Matrix型は以下のように使用できます:
+- 行列の作成と初期化、サイズの変更
+- 行列演算の実行（加算、減算、行列積など）
+- 高度な行列計算（逆行列の計算、行列式の取得など）
 
-	Sanae::Matrix<double> c = b;
+## 例外処理
+Matrix型では不正な行列操作に対する例外として`InvalidMatrix`クラスが使用され、エラーメッセージを提供します。
 
-	//3*2Matrix
-	Sanae::Matrix<double> d = std::pair<size_t,size_t>{3,2};
+## 使用例
+```cpp
+#include "Matrix.h"
 
-	a += b; //a=a+b
-	a -= b; //a=a-b
-	a *= b; //a=a*b (Matrix)
-	a *= 3; //a=a*3 (Scalar mul)
-	a ^= b; //a=a*b (vector)
+using namespace Sanae;
 
-	(b + c); //b+c 
-	(b - c); //b-c
-	(b * c); //b*c (Matrix mul)
-	(b * 5); //b*5 (Scalar mul)
-	(b ^ c); //b*c (vector mul)
+int main() {
+    try {
+        // コンストラクタによる初期化
+        Sanae::Matrix<double> mat1{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+        std::cout << "行列 mat1:" << std::endl << mat1 << std::endl;
 
-	b[0][0];
+        Sanae::Matrix<double> mat2(std::make_pair(2, 3));
+        std::cout << "行列 mat2 (2x3):" << std::endl << mat2 << std::endl;
 
+        Sanae::Matrix<double> mat3(mat1);
+        std::cout << "行列 mat3 (mat1のコピー):" << std::endl << mat3 << std::endl;
 
-	Sanae::Matrix func_var0 =
-	{
-		{7,8,2},
-		{6,0,2},
-		{4,2,1}
-	};
+        // 演算子による操作
+        mat1 += mat1;
+        std::cout << "行列 mat1 加算後 (mat1 += mat1):" << std::endl << mat1 << std::endl;
 
+        mat1 -= mat3;
+        std::cout << "行列 mat1 減算後 (mat1 -= mat3):" << std::endl << mat1 << std::endl;
 
-	func_var0.SwapColumn(0,1);
-	func_var0.SwapRow   (1,2);
+        mat1 *= 2;
+        std::cout << "行列 mat1 スカラー倍後 (mat1 *= 2):" << std::endl << mat1 << std::endl;
 
-	func_var0.Transpose();
-	func_var0.Inverse  ();
-	func_var0.Det      ();
-	
-	//Set 0
-	func_var0.Setter   ([]()->double{return 0;});
+        Sanae::Matrix<double> mat4 = mat1 * mat3;
+        std::cout << "行列 mat4 (mat1 * mat3):" << std::endl << mat4 << std::endl;
 
-	//set random
-	std::default_random_engine       engine;
-	std::normal_distribution<double> dist(0, 1);
+        // 行列の転置
+        Sanae::Matrix<double> mat5 = mat1.Transpose();
+        std::cout << "行列 mat5 (mat1の転置):" << std::endl << mat5 << std::endl;
 
-	func_var0.Setter([&engine, &dist]() -> double {return dist(engine); });
-	func_var0.Setter([](size_t row,size_t column,double& value) -> double {return value*row*column; });
+        // 行列のサイズ変更
+        mat2.ReSize(std::make_pair(3, 3));
+        std::cout << "行列 mat2 サイズ変更後 (3x3):" << std::endl << mat2 << std::endl;
+
+        // 単位行列とゼロ行列
+        Sanae::Matrix<double> mat6 = Sanae::Matrix<double>::Identity(3);
+        std::cout << "単位行列 mat6 (3x3):" << std::endl << mat6 << std::endl;
+
+        Sanae::Matrix<double> mat7 = Sanae::Matrix<double>::Zero(3);
+        std::cout << "ゼロ行列 mat7 (3x3):" << std::endl << mat7 << std::endl;
+
+        // 行列式と逆行列
+        double det = mat1.Det();
+        std::cout << "行列 mat1 の行列式: " << det << std::endl;
+
+        Sanae::Matrix<double> mat8 = mat1.Inverse();
+        std::cout << "行列 mat8 (mat1の逆行列):" << std::endl << mat8 << std::endl;
+
+        // キャスト
+        Sanae::Matrix<float> matFloat = mat1;
+        std::cout << "行列 matFloat (mat1からキャスト):" << std::endl << matFloat << std::endl;
+
+        // アクセス
+        std::cout << "要素 mat1[1][1]: " << mat1[1][1] << std::endl;
+
+        // 譲渡
+        Sanae::Matrix<double> mat9{ {10, 11, 12}, {13, 14, 15}, {16, 17, 18} };
+        std::cout << "行列 mat9 (譲渡前):" << std::endl << mat9 << std::endl;
+
+        mat9 << mat1;
+        std::cout << "行列 mat9 (mat9 << mat1):" << std::endl << mat9 << std::endl;
+
+        // 比較
+        bool isEqual = (mat1 == mat3);
+        std::cout << "比較 (mat1 == mat3): " << (isEqual ? "true" : "false") << std::endl;
+
+        bool isNotEqual = (mat1 != mat3);
+        std::cout << "比較 (mat1 != mat3): " << (isNotEqual ? "true" : "false") << std::endl;
+
+    }
+    catch (InvalidMatrix& e) {
+        std::cerr << "行列エラー: " << e.what() << std::endl;
+    }
+    catch (std::exception& e) {
+        std::cerr << "エラー: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
