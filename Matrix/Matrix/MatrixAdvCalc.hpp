@@ -155,7 +155,13 @@ inline ty Sanae::Matrix<ty>::m_Det
 
 // ArgMatrix を MatrixL と MatrixU へ分解します。
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_LUDecomposition(const Matrix_t& ArgMatrix, Matrix_t& MatrixL, Matrix_t&MatrixU)
+inline void Sanae::Matrix<ty>::m_LUDecomposition
+(
+	const Matrix_t& ArgMatrix, 
+	Matrix_t&       MatrixL, 
+	Matrix_t&       MatrixU
+)
+	const
 {
 	//入力された行列が正方行列でなければならない。
 	if (!m_IsSquareMatrix(ArgMatrix))
@@ -201,7 +207,11 @@ inline void Sanae::Matrix<ty>::m_LUDecomposition(const Matrix_t& ArgMatrix, Matr
 
 
 template<typename ty>
-inline ty Sanae::Matrix<ty>::m_DetByU(const Matrix_t& MatrixU)
+inline ty Sanae::Matrix<ty>::m_DetByU
+(
+	const Matrix_t& MatrixU
+)
+	const
 {
 	//入力された行列が正方行列でなければならない。
 	if (!m_IsSquareMatrix(MatrixU))
@@ -219,7 +229,13 @@ inline ty Sanae::Matrix<ty>::m_DetByU(const Matrix_t& MatrixU)
 
 //逆行列を求めます。
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_Inverse(const Matrix_t& ArgMatrix, Matrix_t& Store, ty Epsilon)
+inline void Sanae::Matrix<ty>::m_Inverse
+(
+	const Matrix_t& ArgMatrix, 
+	Matrix_t&       Store, 
+	ty              Epsilon
+)
+	const
 {
 	//入力された行列が正方行列でなければならない。
 	if (!m_IsSquareMatrix(ArgMatrix))

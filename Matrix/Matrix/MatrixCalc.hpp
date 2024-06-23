@@ -134,6 +134,7 @@ inline void Sanae::Matrix<ty>::m_Mul
 	Matrix_t&       ArgData1,
 	const Matrix_t& ArgData2
 )
+	const
 {
 	//‘æˆêˆø”‚Ì—ñ”‚Æ‘æ“ñˆø”‚Ìs”‚Í“¯‚¶‚Å‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
 	if (m_GetColumnSize(ArgData1) != m_GetRowSize(ArgData2))

@@ -63,17 +63,18 @@ namespace Sanae{
 		inline void m_ScalarMul  (Matrix_t&, ty             ) const; //スカラー倍  :第一引数 *= 第二引数
 		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const; //アダマール積:第一引数 ^= 第二引数
 
-		inline void m_Mul        (Matrix_t&, const Matrix_t&)      ; //積　        :第一引数 *= 第二引数
+		inline void m_Mul        (Matrix_t&, const Matrix_t&) const; //積　        :第一引数 *= 第二引数
 
 
 		//MatrixAdvCalc.hpp
+		//削除予定
 		inline void  m_SweepOut(Matrix_t& arg_from, Matrix_t& arg_store); //掃き出し法により逆行列を求める。
 		inline ty    m_Det     (Matrix_t& arg);                           //行列式を求める。
 
-
-		inline void  m_LUDecomposition(const Matrix_t&, Matrix_t&, Matrix_t&); //LU分解を行い第二引数L,第三引数Uに格納する。
-		inline ty    m_DetByU (const Matrix_t&);                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
-		inline void  m_Inverse(const Matrix_t&,Matrix_t&,ty=1e-5); //逆行列を求める。
+		inline void  m_LUDecomposition(const Matrix_t&, Matrix_t&, Matrix_t&) const; //LU分解を行い第二引数L,第三引数Uに格納する。
+		
+		inline ty    m_DetByU (const Matrix_t&) const;                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
+		inline void  m_Inverse(const Matrix_t&,Matrix_t&,ty=1e-5) const; //逆行列を求める。
 	
 
 	public:
