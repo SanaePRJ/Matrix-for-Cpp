@@ -48,17 +48,16 @@ inline void Sanae::Matrix<ty>::m_ValidateMatrix
 }
 
 
-//正方行列出ない場合 InvalidMatrix を throw します。
+//正方行列かどうか
 template<typename ty>
-inline void Sanae::Matrix<ty>::m_ValidateSquareMatrix
+inline bool Sanae::Matrix<ty>::m_IsSquareMatrix
 (
 	const Matrix_t& Arg
 )
 	const
 {
 	//列数と行数が等しい場合正方行列
-	if (m_GetColumnSize(Arg) != m_GetRowSize(Arg))
-		throw InvalidMatrix("It must be a square matrix.");
+	return m_GetColumnSize(Arg) == m_GetRowSize(Arg);
 }
 
 
@@ -124,30 +123,6 @@ inline size_t Sanae::Matrix<ty>::m_GetColumnSize
 
 	//行番号0の列数が基準
 	return Arg[0].size();
-}
-
-
-//単位行列にする。
-template<typename ty>
-inline void Sanae::Matrix<ty>::m_ToIdentity
-(
-	Matrix_t& Arg
-)
-	const
-{
-	//正方行列であるか
-	if (m_GetRowSize(Arg) != m_GetColumnSize(Arg))
-		throw std::invalid_argument("It must be a square matrix.");
-
-	//サイズの取得
-	size_t size = m_GetRowSize(Arg);
-	//ゼロ行列にする
-	Arg.resize(size, std::vector<ty>(size, 0));
-
-	for (size_t pos = 0; pos < size; pos++)
-		Arg[pos][pos] = 1;
-
-	return;
 }
 
 
@@ -322,11 +297,11 @@ template<typename CharT, typename Traits, typename MatrixType = double>
 std::basic_ostream<CharT, Traits>& operator <<
 (
 	std::basic_ostream<CharT, Traits>& ArgOstream,
-	Sanae::Matrix<MatrixType>          Matrix
+	Sanae::Matrix<MatrixType> Matrix
 )
 {
 	for (size_t Row = 0; Row < Matrix.GetRow(); Row++) {
-		for (MatrixType Column : Matrix[Row])
+		for (MatrixType Column: Matrix[Row])
 			ArgOstream << std::setw(Sanae::FontWeight) << Column;
 
 		ArgOstream << std::endl;

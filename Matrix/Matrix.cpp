@@ -43,6 +43,7 @@ int main()
 		{ 7 , 8 , -9}
 	};
 
+
 	std::cout << "Matrix 1:\n" << Mat1 << "\n";
 	std::cout << "Matrix 2:\n" << Mat2 << "\n";
 
@@ -84,7 +85,6 @@ int main()
 	FontWeight = DefaultWeight;
 
 	MulTest();
-
 
 	return 0;
 }

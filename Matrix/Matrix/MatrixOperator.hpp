@@ -70,7 +70,8 @@ template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=
 (
 	const Matrix<ty>& Arg
-) {
+) 
+{
 	this->m_Add(this->matrix, Arg.matrix);
 
 	return *this;

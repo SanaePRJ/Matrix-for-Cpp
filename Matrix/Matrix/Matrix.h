@@ -43,12 +43,12 @@ namespace Sanae{
 
 
 		//MatrixUtil.hpp
-		inline void   m_ValidateMatrix      (const Matrix_t&) const; //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
-		inline void   m_ValidateSquareMatrix(const Matrix_t&) const; //正方行列かどうかを取得する。              @列数が等しくない場合 throw します。
+		// コンストラクタや=演算子などで実行する。
+		inline void   m_ValidateMatrix(const Matrix_t&) const; //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
 		
-		inline bool   m_IsEmpty   (const Matrix_t&) const; //空の行列かどうかを返す。
-
-		inline bool   m_IsSameSize(const Matrix_t&,const Matrix_t&) const; //同じ大きさかどうかを返す。
+		inline bool   m_IsSquareMatrix(const Matrix_t&) const; //正方行列かどうかを取得する。
+		inline bool   m_IsEmpty       (const Matrix_t&) const; //空の行列かどうかを返す。
+		inline bool   m_IsSameSize    (const Matrix_t&,const Matrix_t&) const; //同じ大きさかどうかを返す。
 
 		inline size_t m_GetRowSize   (const Matrix_t&) const; //行数を取得
 		inline size_t m_GetColumnSize(const Matrix_t&) const; //列数を取得
@@ -65,13 +65,16 @@ namespace Sanae{
 
 		inline void m_Mul        (Matrix_t&, const Matrix_t&)      ; //積　        :第一引数 *= 第二引数
 
-		inline void m_ToIdentity(Matrix_t&) const; //単位行列にする。
-
 
 		//MatrixAdvCalc.hpp
-		inline void m_SweepOut(Matrix_t& arg_from, Matrix_t& arg_store); //掃き出し法により逆行列を求める。
-		inline ty   m_Det     (Matrix_t& arg);                           //行列式を求める。
+		inline void  m_SweepOut(Matrix_t& arg_from, Matrix_t& arg_store); //掃き出し法により逆行列を求める。
+		inline ty    m_Det     (Matrix_t& arg);                           //行列式を求める。
 
+
+		inline void  m_LUDecomposition(const Matrix_t&, Matrix_t&, Matrix_t&); //LU分解を行い第二引数L,第三引数Uに格納する。
+		inline ty    m_DetByU (const Matrix_t&);                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
+		inline void  m_Inverse(const Matrix_t&,Matrix_t&,ty=1e-5); //逆行列を求める。
+	
 
 	public:
 
@@ -134,8 +137,8 @@ namespace Sanae{
 
 
 		//MatrixAdvCalc.hpp
-		inline ty     Det();     //行列式を求める。
-		inline Matrix Inverse(); //逆行列を求める。
+		inline ty     Det    ();        //行列式を求める。
+		inline Matrix Inverse(ty=1e-5); //逆行列を求める。
 
 
  	};
