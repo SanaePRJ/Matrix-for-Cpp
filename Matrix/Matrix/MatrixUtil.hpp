@@ -1,10 +1,16 @@
-/*-------------------------------------------------------------
-* Name    : MatrixUtil.hpp
-* Version : 4.0.5
-* * Author: SanaePRJ
-* Description:
-*  Matrix型のutility関数の実装
--------------------------------------------------------------*/
+/* ---------------------------------------------------------------------------------------------
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ --------------------------------------------------------------------------------------------- */
 
 
 
@@ -19,7 +25,6 @@
 #include <stdexcept>
 #include <functional>
 #include <algorithm>
-#include <iomanip>
 
 #include "Matrix.h"
 
@@ -273,41 +278,6 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 )
 {
 	return Matrix<ty>(std::pair<size_t, size_t>(ArgSize, ArgSize));
-}
-
-
-
-
-/*------------------------------------------------------
-* std::cout で出力する。
-------------------------------------------------------*/
-
-
-
-
-namespace Sanae {
-	const static std::streamsize DefaultWeight = 4;
-
-	static       std::streamsize FontWeight = DefaultWeight;
-}
-
-
-//std::cout出力用
-template<typename CharT, typename Traits, typename MatrixType = double>
-std::basic_ostream<CharT, Traits>& operator <<
-(
-	std::basic_ostream<CharT, Traits>& ArgOstream,
-	Sanae::Matrix<MatrixType> Matrix
-)
-{
-	for (size_t Row = 0; Row < Matrix.GetRow(); Row++) {
-		for (MatrixType Column: Matrix[Row])
-			ArgOstream << std::setw(Sanae::FontWeight) << Column;
-
-		ArgOstream << std::endl;
-	}
-
-	return ArgOstream;
 }
 
 

@@ -1,10 +1,16 @@
-/*-------------------------------------------------------------
-* Name    : Matrix.h
-* Version : 4.0.5
-* Author  : SanaePRJ
-* Description:
-*  MatrixBase型の定義ファイル
--------------------------------------------------------------*/
+/* ---------------------------------------------------------------------------------------------
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ --------------------------------------------------------------------------------------------- */
 
 
 
@@ -20,6 +26,7 @@
 #include <stdexcept>
 #include <functional>
 #include <thread>
+#include <iomanip>
 
 
 
@@ -80,8 +87,8 @@ namespace Sanae{
 	public:
 
 
-		//行列積で使用するスレッド数(初期値は最大のスレッド数の半分)
-		size_t thread = std::thread::hardware_concurrency()/2;
+		//行列積で使用するスレッド数(初期値は最大のスレッド数)
+		size_t thread = std::thread::hardware_concurrency();
 
 
 		//MatrixConstructor.hpp
@@ -150,7 +157,7 @@ namespace Sanae{
 
 
 
-/*無効な行列を示す例外クラス*/
+// 無効な行列を示す例外クラス
 class InvalidMatrix : std::exception{
 protected:
 	std::string m_ErrorMessage = "It is an invalid matrix.";
@@ -164,6 +171,33 @@ public:
 	//エラーメッセージを返す。
 	const char* what() const noexcept override {return m_ErrorMessage.c_str();}
 };
+
+
+
+
+namespace Sanae {
+	const static std::streamsize DefaultWeight = 4;
+	static       std::streamsize FontWeight = DefaultWeight;
+}
+
+
+//std::coutで出力
+template<typename CharT, typename Traits, typename MatrixType = double>
+std::basic_ostream<CharT, Traits>& operator <<
+(
+	std::basic_ostream<CharT, Traits>& ArgOstream,
+	Sanae::Matrix<MatrixType> Matrix
+)
+{
+	for (size_t Row = 0; Row < Matrix.GetRow(); Row++) {
+		for (MatrixType Column : Matrix[Row])
+			ArgOstream << std::setw(Sanae::FontWeight) << Column;
+
+		ArgOstream << std::endl;
+	}
+
+	return ArgOstream;
+}
 
 
 
