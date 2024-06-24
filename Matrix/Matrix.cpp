@@ -87,10 +87,10 @@ int main() {
 
         // 比較
         bool isEqual = (mat1 == mat3);
-        std::cout << "比較 (mat1 == mat3): " << (isEqual ? "true" : "false") << std::endl;
+        std::cout << "比較 (mat1 == mat3): " << std::boolalpha << isEqual << std::endl;
 
         bool isNotEqual = (mat1 != mat3);
-        std::cout << "比較 (mat1 != mat3): " << (isNotEqual ? "true" : "false") << std::endl;
+        std::cout << "比較 (mat1 != mat3): " << std::boolalpha << isNotEqual << std::endl;
 
     }
     catch (InvalidMatrix& e) {
