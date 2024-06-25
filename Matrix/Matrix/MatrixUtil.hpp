@@ -138,7 +138,7 @@ inline size_t Sanae::Matrix<ty>::m_GetColumnSize
 
 //行数を返します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::GetRow()
+inline size_t Sanae::Matrix<ty>::Rows()
 {
 	return m_GetRowSize(matrix);
 }
@@ -146,7 +146,7 @@ inline size_t Sanae::Matrix<ty>::GetRow()
 
 //列数を返します。
 template<typename ty>
-inline size_t Sanae::Matrix<ty>::GetColumn()
+inline size_t Sanae::Matrix<ty>::Cols()
 {
 	return m_GetColumnSize(matrix);
 }
@@ -171,6 +171,42 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapColumn
 }
 
 
+template<typename ty>
+inline auto Sanae::Matrix<ty>::GetRowRef
+(
+	size_t ArgRowPos
+)
+	-> std::vector<std::reference_wrapper<ty>>
+{
+	std::vector<std::reference_wrapper<ty>> Result;
+
+	if (ArgRowPos < Rows()) {
+		for (auto& elem : matrix[ArgRowPos])
+			Result.push_back(elem);
+	}
+
+	return Result;
+}
+
+
+template<typename ty>
+inline auto Sanae::Matrix<ty>::GetColRef
+(
+	size_t ArgColumnPos
+)
+	-> std::vector<std::reference_wrapper<ty>>
+{
+	std::vector<std::reference_wrapper<ty>> Result;
+
+	for (auto& Row : matrix) {
+		if (ArgColumnPos < Cols())
+			Result.push_back(Row[ArgColumnPos]);
+	}
+
+	return Result;
+}
+
+
 //行を入れ替えます。
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapRow
@@ -187,7 +223,7 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapRow
 
 //サイズを変更します。
 template<typename ty>
-inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::ReSize
+inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Resize
 (
 	std::pair<size_t, size_t> ArgSize
 )
@@ -278,6 +314,17 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 )
 {
 	return Matrix<ty>(std::pair<size_t, size_t>(ArgSize, ArgSize));
+}
+
+
+template<typename ty>
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
+(
+	size_t ArgSizeRow, 
+	size_t ArgSizeColumn
+)
+{
+	return Matrix<ty>(std::pair<size_t, size_t>(ArgSizeRow, ArgSizeColumn));
 }
 
 

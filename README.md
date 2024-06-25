@@ -30,9 +30,37 @@ Matrixå^Ç≈ÇÕïsê≥Ç»çsóÒëÄçÏÇ…ëŒÇ∑ÇÈó·äOÇ∆ÇµÇƒ`InvalidMatrix`ÉNÉâÉXÇ™égópÇ≥ÇÍÅAÉGÉ
 
 ## égópó·
 ```cpp
-#include "Matrix.h"
+/* ---------------------------------------------------------------------------------------------
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ --------------------------------------------------------------------------------------------- */
 
-using namespace Sanae;
+
+
+
+//#define SANAE_MATRIX_NOTHREADS
+
+#include <functional>
+#include <iostream>
+#include <random>
+#include <time.h>
+#include <chrono>
+#include <thread>
+
+#include "Test.hpp"
+#include "Matrix/Matrix"
+
+
+
 
 int main() {
     try {
@@ -64,7 +92,7 @@ int main() {
         std::cout << "çsóÒ mat5 (mat1ÇÃì]íu):" << std::endl << mat5 << std::endl;
 
         // çsóÒÇÃÉTÉCÉYïœçX
-        mat2.ReSize(std::make_pair(3, 3));
+        mat2.Resize(std::make_pair(3, 3));
         std::cout << "çsóÒ mat2 ÉTÉCÉYïœçXå„ (3x3):" << std::endl << mat2 << std::endl;
 
         // íPà çsóÒÇ∆É[ÉççsóÒ
@@ -97,11 +125,29 @@ int main() {
 
         // î‰är
         bool isEqual = (mat1 == mat3);
-        std::cout << "î‰är (mat1 == mat3): " << (isEqual ? "true" : "false") << std::endl;
+        std::cout << "î‰är (mat1 == mat3): " << std::boolalpha << isEqual << std::endl;
 
         bool isNotEqual = (mat1 != mat3);
-        std::cout << "î‰är (mat1 != mat3): " << (isNotEqual ? "true" : "false") << std::endl;
+        std::cout << "î‰är (mat1 != mat3): " << std::boolalpha << isNotEqual << "\n" << std::endl;
 
+        // 1çséÊìæ
+        std::cout << "1çsï™éÊìæ mat9:";
+        auto mat9Row = mat9.GetRowRef(0);
+
+        for (auto& Cols : mat9Row)
+            std::cout << std::setw(5) <<  Cols.get();
+        std::cout << std::endl;
+
+        // 1óÒéÊìæ
+        std::cout << "1óÒï™éÊìæ mat9:";
+        auto mat9Col = mat9.GetColRef(0);
+
+        for (auto& Rows : mat9Col)
+            std::cout << std::setw(5) << Rows.get();
+        std::cout << "\n" << std::endl;
+
+        //ÉTÉCÉYéÊìæ
+        std::cout << "ÉTÉCÉY mat9:çs" << mat9.Rows() << " óÒ:" << mat9.Cols() << std::endl;
     }
     catch (InvalidMatrix& e) {
         std::cerr << "çsóÒÉGÉâÅ[: " << e.what() << std::endl;
@@ -112,3 +158,4 @@ int main() {
 
     return 0;
 }
+```

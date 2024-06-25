@@ -260,13 +260,13 @@ Sanae::Matrix<ty>::operator Sanae::Matrix<CastTy>()
 	
 	//キャスト結果を保存
 	CastMatrixT ret;
-	ret.reserve(this->GetRow());
+	ret.reserve(this->Rows());
 
 	for (std::vector<ty>& row : this->matrix) 
 	{
 		//キャスト結果を一行保存
 		std::vector<CastTy> buf_row;
-		buf_row.reserve(this->GetColumn());
+		buf_row.reserve(this->Cols());
 
 		for (ty& column:row)
 			buf_row.push_back(static_cast<CastTy>(column));

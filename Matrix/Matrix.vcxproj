@@ -133,7 +133,6 @@
     <ClCompile Include="Test.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README-JP.md" />
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>

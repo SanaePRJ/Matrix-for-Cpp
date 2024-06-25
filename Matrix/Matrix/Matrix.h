@@ -127,21 +127,26 @@ namespace Sanae{
 
 
 		//MatrixUtil.hpp
-		inline size_t GetRow   (); //行数を取得
-		inline size_t GetColumn(); //列数を取得
+		inline size_t Rows(); //行数を取得
+		inline size_t Cols(); //列数を取得
 
 		inline Matrix& SwapRow(size_t, size_t); //第一引数行と第二引数行を入れ替える。
 		inline Matrix& SwapColumn(size_t, size_t); //第一引数列と第二引数列を入れ替える。
 
-		inline Matrix& ReSize(std::pair<size_t, size_t>); //サイズを変更する。
+		inline auto GetRowRef(size_t) -> std::vector<std::reference_wrapper<ty>>; //1行分のデータを参照する可変長配列を返す。
+		inline auto GetColRef(size_t) -> std::vector<std::reference_wrapper<ty>>; //1列分のデータを参照する可変長配列を返す。
+
+		inline Matrix& Resize(std::pair<size_t, size_t>); //サイズを変更する。
 
 		inline Matrix& Setter     (std::function<ty()>);                  //引数の関数を呼び出し各要素へ返り値を代入する。
 		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>); //引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
 
 		inline Matrix  Transpose  (); //転置する。
 
-		static inline Matrix<ty> Identity(size_t); //指定された行,列数の単位行列を作成します。
-		static inline Matrix<ty> Zero    (size_t); //指定された行,列数の0行列を作成します。
+		static inline Matrix<ty> Identity(size_t); //指定された行=列数の単位行列を作成します。 
+		
+		static inline Matrix<ty> Zero    (size_t); //指定された行,列数の0行列を作成します。 @ 正方行列
+		static inline Matrix<ty> Zero    (size_t, size_t);
 
 
 		//MatrixAdvCalc.hpp
@@ -189,7 +194,7 @@ std::basic_ostream<CharT, Traits>& operator <<
 	Sanae::Matrix<MatrixType> Matrix
 )
 {
-	for (size_t Row = 0; Row < Matrix.GetRow(); Row++) {
+	for (size_t Row = 0; Row < Matrix.Rows(); Row++) {
 		for (MatrixType Column : Matrix[Row])
 			ArgOstream << std::setw(Sanae::FontWeight) << Column;
 

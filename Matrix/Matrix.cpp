@@ -60,7 +60,7 @@ int main() {
         std::cout << "行列 mat5 (mat1の転置):" << std::endl << mat5 << std::endl;
 
         // 行列のサイズ変更
-        mat2.ReSize(std::make_pair(3, 3));
+        mat2.Resize(std::make_pair(3, 3));
         std::cout << "行列 mat2 サイズ変更後 (3x3):" << std::endl << mat2 << std::endl;
 
         // 単位行列とゼロ行列
@@ -96,8 +96,26 @@ int main() {
         std::cout << "比較 (mat1 == mat3): " << std::boolalpha << isEqual << std::endl;
 
         bool isNotEqual = (mat1 != mat3);
-        std::cout << "比較 (mat1 != mat3): " << std::boolalpha << isNotEqual << std::endl;
+        std::cout << "比較 (mat1 != mat3): " << std::boolalpha << isNotEqual << "\n" << std::endl;
 
+        // 1行取得
+        std::cout << "1行分取得 mat9:";
+        auto mat9Row = mat9.GetRowRef(0);
+
+        for (auto& Cols : mat9Row)
+            std::cout << std::setw(5) <<  Cols.get();
+        std::cout << std::endl;
+
+        // 1列取得
+        std::cout << "1列分取得 mat9:";
+        auto mat9Col = mat9.GetColRef(0);
+
+        for (auto& Rows : mat9Col)
+            std::cout << std::setw(5) << Rows.get();
+        std::cout << "\n" << std::endl;
+
+        //サイズ取得
+        std::cout << "サイズ mat9:行" << mat9.Rows() << " 列:" << mat9.Cols() << std::endl;
     }
     catch (InvalidMatrix& e) {
         std::cerr << "行列エラー: " << e.what() << std::endl;
