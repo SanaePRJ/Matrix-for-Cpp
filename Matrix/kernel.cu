@@ -21,8 +21,10 @@
 #include <thread>
 
 #define _SANAE_MATRIX_ENABLE_CUDA_
+
 #include "Matrix/Matrix"
 #include "Test.hpp"
+
 
 int main() {
     //MulTestCPU();
@@ -30,7 +32,7 @@ int main() {
 
     try {
         // コンストラクタによる初期化
-        Sanae::Matrix<double> mat1{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+        Sanae::Matrix<double> mat1{ {0.1, 0.2, 0.3}, {0.4, 0.5, 0.6}, {0.7, 0.8, 0.9} };
         std::cout << "行列 mat1:" << std::endl << mat1 << std::endl;
 
         Sanae::Matrix<double> mat2(std::make_pair(2, 3));
