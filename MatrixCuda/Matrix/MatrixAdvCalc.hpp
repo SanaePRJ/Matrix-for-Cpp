@@ -13,29 +13,18 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIXADV_HPP_
 #define _INCLUDEGUARD_MATRIXADV_HPP_
 
 
-
-
 #include "Matrix.h"
-
-
 
 
 /*------------------------------------------------------
 * プライベートメソッド
 ------------------------------------------------------*/
 
-
-
-
-/*
-* 現在このメソッドは使用せずLU分解により逆行列を求めるようにしています。
-*/
+// 現在このメソッドは使用せずLU分解により逆行列を求めるようにしています。
 // 掃き出し法により求めた結果を arg_store に格納します。
 // * ArgStore を確保している必要はありません。
 template<typename ty>
@@ -85,10 +74,7 @@ inline void Sanae::Matrix<ty>::m_SweepOut
 	}
 }
 
-
-/*
-* 現在このメソッドは使用せずLU分解により逆行列を求めるようにしています。
-*/
+// 現在このメソッドは使用せずLU分解により逆行列を求めるようにしています。
 // 行列式:ライプニッツの行列式
 template<typename ty>
 inline ty Sanae::Matrix<ty>::m_Det
@@ -158,7 +144,6 @@ inline ty Sanae::Matrix<ty>::m_Det
 	return DecDim(Arg, FromCoeff, DecDim);
 }
 
-
 // ArgMatrix を MatrixL と MatrixU へ分解します。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_LUDecomposition
@@ -211,7 +196,6 @@ inline void Sanae::Matrix<ty>::m_LUDecomposition
 	}
 }
 
-
 template<typename ty>
 inline ty Sanae::Matrix<ty>::m_DetByU
 (
@@ -231,7 +215,6 @@ inline ty Sanae::Matrix<ty>::m_DetByU
 	
 	return Det;
 }
-
 
 //逆行列を求めます。
 template<typename ty>
@@ -304,13 +287,9 @@ inline void Sanae::Matrix<ty>::m_Inverse
 }
 
 
-
-
 /*------------------------------------------------------
 * パブリックメソッド
 ------------------------------------------------------*/
-
-
 
 
 // 行列式を求める。
@@ -320,18 +299,18 @@ inline ty Sanae::Matrix<ty>::Det()
 	return this->m_Det(this->matrix);
 }
 
-
 // 逆行列を求める。
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse(ty Epsilon)
+inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse
+(
+	ty Epsilon
+)
 {
 	Matrix_t Inv;
 	m_Inverse(this->matrix,Inv,Epsilon);
 
 	return Inv;
 }
-
-
 
 
 #endif

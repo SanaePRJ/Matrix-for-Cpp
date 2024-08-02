@@ -13,12 +13,8 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIXUTIL_HPP_
 #define _INCLUDEGUARD_MATRIXUTIL_HPP_
-
-
 
 
 #include <vector>
@@ -29,12 +25,9 @@
 #include "Matrix.h"
 
 
-
-
 /*------------------------------------------------------
 * プライベートメソッド
 ------------------------------------------------------*/
-
 
 //すべての行に於いて列数が等しくない場合 InvalidMatrix を throw します。
 template<typename ty>
@@ -52,7 +45,6 @@ inline void Sanae::Matrix<ty>::m_ValidateMatrix
 		throw InvalidMatrix("All rows must have the same number of columns.");
 }
 
-
 //正方行列かどうか
 template<typename ty>
 inline bool Sanae::Matrix<ty>::m_IsSquareMatrix
@@ -64,7 +56,6 @@ inline bool Sanae::Matrix<ty>::m_IsSquareMatrix
 	//列数と行数が等しい場合正方行列
 	return m_GetColumnSize(Arg) == m_GetRowSize(Arg);
 }
-
 
 //行列が空かどうかを返します。
 template<typename ty>
@@ -79,7 +70,6 @@ inline bool Sanae::Matrix<ty>::m_IsEmpty
 
 	return false;
 }
-
 
 //第一引数,第二引数のサイズが等しいかどうか調べます。
 template<typename ty>
@@ -101,7 +91,6 @@ inline bool Sanae::Matrix<ty>::m_IsSameSize
 	return true;
 }
 
-
 //行数を取得します。
 template<typename ty>
 inline size_t Sanae::Matrix<ty>::m_GetRowSize
@@ -112,7 +101,6 @@ inline size_t Sanae::Matrix<ty>::m_GetRowSize
 {
 	return Arg.size();
 }
-
 
 //列数を取得します。
 template<typename ty>
@@ -130,11 +118,9 @@ inline size_t Sanae::Matrix<ty>::m_GetColumnSize
 	return Arg[0].size();
 }
 
-
 /*------------------------------------------------------
 * パブリックメソッド
 ------------------------------------------------------*/
-
 
 //行数を返します。
 template<typename ty>
@@ -143,14 +129,12 @@ inline size_t Sanae::Matrix<ty>::Rows()
 	return m_GetRowSize(matrix);
 }
 
-
 //列数を返します。
 template<typename ty>
 inline size_t Sanae::Matrix<ty>::Cols()
 {
 	return m_GetColumnSize(matrix);
 }
-
 
 //列を入れ替えます。
 template<typename ty>
@@ -170,7 +154,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapColumn
 	return *this;
 }
 
-
 template<typename ty>
 inline auto Sanae::Matrix<ty>::GetRowRef
 (
@@ -187,7 +170,6 @@ inline auto Sanae::Matrix<ty>::GetRowRef
 
 	return Result;
 }
-
 
 template<typename ty>
 inline auto Sanae::Matrix<ty>::GetColRef
@@ -206,7 +188,6 @@ inline auto Sanae::Matrix<ty>::GetColRef
 	return Result;
 }
 
-
 //行を入れ替えます。
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapRow
@@ -220,7 +201,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::SwapRow
 	return *this;
 }
 
-
 //サイズを変更します。
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Resize
@@ -232,7 +212,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Resize
 
 	return *this;
 }
-
 
 //すべての要素に対して ArgFunc() を実行します。
 template<typename ty>
@@ -248,7 +227,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
 	return *this;
 }
 
-
 //すべての要素に対してArgFunc(行数,列数,要素)を実行します。
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
@@ -262,7 +240,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
 
 	return *this;
 }
-
 
 //転置を行います。
 template<typename ty>
@@ -287,7 +264,6 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 	return Result;
 }
 
-
 //単位行列を生成します。
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity
@@ -305,7 +281,6 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity
 	return (Sanae::Matrix<ty>)Result;
 }
 
-
 //指定されたサイズのゼロ行列を生成します。
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
@@ -316,7 +291,6 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 	return Matrix<ty>(std::pair<size_t, size_t>(ArgSize, ArgSize));
 }
 
-
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 (
@@ -326,8 +300,6 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Zero
 {
 	return Matrix<ty>(std::pair<size_t, size_t>(ArgSizeRow, ArgSizeColumn));
 }
-
-
 
 
 #endif

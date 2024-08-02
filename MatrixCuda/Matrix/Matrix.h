@@ -13,14 +13,12 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
+// Include guard
 #ifndef _INCLUDEGUARD_MATRIX_H_
 #define _INCLUDEGUARD_MATRIX_H_
 
 
-
-
+// Include
 #include <iostream>
 #include <vector>
 #include <stdexcept>
@@ -29,6 +27,15 @@
 #include <iomanip>
 
 
+// CUDA
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+
+	#include <cuda_runtime.h>
+	#include <device_launch_parameters.h>
+
+
+#endif
 
 
 namespace Sanae{
@@ -36,7 +43,7 @@ namespace Sanae{
 
 	template<typename ty> class Matrix{
 	private:
-
+		enum class CalcOpeCode;
 
 		template<typename RowType    > using Row_t     = std::vector<RowType>;
 		template<typename RowInitType> using RowInit_t = std::initializer_list<RowInitType>;
@@ -59,18 +66,36 @@ namespace Sanae{
 
 		inline size_t m_GetRowSize   (const Matrix_t&) const; //行数を取得
 		inline size_t m_GetColumnSize(const Matrix_t&) const; //列数を取得
-		
 
+		
 		//MatrixCalc.hpp
 		template<typename FuncType>
-		inline void m_Calc       (Matrix_t&, const Matrix_t&,FuncType) const; //すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
+		inline void m_Calc       (Matrix_t&, const Matrix_t&,FuncType) const; // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
 
-		inline void m_Add        (Matrix_t&, const Matrix_t&) const; //加算        :第一引数 += 第二引数
-		inline void m_Sub        (Matrix_t&, const Matrix_t&) const; //減算        :第一引数 -= 第二引数
-		inline void m_ScalarMul  (Matrix_t&, ty             ) const; //スカラー倍  :第一引数 *= 第二引数
-		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const; //アダマール積:第一引数 ^= 第二引数
+		inline void m_Add        (Matrix_t&, const Matrix_t&) const; // 加算        :第一引数 += 第二引数
+		inline void m_Sub        (Matrix_t&, const Matrix_t&) const; // 減算        :第一引数 -= 第二引数
+		inline void m_ScalarMul  (Matrix_t&, ty             ) const; // スカラー倍  :第一引数 *= 第二引数
+		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const; // アダマール積:第一引数 ^= 第二引数
 
-		inline void m_Mul        (Matrix_t&, const Matrix_t&); //積　        :第一引数 *= 第二引数
+		inline void m_Mul        (Matrix_t&, const Matrix_t&);       // 積　        :第一引数 *= 第二引数
+
+
+		//MatrixCalcCUDA.hpp
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+		static std::vector<ty> Flatten(const Matrix_t&);
+		static Matrix_t        UnFlatten(const std::vector<ty>&, size_t, size_t);
+
+
+		inline void m_CalcGPU(Matrix_t&, const Matrix_t&, CalcOpeCode) const;
+
+		inline void m_AddGPU(Matrix_t&, const Matrix_t&) const;         // 加算        :第一引数 += 第二引数
+		inline void m_SubGPU(Matrix_t&, const Matrix_t&) const;         // 減算        :第一引数 -= 第二引数
+		inline void m_ScalarMulGPU  (Matrix_t&, ty     ) const;         // スカラー倍  :第一引数 *= 第二引数
+		inline void m_HadamardMulGPU(Matrix_t&, const Matrix_t&) const; // アダマール積:第一引数 ^= 第二引数
+		inline void m_MulGPU(Matrix_t&, const Matrix_t&);               // 積　        :第一引数 *= 第二引数
+
+#endif
 
 
 		//MatrixAdvCalc.hpp
@@ -86,6 +111,14 @@ namespace Sanae{
 
 	public:
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+		enum class CalcOpeCode { Add, Sub, HadamardMul, ScalarMul };
+
+		// 演算時にCUDAを使用する。
+		bool UseCUDA = true;
+
+#endif
 
 		//行列積で使用するスレッド数(初期値は最大のスレッド数)
 		size_t thread = std::thread::hardware_concurrency();
@@ -153,21 +186,19 @@ namespace Sanae{
 		inline ty     Det    ();        //行列式を求める。
 		inline Matrix Inverse(ty=1e-5); //逆行列を求める。
 
-
  	};
 
-
 }
-
-
 
 
 // 無効な行列を示す例外クラス
 class InvalidMatrix : std::exception{
 protected:
+
 	std::string m_ErrorMessage = "It is an invalid matrix.";
 
 public:
+
 	InvalidMatrix() {}
 	
 	//メッセージを入力
@@ -175,14 +206,16 @@ public:
 
 	//エラーメッセージを返す。
 	const char* what() const noexcept override {return m_ErrorMessage.c_str();}
+
 };
 
 
-
-
 namespace Sanae {
+
+	//行列表示用
 	const static std::streamsize DefaultWeight = 4;
 	static       std::streamsize FontWeight = DefaultWeight;
+
 }
 
 
@@ -203,8 +236,6 @@ std::basic_ostream<CharT, Traits>& operator <<
 
 	return ArgOstream;
 }
-
-
 
 
 #endif

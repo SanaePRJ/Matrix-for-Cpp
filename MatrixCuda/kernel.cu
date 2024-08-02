@@ -13,10 +13,6 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
-//#define SANAE_MATRIX_NOTHREADS
-
 #include <functional>
 #include <iostream>
 #include <random>
@@ -24,13 +20,14 @@
 #include <chrono>
 #include <thread>
 
-#include "Test.hpp"
+#define _SANAE_MATRIX_ENABLE_CUDA_
 #include "Matrix/Matrix"
-
-
-
+#include "Test.hpp"
 
 int main() {
+    //MulTestCPU();
+    MulTestGPU();
+
     try {
         // コンストラクタによる初期化
         Sanae::Matrix<double> mat1{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
@@ -103,7 +100,7 @@ int main() {
         auto mat9Row = mat9.GetRowRef(0);
 
         for (auto& Cols : mat9Row)
-            std::cout << std::setw(5) <<  Cols.get();
+            std::cout << std::setw(5) << Cols.get();
         std::cout << std::endl;
 
         // 1列取得

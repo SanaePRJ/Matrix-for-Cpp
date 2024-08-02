@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Matrix">
+      <UniqueIdentifier>{7dc118e7-0b8e-4273-96de-942209db24be}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Matrix\Matrix\Matrix.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixAdvCalc.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixCalc.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixConstructor.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixOperator.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixUtil.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix\MatrixCalcCUDA.cuh">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Format.h" />
+    <ClInclude Include="Test.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Matrix\Matrix\Matrix">
+      <Filter>Matrix</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -13,19 +13,14 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIXCALC_HPP_
 #define _INCLUDEGUARD_MATRIXCALC_HPP_
 
 
-
-
 #include <algorithm>
 #include <type_traits>
+
 #include "Matrix.h"
-
-
 
 
 // 渡された関数をすべての要素に対して実行します。
@@ -65,7 +60,6 @@ inline void Sanae::Matrix<ty>::m_Calc
 	return;
 }
 
-
 // 加算
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Add
@@ -78,7 +72,6 @@ inline void Sanae::Matrix<ty>::m_Add
 	this->m_Calc(ArgData1, ArgData2, std::plus<ty>());
 	return;
 }
-
 
 // 減算
 template<typename ty>
@@ -93,7 +86,6 @@ inline void Sanae::Matrix<ty>::m_Sub
 	return;
 }
 
-
 // アダマール積を行う。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_HadamardMul
@@ -106,7 +98,6 @@ inline void Sanae::Matrix<ty>::m_HadamardMul
 	this->m_Calc(ArgData1, ArgData2, std::multiplies<ty>());
 	return;
 }
-
 
 // スカラー倍
 template<typename ty>
@@ -123,14 +114,12 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 }
 
 
-
-
 // マルチスレッドで動作するので thread を include しておく
 #ifndef SANAE_MATRIX_NOTHREADS
+
 	#include <thread>
+
 #endif
-
-
 
 
 // 行列の掛け算を行います。
@@ -229,8 +218,6 @@ inline void Sanae::Matrix<ty>::m_Mul
 
 	return;
 }
-
-
 
 
 #endif

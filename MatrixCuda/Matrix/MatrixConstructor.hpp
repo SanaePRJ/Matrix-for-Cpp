@@ -13,24 +13,17 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIXCONSTRUCTOR_HPP_
 #define _INCLUDEGUARD_MATRIXCONSTRUCTOR_HPP_
-
-
 
 
 #include <algorithm>
 #include "Matrix.h"
 
 
-
-
 //コンストラクタ
 template<typename ty>
 Sanae::Matrix<ty>::Matrix() {}
-
 
 //サイズを指定して0行列を生成する。
 template<typename ty>
@@ -40,7 +33,6 @@ Sanae::Matrix<ty>::Matrix
 ) 
 	:matrix(ArgSize.first, std::vector<ty>(ArgSize.second, 0))
 {}
-
 
 //以下のように定義することができる。
 //{
@@ -59,7 +51,6 @@ Sanae::Matrix<ty>::Matrix
 	this->m_ValidateMatrix(this->matrix);
 }
 
-
 //std::vector<std::vector<ty>>
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
@@ -71,7 +62,6 @@ Sanae::Matrix<ty>::Matrix
 	//列数は等しくなければならない。
 	this->m_ValidateMatrix(this->matrix);
 }
-
 
 //コピーコンストラクタ
 template<typename ty>
@@ -86,14 +76,11 @@ Sanae::Matrix<ty>::Matrix
 	std::copy(ArgMatrix.matrix.begin(),ArgMatrix.matrix.end(),matrix.begin());
 }
 
-
 //デストラクタ
 template<typename ty>
 inline Sanae::Matrix<ty>::~Matrix()
 {
 }
-
-
 
 
 #endif

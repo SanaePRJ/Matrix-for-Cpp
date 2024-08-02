@@ -13,18 +13,12 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIXOPERATOR_HPP_
 #define _INCLUDEGUARD_MATRIXOPERATOR_HPP_
 
 
-
-
 #include <algorithm>
 #include "Matrix.h"
-
-
 
 
 //以下のように定義することができる。
@@ -48,7 +42,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 	return *this;
 }
 
-
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 (
@@ -66,11 +59,9 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 	return *this;
 }
 
-
 //move用
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =(Matrix<ty>&& arg) = default;
-
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=
@@ -78,11 +69,21 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator +=
 	const Matrix<ty>& Arg
 ) 
 {
+
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_AddGPU(this->matrix, Arg.matrix);
+
+		return *this;
+	}
+
+#endif
+
 	this->m_Add(this->matrix, Arg.matrix);
 
 	return *this;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=
@@ -90,11 +91,20 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator -=
 	const Matrix<ty>& Arg
 )
 {
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_SubGPU(this->matrix, Arg.matrix);
+
+		return *this;
+	}
+
+#endif
+
 	this->m_Sub(this->matrix, Arg.matrix);
 
 	return *this;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=
@@ -102,11 +112,20 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator ^=
 	const Matrix<ty>& Arg
 )
 {
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_HadamardMulGPU(this->matrix, Arg.matrix);
+
+		return *this;
+	}
+
+#endif
+
 	this->m_HadamardMul(this->matrix, Arg.matrix);
 
 	return *this;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
@@ -114,11 +133,20 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
 	const Matrix<ty>& Arg
 )
 {
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_MulGPU(this->matrix, Arg.matrix);
+
+		return *this;
+	}
+
+#endif
+
 	this->m_Mul(this->matrix, Arg.matrix);
 
 	return *this;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
@@ -126,11 +154,20 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator *=
 	ty Arg
 )
 {
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_ScalarMulGPU(this->matrix, Arg);
+
+		return *this;
+	}
+
+#endif
+
 	this->m_ScalarMul(this->matrix,Arg);
 
 	return *this;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +
@@ -138,14 +175,23 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +
 	const Matrix<ty>& Arg
 )
 {
-	Matrix_t buf;
-	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(buf));
+	Matrix_t Result;
+	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
-	this->m_Add(buf, Arg.matrix);
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
-	return buf;
+	if (this->UseCUDA) {
+		this->m_AddGPU(Result, Arg.matrix);
+
+		return Result;
+	}
+
+#endif
+
+	this->m_Add(Result, Arg.matrix);
+
+	return Result;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -
@@ -156,11 +202,20 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -
 	Matrix_t Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_SubGPU(Result, Arg.matrix);
+
+		return Result;
+	}
+
+#endif
+
 	this->m_Sub(Result, Arg.matrix);
 
 	return Result;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^
@@ -171,11 +226,20 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^
 	Matrix_t Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_HadamardMulGPU(Result, Arg.matrix);
+
+		return Result;
+	}
+
+#endif
+
 	this->m_HadamardMul(Result, Arg.matrix);
 
 	return Result;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
@@ -186,11 +250,20 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
 	Matrix_t Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_MulGPU(Result, Arg.matrix);
+
+		return Result;
+	}
+
+#endif
+
 	this->m_Mul(Result, Arg.matrix);
 
 	return Result;
 }
-
 
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
@@ -201,11 +274,20 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
 	Matrix_t Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+
+	if (this->UseCUDA) {
+		this->m_ScalarMulGPU(Result, Arg.matrix);
+
+		return Result;
+	}
+
+#endif
+
 	this->m_ScalarMul(Result, Arg);
 
 	return Result;
 }
-
 
 //譲渡
 template<typename ty>
@@ -220,7 +302,6 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator<<
 	return *this;
 }
 
-
 //行での配列を取得します。
 template<typename ty>
 inline std::vector<ty>& Sanae::Matrix<ty>::operator []
@@ -231,7 +312,6 @@ inline std::vector<ty>& Sanae::Matrix<ty>::operator []
 	return this->matrix[ArgPos];
 }
 
-
 template<typename ty>
 inline bool Sanae::Matrix<ty>::operator==
 (
@@ -241,7 +321,6 @@ inline bool Sanae::Matrix<ty>::operator==
 	return (this->matrix == ArgMatrix.matrix);
 }
 
-
 template<typename ty>
 inline bool Sanae::Matrix<ty>::operator!=
 (
@@ -250,7 +329,6 @@ inline bool Sanae::Matrix<ty>::operator!=
 {
 	return (this->matrix != ArgMatrix.matrix);
 }
-
 
 template<typename ty>
 template<typename CastTy>
@@ -276,8 +354,6 @@ Sanae::Matrix<ty>::operator Sanae::Matrix<CastTy>()
 
 	return Sanae::Matrix<CastTy>(ret);
 }
-
-
 
 
 #endif

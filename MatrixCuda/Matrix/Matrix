@@ -13,12 +13,8 @@
  --------------------------------------------------------------------------------------------- */
 
 
-
-
 #ifndef _INCLUDEGUARD_MATRIX_HPP_
 #define _INCLUDEGUARD_MATRIX_HPP_
-
-
 
 
 #include "Matrix.h"
@@ -28,7 +24,11 @@
 #include "MatrixUtil.hpp"
 #include "MatrixAdvCalc.hpp"
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
+	#include "MatrixCalcCUDA.cuh"
+
+#endif
 
 
 #endif
