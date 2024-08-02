@@ -54,8 +54,6 @@ static void MulTestCPU()
 
 	std::cout << n * n * n << "回計算されます。" << std::endl;
 
-	buf0.UseCUDA = false;
-
 	//1スレッドでの計算
 	buf0.thread = 1;
 	std::cout << buf0.thread << "スレッドでの計算:";
