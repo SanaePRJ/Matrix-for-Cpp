@@ -4,20 +4,20 @@ MatrixŒ^‚ÍAs—ñ‚ð•\Œ»‚·‚é‚½‚ß‚Ìƒeƒ“ƒvƒŒ[ƒgƒNƒ‰ƒX‚Å‚ ‚èAs—ñ‚Ìì¬A‘€ìAŒvŽZ
 WebSite:	http://sanae.starfree.jp  
 Author:		SanaeProject
 
-- ‚±‚Ìà–¾•¶‚Í`ChatGpt(Gpt3.5)`‚É‚æ‚è¶¬‚µ‚Ü‚µ‚½B
-
 ## “Á’¥
 - **ƒeƒ“ƒvƒŒ[ƒgƒNƒ‰ƒX**: —v‘f‚ÌŒ^(`ty`)‚ÉˆË‘¶‚µ‚Ä’è‹`‚³‚ê‚é‚½‚ßA”CˆÓ‚Ìƒf[ƒ^Œ^‚Ås—ñ‚ðˆµ‚¦‚Ü‚·B
 - **“®“IƒTƒCƒY**: s”‚Æ—ñ”‚ª“®“I‚ÉŒˆ’è‚³‚êAƒTƒCƒY‚Ì•ÏX‚â‰Šú‰»‚ª‰Â”\‚Å‚·B
 - **s—ñ‰‰ŽZ‚ÌƒTƒ|[ƒg**: ‰ÁŽZAŒ¸ŽZAƒXƒJƒ‰[”{As—ñÏ‚È‚Ç‚Ì‰‰ŽZ‚ªŽÀ‘•‚³‚ê‚Ä‚¢‚Ü‚·B
 - **‚“x‚Ès—ñŒvŽZ**: ‹ts—ñ‚ÌŒvŽZ‚âLU•ª‰ð‚ÉŠî‚Ã‚­s—ñŽ®‚ÌŒvŽZ‚È‚ÇA‚“x‚È”Šw“I‘€ì‚ªƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚Ü‚·B
 - **ƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO**: •s³‚Ès—ñ‘€ì‚É‘Î‚·‚é—áŠOˆ—‚ª‘g‚Ýž‚Ü‚ê‚Ä‚¢‚Ü‚·B
+- **‚‘¬‚È‰‰ŽZ**: s—ñÏ‚ð•¡”‚ÌƒXƒŒƒbƒh‚ÅŒvŽZ‚·‚é‚±‚Æ‚Å‚‘¬‚ÉŒvŽZ‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B  ‚Ü‚½`CUDA`‚ðŽg—p‚µ‚½‰‰ŽZ‚ð‚·‚é‚±‚Æ‚ª‚Å‚«**‰ÁŽZAŒ¸ŽZAƒXƒJƒ‰[”{AƒAƒ_ƒ}[ƒ‹ÏAs—ñÏ**‚ð‚‘¬‚É‰‰ŽZ‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
 ## Žå‚Èƒtƒ@ƒCƒ‹\¬
 - **Matrix.h**: MatrixŒ^‚Ì’è‹`‚ªŠÜ‚Ü‚ê‚Ä‚¨‚èAƒNƒ‰ƒXƒƒ“ƒo[Aƒeƒ“ƒvƒŒ[ƒgAs—ñ‰‰ŽZA‚“x‚Ès—ñŒvŽZ‚È‚Ç‚ÌŽÀ‘•‚ª‹Lq‚³‚ê‚Ä‚¢‚Ü‚·B
 - **MatrixUtil.hpp**: s—ñ‘€ì‚ÉŠÖ‚·‚éƒ†[ƒeƒBƒŠƒeƒBŠÖ”‚ªéŒ¾‚³‚êAs—ñ‚ÌŠî–{“I‚È‘€ì‚ðƒTƒ|[ƒg‚µ‚Ü‚·B
 - **MatrixCalc.hpp**: s—ñ‰‰ŽZ‚ÉŠÖ‚·‚éŠÖ”‚ªéŒ¾‚³‚êA‰ÁŽZAŒ¸ŽZAƒXƒJƒ‰[”{AƒAƒ_ƒ}[ƒ‹ÏAs—ñÏ‚È‚Ç‚Ì‰‰ŽZ‚ð’è‹`‚µ‚Ü‚·B
 - **MatrixAdvCalc.hpp**: ‚“x‚Ès—ñŒvŽZ‚ÉŠÖ‚·‚éŠÖ”‚ªéŒ¾‚³‚êA‹ts—ñ‚ÌŒvŽZALU•ª‰ðAs—ñŽ®‚ÌŒvŽZ‚È‚Ç‚ðŽÀ‘•‚µ‚Ü‚·B
+- **MatrixClacCUDA.cuh**: CUDA‚ð—p‚¢‚½‰ÁŽZAŒ¸ŽZAƒXƒJƒ‰[”{AƒAƒ_ƒ}[ƒ‹ÏAs—ñÏ‚È‚Ç‚Ì‰‰ŽZ‚ð’è‹`‚µ‚Ü‚·B
 
 ## —˜—p•û–@
 MatrixŒ^‚ÍˆÈ‰º‚Ì‚æ‚¤‚ÉŽg—p‚Å‚«‚Ü‚·:
@@ -27,6 +27,36 @@ MatrixŒ^‚ÍˆÈ‰º‚Ì‚æ‚¤‚ÉŽg—p‚Å‚«‚Ü‚·:
 
 ## —áŠOˆ—
 MatrixŒ^‚Å‚Í•s³‚Ès—ñ‘€ì‚É‘Î‚·‚é—áŠO‚Æ‚µ‚Ä`InvalidMatrix`ƒNƒ‰ƒX‚ªŽg—p‚³‚êAƒGƒ‰[ƒƒbƒZ[ƒW‚ð’ñ‹Ÿ‚µ‚Ü‚·B
+
+## ƒ}ƒ‹ƒ`ƒXƒŒƒbƒh
+MatrixŒ^‚Å‚Í**s—ñÏ**‚ðƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‚Å‰‰ŽZ‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B  
+Žg—p‚µ‚È‚¢ê‡‚Í`_SANAE_MATRIX_NOTHREADS_`‚ðéŒ¾‚µ‚Ü‚·B  
+```cpp
+#include "Matrix/Matrix"
+
+int main(){
+    Sanae::Matrix<double> a;
+    a.thread = std::thread::hardware_concurrency(); // Žg—p‚·‚éƒXƒŒƒbƒh”‚ðÝ’è : Å‘å’l
+}
+```
+
+## CUDA
+MatrixŒ^‚Å‚Í**‰ÁŽZAŒ¸ŽZAƒXƒJƒ‰[”{AƒAƒ_ƒ}[ƒ‹ÏAs—ñÏ**‚ðGPUã‚ÅŒvŽZ‚³‚¹‚é‚±‚Æ‚É‚æ‚è‚‘¬‰»‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B  
+
+### CUDA‚ðŽg—p‚µ‚ÄŒvŽZ‚³‚¹‚é
+Matrix‚ðƒCƒ“ƒNƒ‹[ƒh‚·‚é‘O‚É`_SANAE_MATRIX_ENABLE_CUDA_`‚ðéŒ¾‚µ‚Ü‚·B
+```cpp
+#define _SANAE_MATRIX_ENABLE_CUDA_
+#include "Matrix/Matrix"
+
+int main(){
+    Sanae::Matrix<double> a;
+    a.ThreadsPerBlock = {16,16}; // “K‹Xƒ`ƒ…[ƒjƒ“ƒO‚ð‚¨Š©‚ß‚µ‚Ü‚·B
+
+    a.UseCUDA=true;  // ‰‰ŽZ‚ÉCUDA‚ðŽg—p‚·‚éB(‰Šú’l)
+    a.UseCUDA=false; // ‰‰ŽZ‚ÉCUDA‚ðŽg—p‚µ‚È‚¢B
+}
+```
 
 ## Žg—p—á
 ```cpp
@@ -47,7 +77,7 @@ MatrixŒ^‚Å‚Í•s³‚Ès—ñ‘€ì‚É‘Î‚·‚é—áŠO‚Æ‚µ‚Ä`InvalidMatrix`ƒNƒ‰ƒX‚ªŽg—p‚³‚êAƒGƒ
 
 
 
-//#define SANAE_MATRIX_NOTHREADS
+//#define _SANAE_MATRIX_NOTHREADS_
 
 #include <functional>
 #include <iostream>

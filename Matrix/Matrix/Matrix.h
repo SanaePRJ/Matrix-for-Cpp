@@ -52,11 +52,11 @@ namespace Sanae{
 		template<typename MatrixType = ty> using MatrixInit_t = std::initializer_list<RowInit_t<MatrixType>>;
 
 	
-		//Variables
+		// Variables
 		Matrix_t<ty> matrix;
 
 
-		//MatrixUtil.hpp
+		// MatrixUtil.hpp
 		// コンストラクタや=演算子などで実行する。
 		inline void   m_ValidateMatrix(const Matrix_t<ty>&) const; //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
 		
@@ -68,7 +68,7 @@ namespace Sanae{
 		inline size_t m_GetColumnSize(const Matrix_t<ty>&) const; //列数を取得
 
 		
-		//MatrixCalc.hpp
+		// MatrixCalc.hpp
 		template<typename FuncType>
 		inline void m_Calc       (Matrix_t<ty>&, const Matrix_t<ty>&,FuncType) const; // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
 
@@ -80,7 +80,7 @@ namespace Sanae{
 		inline void m_Mul        (Matrix_t<ty>&, const Matrix_t<ty>&);       // 積　        :第一引数 *= 第二引数
 
 
-		//MatrixCalcCUDA.hpp
+		// MatrixCalcCUDA.hpp
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
 		static std::vector<ty> Flatten  (const Matrix_t<ty>&);
@@ -91,22 +91,22 @@ namespace Sanae{
 
 		inline void m_AddGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const;         // 加算        :第一引数 += 第二引数
 		inline void m_SubGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const;         // 減算        :第一引数 -= 第二引数
-		inline void m_ScalarMulGPU  (Matrix_t<ty>&, ty     ) const;         // スカラー倍  :第一引数 *= 第二引数
+		inline void m_ScalarMulGPU  (Matrix_t<ty>&, ty     ) const;             // スカラー倍  :第一引数 *= 第二引数
 		inline void m_HadamardMulGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const; // アダマール積:第一引数 ^= 第二引数
 		inline void m_MulGPU(Matrix_t<ty>&, const Matrix_t<ty>&);               // 積　        :第一引数 *= 第二引数
 
 #endif
 
 
-		//MatrixAdvCalc.hpp
-		//削除予定
-		inline void  m_SweepOut(Matrix_t<ty>& arg_from, Matrix_t<ty>& arg_store); //掃き出し法により逆行列を求める。
-		inline ty    m_Det     (Matrix_t<ty>& arg);                           //行列式を求める。
+		// MatrixAdvCalc.hpp
+		// 削除予定
+		inline void  m_SweepOut(Matrix_t<ty>& arg_from, Matrix_t<ty>& arg_store); // 掃き出し法により逆行列を求める。
+		inline ty    m_Det     (Matrix_t<ty>& arg);                               // 行列式を求める。
 
-		inline void  m_LUDecomposition(const Matrix_t<ty>&, Matrix_t<ty>&, Matrix_t<ty>&) const; //LU分解を行い第二引数L,第三引数Uに格納する。
+		inline void  m_LUDecomposition(const Matrix_t<ty>&, Matrix_t<ty>&, Matrix_t<ty>&) const; // LU分解を行い第二引数L,第三引数Uに格納する。
 		
-		inline ty    m_DetByU (const Matrix_t<ty>&) const;                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
-		inline void  m_Inverse(const Matrix_t<ty>&,Matrix_t<ty>&,ty=1e-5) const; //逆行列を求める。
+		inline ty    m_DetByU (const Matrix_t<ty>&) const;                       // LU分解によって求めたU(上三角行列)によって行列式を求める。
+		inline void  m_Inverse(const Matrix_t<ty>&,Matrix_t<ty>&,ty=1e-5) const; // 逆行列を求める。
 	
 
 	public:
@@ -114,23 +114,24 @@ namespace Sanae{
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
 		enum class CalcOpeCode { Add, Sub, HadamardMul, ScalarMul };
+		dim3 ThreadsPerBlock   {16,16};  // 初期値は{16,16}ですが適宜チューニングしてください。
 
 #endif
 
 		// 演算時にCUDAを使用する。
 		bool UseCUDA = true;
 
-		//行列積で使用するスレッド数(初期値は最大のスレッド数)
+		// 行列積で使用するスレッド数(初期値は最大のスレッド数)
 		size_t thread = std::thread::hardware_concurrency();
 
 
-		//MatrixConstructor.hpp
+		// MatrixConstructor.hpp
 		Matrix ();
-		Matrix (std::pair<size_t,size_t>); //サイズ指定
-		Matrix (MatrixInit_t<ty>);             //{{0,0},{0,0}}...2*2行列
-		Matrix (const Matrix_t<ty>&);          //std::vector<std::vector<ty>>
-		Matrix (const Matrix&);            //コピーコンストラクタ
-		~Matrix();                         //デストラクタ
+		Matrix (std::pair<size_t,size_t>); // サイズ指定
+		Matrix (MatrixInit_t<ty>);         // {{0,0},{0,0}}...2*2行列
+		Matrix (const Matrix_t<ty>&);      // std::vector<std::vector<ty>>
+		Matrix (const Matrix&);            // コピーコンストラクタ
+		~Matrix();                         // デストラクタ
 
 
 		//MatrixOperator.hpp
@@ -138,36 +139,36 @@ namespace Sanae{
 		inline Matrix& operator =(const Matrix&);
 		inline Matrix& operator =(Matrix&&);
 
-		inline Matrix& operator +=(const Matrix&); //加算
-		inline Matrix& operator -=(const Matrix&); //減算
-		inline Matrix& operator ^=(const Matrix&); //内積
-		inline Matrix& operator *=(const Matrix&); //行列積
-		inline Matrix& operator *=(ty);            //スカラー倍
+		inline Matrix& operator +=(const Matrix&); // 加算
+		inline Matrix& operator -=(const Matrix&); // 減算
+		inline Matrix& operator ^=(const Matrix&); // 内積
+		inline Matrix& operator *=(const Matrix&); // 行列積
+		inline Matrix& operator *=(ty);            // スカラー倍
 
-		inline Matrix  operator + (const Matrix&); //加算
-		inline Matrix  operator - (const Matrix&); //減算
-		inline Matrix  operator ^ (const Matrix&); //内積
-		inline Matrix  operator * (const Matrix&); //行列積
-		inline Matrix  operator * (ty);            //スカラー倍
+		inline Matrix  operator + (const Matrix&); // 加算
+		inline Matrix  operator - (const Matrix&); // 減算
+		inline Matrix  operator ^ (const Matrix&); // 内積
+		inline Matrix  operator * (const Matrix&); // 行列積
+		inline Matrix  operator * (ty);            // スカラー倍
 
-		template<typename CastTy> operator Sanae::Matrix<CastTy>(); //キャスト
+		template<typename CastTy> operator Sanae::Matrix<CastTy>(); // キャスト
 
-		inline Matrix& operator <<(Matrix&);         //譲渡
-		inline std::vector<ty>& operator [](size_t); //要素へアクセス
+		inline Matrix& operator <<(Matrix&);         // 譲渡
+		inline std::vector<ty>& operator [](size_t); // 要素へアクセス
 
-		inline bool    operator ==(const Matrix&); //比較==
-		inline bool    operator !=(const Matrix&); //比較!=
+		inline bool    operator ==(const Matrix&); // 比較 ==
+		inline bool    operator !=(const Matrix&); // 比較 !=
 
 
-		//MatrixUtil.hpp
-		inline size_t Rows(); //行数を取得
-		inline size_t Cols(); //列数を取得
+		// MatrixUtil.hpp
+		inline size_t Rows(); // 行数を取得
+		inline size_t Cols(); // 列数を取得
 
-		inline Matrix& SwapRow(size_t, size_t); //第一引数行と第二引数行を入れ替える。
-		inline Matrix& SwapColumn(size_t, size_t); //第一引数列と第二引数列を入れ替える。
+		inline Matrix& SwapRow(size_t, size_t);    // 第一引数行と第二引数行を入れ替える。
+		inline Matrix& SwapColumn(size_t, size_t); // 第一引数列と第二引数列を入れ替える。
 
-		inline auto GetRowRef(size_t) -> std::vector<std::reference_wrapper<ty>>; //1行分のデータを参照する可変長配列を返す。
-		inline auto GetColRef(size_t) -> std::vector<std::reference_wrapper<ty>>; //1列分のデータを参照する可変長配列を返す。
+		inline auto GetRowRef(size_t) -> std::vector<std::reference_wrapper<ty>>; // 1行分のデータを参照する可変長配列を返す。
+		inline auto GetColRef(size_t) -> std::vector<std::reference_wrapper<ty>>; // 1列分のデータを参照する可変長配列を返す。
 
 		inline Matrix& Resize(std::pair<size_t, size_t>); //サイズを変更する。
 
@@ -183,8 +184,8 @@ namespace Sanae{
 
 
 		//MatrixAdvCalc.hpp
-		inline ty     Det    ();        //行列式を求める。
-		inline Matrix Inverse(ty=1e-5); //逆行列を求める。
+		inline auto Det() -> typename std::enable_if<std::is_floating_point<ty>::value,double>::type;                //行列式を求める。
+		inline auto Inverse(ty=1e-5) -> typename std::enable_if<std::is_floating_point<ty>::value,Matrix<ty>>::type; //逆行列を求める。
 
  	};
 

@@ -146,7 +146,7 @@
     <ClInclude Include="Matrix\MatrixUtil.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Mat\Matrix\Matrix.cpp" />
+    <ClCompile Include="Matrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

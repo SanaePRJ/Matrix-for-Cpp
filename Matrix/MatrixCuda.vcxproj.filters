@@ -37,5 +37,6 @@
     <None Include="Matrix\Matrix">
       <Filter>Matrix</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>

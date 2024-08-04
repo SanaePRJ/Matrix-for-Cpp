@@ -294,22 +294,23 @@ inline void Sanae::Matrix<ty>::m_Inverse
 
 // 行列式を求める。
 template<typename ty>
-inline ty Sanae::Matrix<ty>::Det()
+inline auto Sanae::Matrix<ty>::Det() -> typename std::enable_if<std::is_floating_point<ty>::value,double>::type
 {
 	return this->m_Det(this->matrix);
 }
 
 // 逆行列を求める。
 template<typename ty>
-inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse
+inline auto Sanae::Matrix<ty>::Inverse 
 (
 	ty Epsilon
 )
+	-> typename std::enable_if<std::is_floating_point<ty>::value,Matrix<ty>>::type
 {
 	Matrix_t<ty> Inv;
 	m_Inverse(this->matrix,Inv,Epsilon);
 
-	return Inv;
+	return Matrix<ty>{Inv};
 }
 
 

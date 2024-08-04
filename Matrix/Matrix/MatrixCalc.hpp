@@ -115,7 +115,7 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 
 
 // マルチスレッドで動作するので thread を include しておく
-#ifndef SANAE_MATRIX_NOTHREADS
+#ifndef _SANAE_MATRIX_NOTHREADS_
 
 	#include <thread>
 
@@ -166,7 +166,7 @@ inline void Sanae::Matrix<ty>::m_Mul
 		};
 
 // マルチスレッドで計算させる。
-#ifndef SANAE_MATRIX_NOTHREADS
+#ifndef _SANAE_MATRIX_NOTHREADS_
 
 	//threadで分割するためのラムダ式
 	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t ArgFrom,size_t ArgTo) {

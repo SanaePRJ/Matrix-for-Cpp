@@ -27,13 +27,15 @@
 
 
 int main() {
-    MulTestCPU();
-    MulTestGPU();
+    //MulTestCPU();
+    //MulTestGPU();
 
     try {
         // コンストラクタによる初期化
         Sanae::Matrix<double> mat1{ {0.1, 0.2, 0.3}, {0.4, 0.5, 0.6}, {0.7, 0.8, 0.9} };
         std::cout << "行列 mat1:" << std::endl << mat1 << std::endl;
+
+        mat1.ThreadsPerBlock = { 16,16 };
 
         Sanae::Matrix<double> mat2(std::make_pair(2, 3));
         std::cout << "行列 mat2 (2x3):" << std::endl << mat2 << std::endl;
@@ -71,10 +73,16 @@ int main() {
 
         // 行列式と逆行列
         double det = mat1.Det();
+
         std::cout << "行列 mat1 の行列式: " << det << std::endl;
 
         Sanae::Matrix<double> mat8 = mat1.Inverse();
         std::cout << "行列 mat8 (mat1の逆行列):" << std::endl << mat8 << std::endl;
+
+        // Sanae::Matrix<int> matInt(std::make_pair(3, 3));
+        // 実数型でない時行列式、逆行列は使用できない。
+        // matInt.Det();
+        // matInt.Inverse();
 
         // キャスト
         Sanae::Matrix<float> matFloat = mat1;

@@ -211,25 +211,24 @@ inline void Sanae::Matrix<ty>::m_CalcGPU(
 	FlatMatrix<ty> d_ArgData2 = { d_FlatData2, Row, Col };
 
 	// スレッドとブロックの設定
-	dim3 threadsPerBlock(16, 16); // 各ブロック内のスレッド数
-	dim3 blocksPerGrid((Col + threadsPerBlock.x - 1) / threadsPerBlock.x, (Row + threadsPerBlock.y - 1) / threadsPerBlock.y); // グリッド内のブロック数
+	dim3 blocksPerGrid((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x, (Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y); // グリッド内のブロック数
 	
 	// オペコードに基づきカーネル関数をコール
 	switch (OpeCode) {
 	case CalcOpeCode::Add:
-		AddKernel<ty> <<<blocksPerGrid, threadsPerBlock >>> (d_ArgData1, d_ArgData2);
+		AddKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgData1, d_ArgData2);
 		break;
 
 	case CalcOpeCode::Sub:
-		SubKernel<ty> <<<blocksPerGrid, threadsPerBlock >>> (d_ArgData1, d_ArgData2);
+		SubKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgData1, d_ArgData2);
 		break;
 
 	case CalcOpeCode::HadamardMul:
-		HadamardMulKernel<ty> <<<blocksPerGrid, threadsPerBlock >>> (d_ArgData1, d_ArgData2);
+		HadamardMulKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgData1, d_ArgData2);
 		break;
 
 	case CalcOpeCode::ScalarMul:
-		ScalarMulKernel<ty> <<<blocksPerGrid, threadsPerBlock >>> (d_ArgData1, FlatData2[0]);
+		ScalarMulKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgData1, FlatData2[0]);
 		break;
 
 	default:
@@ -366,10 +365,9 @@ inline void Sanae::Matrix<ty>::m_MulGPU
 	FlatMatrix<ty> d_ArgStore = { d_FlatResult, Row, Col };
 
 	// スレッドとブロックの設定
-	dim3 threadsPerBlock(16, 16);
-	dim3 blocksPerGrid((Col + threadsPerBlock.x - 1) / threadsPerBlock.x, (Row + threadsPerBlock.y - 1) / threadsPerBlock.y);
+	dim3 blocksPerGrid((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x, (Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y);
 
-	MulKernel<ty> <<<blocksPerGrid, threadsPerBlock >>> (d_ArgStore, d_ArgData1, d_ArgData2);
+	MulKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgStore, d_ArgData1, d_ArgData2);
 
 	// カーネル関数のエラーチェック
 	cudaDeviceSynchronize();
