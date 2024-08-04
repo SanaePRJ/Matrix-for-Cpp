@@ -27,7 +27,7 @@
 
 
 int main() {
-    //MulTestCPU();
+    MulTestCPU();
     MulTestGPU();
 
     try {

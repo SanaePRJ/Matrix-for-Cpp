@@ -48,65 +48,65 @@ namespace Sanae{
 		template<typename RowType    > using Row_t     = std::vector<RowType>;
 		template<typename RowInitType> using RowInit_t = std::initializer_list<RowInitType>;
 
-		using Matrix_t     = std::vector          <Row_t<ty>>;
-		using MatrixInit_t = std::initializer_list<RowInit_t<ty>>;
+		template<typename MatrixType = ty> using Matrix_t     = std::vector          <Row_t<MatrixType>>;
+		template<typename MatrixType = ty> using MatrixInit_t = std::initializer_list<RowInit_t<MatrixType>>;
 
 	
 		//Variables
-		Matrix_t matrix;
+		Matrix_t<ty> matrix;
 
 
 		//MatrixUtil.hpp
 		// コンストラクタや=演算子などで実行する。
-		inline void   m_ValidateMatrix(const Matrix_t&) const; //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
+		inline void   m_ValidateMatrix(const Matrix_t<ty>&) const; //すべての行に於いて列数が等しいか確認する。@列数が等しくない場合 throw します。
 		
-		inline bool   m_IsSquareMatrix(const Matrix_t&) const; //正方行列かどうかを取得する。
-		inline bool   m_IsEmpty       (const Matrix_t&) const; //空の行列かどうかを返す。
-		inline bool   m_IsSameSize    (const Matrix_t&,const Matrix_t&) const; //同じ大きさかどうかを返す。
+		inline bool   m_IsSquareMatrix(const Matrix_t<ty>&) const; //正方行列かどうかを取得する。
+		inline bool   m_IsEmpty       (const Matrix_t<ty>&) const; //空の行列かどうかを返す。
+		inline bool   m_IsSameSize    (const Matrix_t<ty>&,const Matrix_t<ty>&) const; //同じ大きさかどうかを返す。
 
-		inline size_t m_GetRowSize   (const Matrix_t&) const; //行数を取得
-		inline size_t m_GetColumnSize(const Matrix_t&) const; //列数を取得
+		inline size_t m_GetRowSize   (const Matrix_t<ty>&) const; //行数を取得
+		inline size_t m_GetColumnSize(const Matrix_t<ty>&) const; //列数を取得
 
 		
 		//MatrixCalc.hpp
 		template<typename FuncType>
-		inline void m_Calc       (Matrix_t&, const Matrix_t&,FuncType) const; // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
+		inline void m_Calc       (Matrix_t<ty>&, const Matrix_t<ty>&,FuncType) const; // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
 
-		inline void m_Add        (Matrix_t&, const Matrix_t&) const; // 加算        :第一引数 += 第二引数
-		inline void m_Sub        (Matrix_t&, const Matrix_t&) const; // 減算        :第一引数 -= 第二引数
-		inline void m_ScalarMul  (Matrix_t&, ty             ) const; // スカラー倍  :第一引数 *= 第二引数
-		inline void m_HadamardMul(Matrix_t&, const Matrix_t&) const; // アダマール積:第一引数 ^= 第二引数
+		inline void m_Add        (Matrix_t<ty>&, const Matrix_t<ty>&) const; // 加算        :第一引数 += 第二引数
+		inline void m_Sub        (Matrix_t<ty>&, const Matrix_t<ty>&) const; // 減算        :第一引数 -= 第二引数
+		inline void m_ScalarMul  (Matrix_t<ty>&, ty                 ) const; // スカラー倍  :第一引数 *= 第二引数
+		inline void m_HadamardMul(Matrix_t<ty>&, const Matrix_t<ty>&) const; // アダマール積:第一引数 ^= 第二引数
 
-		inline void m_Mul        (Matrix_t&, const Matrix_t&);       // 積　        :第一引数 *= 第二引数
+		inline void m_Mul        (Matrix_t<ty>&, const Matrix_t<ty>&);       // 積　        :第一引数 *= 第二引数
 
 
 		//MatrixCalcCUDA.hpp
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
-		static std::vector<ty> Flatten(const Matrix_t&);
-		static Matrix_t        UnFlatten(const std::vector<ty>&, size_t, size_t);
+		static std::vector<ty> Flatten  (const Matrix_t<ty>&);
+		static Matrix_t<ty>    UnFlatten(const std::vector<ty>&, size_t, size_t);
 
 
-		inline void m_CalcGPU(Matrix_t&, const Matrix_t&, CalcOpeCode) const;
+		inline void m_CalcGPU(Matrix_t<ty>&, const Matrix_t<ty>&, CalcOpeCode) const;
 
-		inline void m_AddGPU(Matrix_t&, const Matrix_t&) const;         // 加算        :第一引数 += 第二引数
-		inline void m_SubGPU(Matrix_t&, const Matrix_t&) const;         // 減算        :第一引数 -= 第二引数
-		inline void m_ScalarMulGPU  (Matrix_t&, ty     ) const;         // スカラー倍  :第一引数 *= 第二引数
-		inline void m_HadamardMulGPU(Matrix_t&, const Matrix_t&) const; // アダマール積:第一引数 ^= 第二引数
-		inline void m_MulGPU(Matrix_t&, const Matrix_t&);               // 積　        :第一引数 *= 第二引数
+		inline void m_AddGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const;         // 加算        :第一引数 += 第二引数
+		inline void m_SubGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const;         // 減算        :第一引数 -= 第二引数
+		inline void m_ScalarMulGPU  (Matrix_t<ty>&, ty     ) const;         // スカラー倍  :第一引数 *= 第二引数
+		inline void m_HadamardMulGPU(Matrix_t<ty>&, const Matrix_t<ty>&) const; // アダマール積:第一引数 ^= 第二引数
+		inline void m_MulGPU(Matrix_t<ty>&, const Matrix_t<ty>&);               // 積　        :第一引数 *= 第二引数
 
 #endif
 
 
 		//MatrixAdvCalc.hpp
 		//削除予定
-		inline void  m_SweepOut(Matrix_t& arg_from, Matrix_t& arg_store); //掃き出し法により逆行列を求める。
-		inline ty    m_Det     (Matrix_t& arg);                           //行列式を求める。
+		inline void  m_SweepOut(Matrix_t<ty>& arg_from, Matrix_t<ty>& arg_store); //掃き出し法により逆行列を求める。
+		inline ty    m_Det     (Matrix_t<ty>& arg);                           //行列式を求める。
 
-		inline void  m_LUDecomposition(const Matrix_t&, Matrix_t&, Matrix_t&) const; //LU分解を行い第二引数L,第三引数Uに格納する。
+		inline void  m_LUDecomposition(const Matrix_t<ty>&, Matrix_t<ty>&, Matrix_t<ty>&) const; //LU分解を行い第二引数L,第三引数Uに格納する。
 		
-		inline ty    m_DetByU (const Matrix_t&) const;                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
-		inline void  m_Inverse(const Matrix_t&,Matrix_t&,ty=1e-5) const; //逆行列を求める。
+		inline ty    m_DetByU (const Matrix_t<ty>&) const;                   //LU分解によって求めたU(上三角行列)によって行列式を求める。
+		inline void  m_Inverse(const Matrix_t<ty>&,Matrix_t<ty>&,ty=1e-5) const; //逆行列を求める。
 	
 
 	public:
@@ -115,10 +115,10 @@ namespace Sanae{
 
 		enum class CalcOpeCode { Add, Sub, HadamardMul, ScalarMul };
 
+#endif
+
 		// 演算時にCUDAを使用する。
 		bool UseCUDA = true;
-
-#endif
 
 		//行列積で使用するスレッド数(初期値は最大のスレッド数)
 		size_t thread = std::thread::hardware_concurrency();
@@ -127,14 +127,14 @@ namespace Sanae{
 		//MatrixConstructor.hpp
 		Matrix ();
 		Matrix (std::pair<size_t,size_t>); //サイズ指定
-		Matrix (MatrixInit_t);             //{{0,0},{0,0}}...2*2行列
-		Matrix (const Matrix_t&);          //std::vector<std::vector<ty>>
+		Matrix (MatrixInit_t<ty>);             //{{0,0},{0,0}}...2*2行列
+		Matrix (const Matrix_t<ty>&);          //std::vector<std::vector<ty>>
 		Matrix (const Matrix&);            //コピーコンストラクタ
 		~Matrix();                         //デストラクタ
 
 
 		//MatrixOperator.hpp
-		inline Matrix& operator =(MatrixInit_t);
+		inline Matrix& operator =(MatrixInit_t<ty>);
 		inline Matrix& operator =(const Matrix&);
 		inline Matrix& operator =(Matrix&&);
 

@@ -30,7 +30,7 @@
 template<typename ty>
 inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::operator =
 (
-	MatrixInit_t ArgInitValue
+	MatrixInit_t<ty> ArgInitValue
 )
 {
 	//std::initializer_list<std::initialize_list<ty>>‚ðstd::vector<std::vector<ty>>‚Ö
@@ -175,7 +175,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator +
 	const Matrix<ty>& Arg
 )
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
@@ -199,7 +199,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator -
 	const Matrix<ty>& Arg
 )
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
@@ -223,7 +223,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator ^
 	const Matrix<ty>& Arg
 )
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
@@ -247,7 +247,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
 	const Matrix<ty>& Arg
 )
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
@@ -271,7 +271,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
 	ty Arg
 )
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 	std::copy(this->matrix.begin(), this->matrix.end(), std::back_inserter(Result));
 
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_

@@ -39,6 +39,10 @@ static void MulTestCPU()
 	Sanae::Matrix<double> buf0 = std::pair<size_t, size_t>{ n,n };
 	Sanae::Matrix<double> buf1 = std::pair<size_t, size_t>{ n,n };
 
+#ifdef _SANAE_MATRIX_ENABLE_CUDA_
+	buf0.UseCUDA = false;
+#endif 
+
 	buf0.Setter([&engine, &dist]()->double {return dist(engine); });
 	buf1.Setter([&engine, &dist]()->double {return dist(engine); });
 
@@ -61,7 +65,7 @@ static void MulTestCPU()
 	std::cout << time1 << "ミリ秒かかりました。" << std::endl;
 
 	//複数スレッドでの計算
-	for (size_t i = 2; i <= std::thread::hardware_concurrency(); i++) {
+	for (size_t i = 12; i <= std::thread::hardware_concurrency(); i++) {
 		buf0.thread = i;
 
 		std::cout << buf0.thread << "スレッドでの計算:";
@@ -110,7 +114,7 @@ static void MulTestGPU() {
 	buf0.UseCUDA = true;
 	double time2 = static_cast<double>(calc());
 	std::cout << "GPUでは" << time2 << "ミリ秒かかりました。" << std::endl;
-	std::cout << (1 - time2 / time1) * 100 << "%高速化できました。" << std::endl;
+	std::cout << time1 / time2 << "倍高速化できました。" << std::endl;
 
 	system("pause");
 }

@@ -81,17 +81,14 @@
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix\Matrix\Matrix.h" />
-    <ClInclude Include="Matrix\Matrix\MatrixAdvCalc.hpp" />
-    <ClInclude Include="Matrix\Matrix\MatrixCalc.hpp" />
-    <ClInclude Include="Matrix\Matrix\MatrixCalcCUDA.cuh" />
-    <ClInclude Include="Matrix\Matrix\MatrixConstructor.hpp" />
-    <ClInclude Include="Matrix\Matrix\MatrixOperator.hpp" />
-    <ClInclude Include="Matrix\Matrix\MatrixUtil.hpp" />
+    <ClInclude Include="Matrix\Matrix.h" />
+    <ClInclude Include="Matrix\MatrixAdvCalc.hpp" />
+    <ClInclude Include="Matrix\MatrixCalc.hpp" />
+    <ClInclude Include="Matrix\MatrixCalcCUDA.cuh" />
+    <ClInclude Include="Matrix\MatrixConstructor.hpp" />
+    <ClInclude Include="Matrix\MatrixOperator.hpp" />
+    <ClInclude Include="Matrix\MatrixUtil.hpp" />
     <ClInclude Include="Test.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Matrix\Matrix\Matrix" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Format.h">
@@ -99,6 +96,9 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <FileType>Text</FileType>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Matrix\Matrix" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,37 +4,37 @@
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Format.h" />
+    <ClInclude Include="Test.hpp" />
+    <ClInclude Include="Matrix\MatrixAdvCalc.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixCalc.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixCalcCUDA.cuh">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixConstructor.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixOperator.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixUtil.hpp">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\Matrix.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Matrix">
-      <UniqueIdentifier>{7dc118e7-0b8e-4273-96de-942209db24be}</UniqueIdentifier>
+      <UniqueIdentifier>{a1781811-cf8d-44a2-9aa9-c93231420b75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix\Matrix\Matrix.h">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixAdvCalc.hpp">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixCalc.hpp">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixConstructor.hpp">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixOperator.hpp">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixUtil.hpp">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix\Matrix\MatrixCalcCUDA.cuh">
-      <Filter>Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="Format.h" />
-    <ClInclude Include="Test.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Matrix\Matrix\Matrix">
+    <None Include="Matrix\Matrix">
       <Filter>Matrix</Filter>
     </None>
   </ItemGroup>

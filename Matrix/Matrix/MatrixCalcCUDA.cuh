@@ -29,7 +29,7 @@
 template<typename ty>
 inline std::vector<ty> Sanae::Matrix<ty>::Flatten
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 {
 	std::vector<ty> Result;
@@ -42,7 +42,7 @@ inline std::vector<ty> Sanae::Matrix<ty>::Flatten
 
 // 1次元配列から2次元配列へ変換する。
 template<typename ty>
-inline Sanae::Matrix<ty>::Matrix_t Sanae::Matrix<ty>::UnFlatten
+inline Sanae::Matrix<ty>::Matrix_t<ty> Sanae::Matrix<ty>::UnFlatten
 (
 	const std::vector<ty>& Arg,
 	size_t Rows, 
@@ -161,8 +161,8 @@ __global__ void MulKernel
 // ArgData1とArgData2に対してClacOpeCodeを実行する。
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_CalcGPU(
-	Matrix_t&       ArgData1,
-	const Matrix_t& ArgData2,
+	Matrix_t<ty>&       ArgData1,
+	const Matrix_t<ty>& ArgData2,
 	CalcOpeCode     OpeCode
 ) 
 	const
@@ -261,8 +261,8 @@ inline void Sanae::Matrix<ty>::m_CalcGPU(
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_AddGPU
 (
-	Matrix_t& ArgData1,
-	const Matrix_t& ArgData2
+	Matrix_t<ty>& ArgData1,
+	const Matrix_t<ty>& ArgData2
 )
 	const
 {
@@ -275,8 +275,8 @@ inline void Sanae::Matrix<ty>::m_AddGPU
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_SubGPU
 (
-	Matrix_t& ArgData1,
-	const Matrix_t& ArgData2
+	Matrix_t<ty>& ArgData1,
+	const Matrix_t<ty>& ArgData2
 )
 const
 {
@@ -288,8 +288,8 @@ const
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_HadamardMulGPU
 (
-	Matrix_t& ArgData1,
-	const Matrix_t& ArgData2
+	Matrix_t<ty>& ArgData1,
+	const Matrix_t<ty>& ArgData2
 )
 const
 {
@@ -301,12 +301,12 @@ const
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_ScalarMulGPU
 (
-	Matrix_t& ArgData1,
+	Matrix_t<ty>& ArgData1,
 	ty        ArgData2
 )
 const
 {
-	Matrix_t MatrixData2(1,std::vector<ty>(1,ArgData2));
+	Matrix_t<ty> MatrixData2(1,std::vector<ty>(1,ArgData2));
 
 	this->m_CalcGPU(ArgData1, MatrixData2, CalcOpeCode::ScalarMul);
 
@@ -317,8 +317,8 @@ const
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_MulGPU
 (
-	Matrix_t& ArgData1, 
-	const Matrix_t& ArgData2
+	Matrix_t<ty>& ArgData1, 
+	const Matrix_t<ty>& ArgData2
 )
 {
 	if (this->m_GetColumnSize(ArgData1) != this->m_GetRowSize(ArgData2))

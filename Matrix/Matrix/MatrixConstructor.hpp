@@ -43,7 +43,7 @@ Sanae::Matrix<ty>::Matrix
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
 (
-	MatrixInit_t ArgInitValue
+	MatrixInit_t<ty> ArgInitValue
 )
 	:matrix(ArgInitValue.begin(), ArgInitValue.end())
 {
@@ -55,7 +55,7 @@ Sanae::Matrix<ty>::Matrix
 template<typename ty>
 Sanae::Matrix<ty>::Matrix
 (
-	const Matrix_t& ArgInitValue
+	const Matrix_t<ty>& ArgInitValue
 )
 	:matrix(ArgInitValue.begin(), ArgInitValue.end())
 {

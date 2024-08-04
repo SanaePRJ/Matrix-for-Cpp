@@ -33,7 +33,7 @@
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_ValidateMatrix
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 	const
 {
@@ -49,7 +49,7 @@ inline void Sanae::Matrix<ty>::m_ValidateMatrix
 template<typename ty>
 inline bool Sanae::Matrix<ty>::m_IsSquareMatrix
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 	const
 {
@@ -61,7 +61,7 @@ inline bool Sanae::Matrix<ty>::m_IsSquareMatrix
 template<typename ty>
 inline bool Sanae::Matrix<ty>::m_IsEmpty
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 	const
 {
@@ -75,8 +75,8 @@ inline bool Sanae::Matrix<ty>::m_IsEmpty
 template<typename ty>
 inline bool Sanae::Matrix<ty>::m_IsSameSize
 (
-	const Matrix_t& Arg1,
-	const Matrix_t& Arg2
+	const Matrix_t<ty>& Arg1,
+	const Matrix_t<ty>& Arg2
 )
 	const
 {
@@ -95,7 +95,7 @@ inline bool Sanae::Matrix<ty>::m_IsSameSize
 template<typename ty>
 inline size_t Sanae::Matrix<ty>::m_GetRowSize
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 	const
 {
@@ -106,7 +106,7 @@ inline size_t Sanae::Matrix<ty>::m_GetRowSize
 template<typename ty>
 inline size_t Sanae::Matrix<ty>::m_GetColumnSize
 (
-	const Matrix_t& Arg
+	const Matrix_t<ty>& Arg
 )
 	const
 {
@@ -245,7 +245,7 @@ inline Sanae::Matrix<ty>& Sanae::Matrix<ty>::Setter
 template<typename ty>
 inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Transpose()
 {
-	Matrix_t Result;
+	Matrix_t<ty> Result;
 
 	// this->matrix の行数と列数を取得
 	size_t Row    = this->m_GetRowSize(this->matrix);
@@ -272,7 +272,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Identity
 )
 {
 	// arg_size * arg_size 行列の0行列を生成
-	Matrix_t Result(ArgSize, std::vector<ty>(ArgSize, 0));
+	Matrix_t<ty> Result(ArgSize, std::vector<ty>(ArgSize, 0));
 
 	//単位行列へ
 	for (size_t Position = 0; Position < ArgSize; Position++)

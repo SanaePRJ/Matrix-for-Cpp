@@ -30,8 +30,8 @@
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_SweepOut
 (
-	Matrix_t& ArgFrom, 
-	Matrix_t& ArgStore
+	Matrix_t<ty>& ArgFrom, 
+	Matrix_t<ty>& ArgStore
 )
 {
 	//入力された行列が正方行列でなければならない。
@@ -39,7 +39,7 @@ inline void Sanae::Matrix<ty>::m_SweepOut
 		throw InvalidMatrix("Must be a square matrix.");
 
 	//arg_fromをコピーする。
-	Matrix_t from_copy(m_GetRowSize(ArgFrom),std::vector<ty>(m_GetColumnSize(ArgFrom),0));
+	Matrix_t<ty> from_copy(m_GetRowSize(ArgFrom),std::vector<ty>(m_GetColumnSize(ArgFrom),0));
 	//コピー
 	std::copy(ArgFrom.begin(), ArgFrom.end(),from_copy.begin());
 
@@ -79,7 +79,7 @@ inline void Sanae::Matrix<ty>::m_SweepOut
 template<typename ty>
 inline ty Sanae::Matrix<ty>::m_Det
 (
-	Matrix_t& Arg
+	Matrix_t<ty>& Arg
 )
 {
 	//入力された行列が正方行列でなければならない。
@@ -87,13 +87,13 @@ inline ty Sanae::Matrix<ty>::m_Det
 		throw InvalidMatrix("Must be a square matrix.");
 
 	//サラスの方式で解きます。
-	const auto DetBy2D = [](const Matrix_t& Matrix2D)
+	const auto DetBy2D = [](const Matrix_t<ty>& Matrix2D)
 		{
 			return Matrix2D[0][0] * Matrix2D[1][1] - Matrix2D[1][0] * Matrix2D[0][1];
 		};
 
 	//[Pos][0]-[0][Pos]を含まない行列を抜き取ります。
-	const auto Extraction = [](const Matrix_t& From, Matrix_t& Storage, size_t Pos)
+	const auto Extraction = [](const Matrix_t<ty>& From, Matrix_t<ty>& Storage, size_t Pos)
 		{
 			//正方行列ナノは確定しているので次元を求める。
 			const size_t Dim = From.size();
@@ -113,7 +113,7 @@ inline ty Sanae::Matrix<ty>::m_Det
 		};
 
 	//次元を落としまくる。
-	const auto DecDim = [this, Extraction, DetBy2D](const Matrix_t& From, ty Coeff, auto Func)
+	const auto DecDim = [this, Extraction, DetBy2D](const Matrix_t<ty>& From, ty Coeff, auto Func)
 		{
 			const size_t Size    = From.size(); //元のサイズ
 			const size_t NewSize = Size - 1;    //落とした後のサイズ
@@ -127,7 +127,7 @@ inline ty Sanae::Matrix<ty>::m_Det
 			//[0][0]~[n][0]まで
 			for (size_t Position = 0; Position < Size; Position++)
 			{
-				Matrix_t Buffer(NewSize, std::vector<ty>(NewSize, 0)); //格納用
+				Matrix_t<ty> Buffer(NewSize, std::vector<ty>(NewSize, 0)); //格納用
 				Extraction(From, Buffer, Position);                    //縮小した行列を取得
 
 				ty CoeffBuffer = From[Position][0] * (Position % 2 == 0 ? 1 : -1); //新しい係数
@@ -148,9 +148,9 @@ inline ty Sanae::Matrix<ty>::m_Det
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_LUDecomposition
 (
-	const Matrix_t& ArgMatrix, 
-	Matrix_t&       MatrixL, 
-	Matrix_t&       MatrixU
+	const Matrix_t<ty>& ArgMatrix, 
+	Matrix_t<ty>&       MatrixL, 
+	Matrix_t<ty>&       MatrixU
 )
 	const
 {
@@ -159,7 +159,7 @@ inline void Sanae::Matrix<ty>::m_LUDecomposition
 		throw InvalidMatrix("Must be a square matrix.");
 
 	//すべての列に対して LRowFrom 行を LNum 倍したものを LRowTo 行へ加算する。
-	auto Operation = [this](Matrix_t& LambdaMatrix,size_t LambdaRowFrom,size_t LambdaRowTo,ty LambdaNum)
+	auto Operation = [this](Matrix_t<ty>& LambdaMatrix,size_t LambdaRowFrom,size_t LambdaRowTo,ty LambdaNum)
 		{
 			//すべての列で実行
 			for (size_t Column = 0; Column < m_GetColumnSize(LambdaMatrix); Column++) {
@@ -199,7 +199,7 @@ inline void Sanae::Matrix<ty>::m_LUDecomposition
 template<typename ty>
 inline ty Sanae::Matrix<ty>::m_DetByU
 (
-	const Matrix_t& MatrixU
+	const Matrix_t<ty>& MatrixU
 )
 	const
 {
@@ -220,8 +220,8 @@ inline ty Sanae::Matrix<ty>::m_DetByU
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Inverse
 (
-	const Matrix_t& ArgMatrix, 
-	Matrix_t&       Store, 
+	const Matrix_t<ty>& ArgMatrix, 
+	Matrix_t<ty>&       Store, 
 	ty              Epsilon
 )
 	const
@@ -234,7 +234,7 @@ inline void Sanae::Matrix<ty>::m_Inverse
 	const size_t Size = m_GetRowSize(ArgMatrix);
 
 	// LU分解を行う
-	Matrix_t MatrixL, MatrixU;
+	Matrix_t<ty> MatrixL, MatrixU;
 	m_LUDecomposition(ArgMatrix, MatrixL, MatrixU);
 	
 	/* 行列式が0の場合0に限りなく近くすることで近似させるためいらない
@@ -247,7 +247,7 @@ inline void Sanae::Matrix<ty>::m_Inverse
 		MatrixU[Pos][Pos] += MatrixU[Pos][Pos] == 0 ? Epsilon : 0;
 
 	// 単位行列を作成
-	Matrix_t IdentityMatrix = Identity(Size).matrix;
+	Matrix_t<ty> IdentityMatrix = Identity(Size).matrix;
 
 	// 逆行列を初期化
 	Store.resize(Size, std::vector<ty>(Size, 0));
@@ -306,7 +306,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::Inverse
 	ty Epsilon
 )
 {
-	Matrix_t Inv;
+	Matrix_t<ty> Inv;
 	m_Inverse(this->matrix,Inv,Epsilon);
 
 	return Inv;

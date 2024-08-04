@@ -29,8 +29,8 @@ template<typename ty>
 template<typename FuncType>
 inline void Sanae::Matrix<ty>::m_Calc
 (
-	Matrix_t&       ArgMatrix1,
-	const Matrix_t& ArgMatrix2,
+	Matrix_t<ty>&       ArgMatrix1,
+	const Matrix_t<ty>& ArgMatrix2,
 
 	FuncType Func
 )
@@ -64,8 +64,8 @@ inline void Sanae::Matrix<ty>::m_Calc
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Add
 (
-	Matrix_t&       ArgData1, 
-	const Matrix_t& ArgData2
+	Matrix_t<ty>&       ArgData1, 
+	const Matrix_t<ty>& ArgData2
 ) 
 	const
 {
@@ -77,8 +77,8 @@ inline void Sanae::Matrix<ty>::m_Add
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Sub
 (
-	Matrix_t&       ArgData1, 
-	const Matrix_t& ArgData2
+	Matrix_t<ty>&       ArgData1, 
+	const Matrix_t<ty>& ArgData2
 )
 	const
 {
@@ -90,8 +90,8 @@ inline void Sanae::Matrix<ty>::m_Sub
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_HadamardMul
 (
-	Matrix_t&       ArgData1, 
-	const Matrix_t& ArgData2
+	Matrix_t<ty>&       ArgData1, 
+	const Matrix_t<ty>& ArgData2
 )
 	const
 {
@@ -103,7 +103,7 @@ inline void Sanae::Matrix<ty>::m_HadamardMul
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_ScalarMul
 (
-	Matrix_t& ArgData1, 
+	Matrix_t<ty>& ArgData1, 
 	ty        ArgData2
 )
 	const
@@ -126,8 +126,8 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_Mul
 (
-	Matrix_t&       ArgData1,
-	const Matrix_t& ArgData2
+	Matrix_t<ty>&       ArgData1,
+	const Matrix_t<ty>& ArgData2
 )
 {
 	//第一引数の列数と第二引数の行数は同じでなければならない。
@@ -136,7 +136,7 @@ inline void Sanae::Matrix<ty>::m_Mul
 
 
 	//第一引数の行数と第二引数の列数を確保,0で初期化
-	Matrix_t Result(this->m_GetRowSize(ArgData1), Row_t<ty>(m_GetColumnSize(ArgData2), 0));
+	Matrix_t<ty> Result(this->m_GetRowSize(ArgData1), Row_t<ty>(m_GetColumnSize(ArgData2), 0));
 
 	//行列サイズを取得
 	const size_t Row    = this->m_GetRowSize   (Result); //行数
