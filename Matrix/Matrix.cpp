@@ -30,6 +30,7 @@
 
 
 int main() {
+    MulTestCPU();
     try {
         // コンストラクタによる初期化
         Sanae::Matrix<double> mat1{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };

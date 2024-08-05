@@ -32,6 +32,8 @@ MatrixŒ^‚Å‚Í•s³‚Ès—ñ‘€ì‚É‘Î‚·‚é—áŠO‚Æ‚µ‚Ä`InvalidMatrix`ƒNƒ‰ƒX‚ªŽg—p‚³‚êAƒGƒ
 MatrixŒ^‚Å‚Í**s—ñÏ**‚ðƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‚Å‰‰ŽZ‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B  
 Žg—p‚µ‚È‚¢ê‡‚Í`_SANAE_MATRIX_NOTHREADS_`‚ðéŒ¾‚µ‚Ü‚·B  
 ```cpp
+// •¡”‚ÌƒXƒŒƒbƒh‚ðŽg—p‚µ‚È‚¢ê‡‚ÍˆÈ‰º‚Ì//‚ðŠO‚µ‚Ü‚·B
+// #define _SANAE_MATRIX_NOTHREADS_
 #include "Matrix/Matrix"
 
 int main(){
@@ -57,6 +59,38 @@ int main(){
     a.UseCUDA=false; // ‰‰ŽZ‚ÉCUDA‚ðŽg—p‚µ‚È‚¢B
 }
 ```
+
+## ‚‘¬‰»ŽÀŒ±
+### ŠÂ‹«
+ - **CPU**
+AMD Ryzen 5 5600G with Radeon Graphics 
+- **ƒƒ‚ƒŠ**
+16.0 GB DDR4 3200
+- **GPU**
+NVIDIA GeForce GTX 1660
+### —”
+•½‹Ï’l : 0
+•W€•Î· : 1
+
+### Œ‹‰Ê
+#### A[2500~2500] ~ B[2500~2500]
+- 1ƒXƒŒƒbƒh
+237537[ms]
+- 12ƒXƒŒƒbƒh
+42962[ms] -> 5.5”{
+- GPU
+1840[ms] -> 23”{(CPU‚Ì‚Ý‚Æ”ä‚×‚Ä)
+
+```CPU‚Ì‚Ý‚Å‚Í43•b‚©‚©‚éŒvŽZ‚ð2•b‚ÅI‚í‚ç‚¹‚é‚±‚Æ‚ª‚Å‚«‚éB```
+
+
+#### A[10000~10000] ~ B[10000~10000]
+- 12ƒXƒŒƒbƒh
+4479320[ms]
+- GPU
+90190[ms] -> 50”{(CPU‚Ì‚Ý‚Æ”ä‚×‚Ä)
+
+```CPU‚Ì‚Ý‚Å‚Í1ŽžŠÔ24•ª‚©‚©‚éŒvŽZ‚ð1•ª30•b‚ÅI‚í‚ç‚¹‚é‚±‚Æ‚ª‚Å‚«‚éB```
 
 ## Žg—p—á
 ```cpp
