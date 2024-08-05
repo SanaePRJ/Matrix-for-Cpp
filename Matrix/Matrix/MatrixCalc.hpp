@@ -34,7 +34,6 @@ inline void Sanae::Matrix<ty>::m_Calc
 
 	FuncType Func
 )
-	const
 {
 	//サイズが0の場合計算できない...
 	if (m_IsEmpty(ArgMatrix1) || m_IsEmpty(ArgMatrix2))
@@ -47,6 +46,52 @@ inline void Sanae::Matrix<ty>::m_Calc
 	const size_t Row    = this->m_GetRowSize   (ArgMatrix1);  //計算する行数
 	const size_t Column = this->m_GetColumnSize(ArgMatrix1);  //計算する列数
 
+	// マルチスレッドで計算させる。
+#ifndef _SANAE_MATRIX_NOTHREADS_
+
+	//計算するタスク数を求める。
+	const size_t AllTaskCount = Row * Column;
+
+	//最低1スレッドを使う。
+	if (this->thread == 0)
+		this->thread = 1;
+
+	//1スレッド当たりのタスクを求める。
+	size_t OneTaskCount = AllTaskCount / this->thread;
+
+	//threadで分割するためのラムダ式
+	auto CalcThread = [&Row, &Column, &ArgMatrix1, &ArgMatrix2, &Func](size_t ArgFrom, size_t ArgTo) {
+		for (size_t Position = ArgFrom; Position < ArgTo; Position++)
+			ArgMatrix1[(Position / Column)][(Position % Column)] = Func(ArgMatrix1[(Position / Column)][(Position % Column)], ArgMatrix2[(Position / Column)][(Position % Column)]);
+		};
+
+	//スレッド管理
+	std::vector<std::thread> Threads;
+	for (size_t Position = 0; Position < AllTaskCount;)
+	{
+		size_t From = Position;
+		size_t To = Position + OneTaskCount;
+
+		//タスク数が超えた場合
+		if (To > AllTaskCount)
+			To = AllTaskCount;
+
+		//タスクがもうない
+		if (From == To)
+			break;
+
+		//スレッドを作成
+		Threads.push_back(std::thread(CalcThread, From, To));
+		Position = To;
+	}
+
+	//タスク完了まで待つ
+	for (std::thread& th : Threads)
+		th.join();
+
+	//単独のスレッドで計算させる。
+#else
+
 	//全要素に対して処理を行う
 	for (size_t PosRow = 0; PosRow < Row; PosRow++)
 	{
@@ -57,6 +102,8 @@ inline void Sanae::Matrix<ty>::m_Calc
 		}
 	}
 
+#endif
+
 	return;
 }
 
@@ -66,10 +113,10 @@ inline void Sanae::Matrix<ty>::m_Add
 (
 	Matrix_t<ty>&       ArgData1, 
 	const Matrix_t<ty>& ArgData2
-) 
-	const
+)
 {
 	this->m_Calc(ArgData1, ArgData2, std::plus<ty>());
+
 	return;
 }
 
@@ -80,9 +127,9 @@ inline void Sanae::Matrix<ty>::m_Sub
 	Matrix_t<ty>&       ArgData1, 
 	const Matrix_t<ty>& ArgData2
 )
-	const
 {
 	this->m_Calc(ArgData1, ArgData2, std::minus<ty>());
+
 	return;
 }
 
@@ -93,9 +140,9 @@ inline void Sanae::Matrix<ty>::m_HadamardMul
 	Matrix_t<ty>&       ArgData1, 
 	const Matrix_t<ty>& ArgData2
 )
-	const
 {
 	this->m_Calc(ArgData1, ArgData2, std::multiplies<ty>());
+
 	return;
 }
 
@@ -106,7 +153,6 @@ inline void Sanae::Matrix<ty>::m_ScalarMul
 	Matrix_t<ty>& ArgData1, 
 	ty        ArgData2
 )
-	const
 {
 	this->m_Calc(ArgData1, ArgData1, [&ArgData2](ty d1, ty d2)->ty {return d1 * ArgData2; });
 
@@ -138,20 +184,6 @@ inline void Sanae::Matrix<ty>::m_Mul
 	//第一引数の行数と第二引数の列数を確保,0で初期化
 	Matrix_t<ty> Result(this->m_GetRowSize(ArgData1), Row_t<ty>(m_GetColumnSize(ArgData2), 0));
 
-	//行列サイズを取得
-	const size_t Row    = this->m_GetRowSize   (Result); //行数
-	const size_t Column = this->m_GetColumnSize(Result); //列数
-	
-	//計算するタスク数を求める。
-	const size_t AllTaskCount = Row * Column;
-
-	//最低1スレッドを使う。
-	if (this->thread == 0)
-		this->thread = 1;
-
-	//1スレッド当たりのタスクを求める。
-	size_t OneTaskCount    = AllTaskCount / this->thread;
-
 	//l[i][j] = Σk=0,n (m[i][k] * n[k][j])を計算させるラムダ式
 	auto MulLambda = [ArgData1, ArgData2, this](size_t ArgRow, size_t ArgColumn)
 		{
@@ -165,8 +197,22 @@ inline void Sanae::Matrix<ty>::m_Mul
 			return Sum;
 		};
 
+	// 行列サイズを取得
+	const size_t Row    = this->m_GetRowSize(Result);    // 行数
+	const size_t Column = this->m_GetColumnSize(Result); // 列数
+
 // マルチスレッドで計算させる。
 #ifndef _SANAE_MATRIX_NOTHREADS_
+
+	//計算するタスク数を求める。
+	const size_t AllTaskCount = Row * Column;
+
+	//最低1スレッドを使う。
+	if (this->thread == 0)
+		this->thread = 1;
+
+	//1スレッド当たりのタスクを求める。
+	size_t OneTaskCount = AllTaskCount / this->thread;
 
 	//threadで分割するためのラムダ式
 	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t ArgFrom,size_t ArgTo) {

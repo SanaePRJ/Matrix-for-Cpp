@@ -28,7 +28,7 @@
 
 int main() {
     //MulTestCPU();
-    //MulTestGPU();
+    MulTestGPU();
 
     try {
         // コンストラクタによる初期化

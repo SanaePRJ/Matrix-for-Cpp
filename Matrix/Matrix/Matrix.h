@@ -70,14 +70,14 @@ namespace Sanae{
 		
 		// MatrixCalc.hpp
 		template<typename FuncType>
-		inline void m_Calc       (Matrix_t<ty>&, const Matrix_t<ty>&,FuncType) const; // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
+		inline void m_Calc       (Matrix_t<ty>&, const Matrix_t<ty>&,FuncType); // すべての要素で第一引数=FuncType(第一引数,第二引数)を実行する。
 
-		inline void m_Add        (Matrix_t<ty>&, const Matrix_t<ty>&) const; // 加算        :第一引数 += 第二引数
-		inline void m_Sub        (Matrix_t<ty>&, const Matrix_t<ty>&) const; // 減算        :第一引数 -= 第二引数
-		inline void m_ScalarMul  (Matrix_t<ty>&, ty                 ) const; // スカラー倍  :第一引数 *= 第二引数
-		inline void m_HadamardMul(Matrix_t<ty>&, const Matrix_t<ty>&) const; // アダマール積:第一引数 ^= 第二引数
+		inline void m_Add        (Matrix_t<ty>&, const Matrix_t<ty>&); // 加算        : 第一引数 += 第二引数
+		inline void m_Sub        (Matrix_t<ty>&, const Matrix_t<ty>&); // 減算        : 第一引数 -= 第二引数
+		inline void m_ScalarMul  (Matrix_t<ty>&, ty                 ); // スカラー倍  : 第一引数 *= 第二引数
+		inline void m_HadamardMul(Matrix_t<ty>&, const Matrix_t<ty>&); // アダマール積: 第一引数 ^= 第二引数
 
-		inline void m_Mul        (Matrix_t<ty>&, const Matrix_t<ty>&);       // 積　        :第一引数 *= 第二引数
+		inline void m_Mul        (Matrix_t<ty>&, const Matrix_t<ty>&);       // 積　        : 第一引数 *= 第二引数
 
 
 		// MatrixCalcCUDA.hpp
@@ -170,22 +170,22 @@ namespace Sanae{
 		inline auto GetRowRef(size_t) -> std::vector<std::reference_wrapper<ty>>; // 1行分のデータを参照する可変長配列を返す。
 		inline auto GetColRef(size_t) -> std::vector<std::reference_wrapper<ty>>; // 1列分のデータを参照する可変長配列を返す。
 
-		inline Matrix& Resize(std::pair<size_t, size_t>); //サイズを変更する。
+		inline Matrix& Resize(std::pair<size_t, size_t>); // サイズを変更する。
 
-		inline Matrix& Setter     (std::function<ty()>);                  //引数の関数を呼び出し各要素へ返り値を代入する。
-		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>); //引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
+		inline Matrix& Setter     (std::function<ty()>);                  // 引数の関数を呼び出し各要素へ返り値を代入する。
+		inline Matrix& Setter     (std::function<ty(size_t,size_t,ty&)>); // 引数の関数を呼び出し各要素へ返り値を代入する。(行数,列数,元の行列[行数][列数])を引数として受け取る。
 
-		inline Matrix  Transpose  (); //転置する。
+		inline Matrix  Transpose  (); // 転置する。
 
-		static inline Matrix<ty> Identity(size_t); //指定された行=列数の単位行列を作成します。 
+		static inline Matrix<ty> Identity(size_t); // 指定された行=列数の単位行列を作成します。 
 		
-		static inline Matrix<ty> Zero    (size_t); //指定された行,列数の0行列を作成します。 @ 正方行列
+		static inline Matrix<ty> Zero    (size_t); // 指定された行,列数の0行列を作成します。 @ 正方行列
 		static inline Matrix<ty> Zero    (size_t, size_t);
 
 
-		//MatrixAdvCalc.hpp
-		inline auto Det() -> typename std::enable_if<std::is_floating_point<ty>::value,double>::type;                //行列式を求める。
-		inline auto Inverse(ty=1e-5) -> typename std::enable_if<std::is_floating_point<ty>::value,Matrix<ty>>::type; //逆行列を求める。
+		// MatrixAdvCalc.hpp
+		inline auto Det() -> typename std::enable_if<std::is_floating_point<ty>::value,double>::type;                // 行列式を求める。
+		inline auto Inverse(ty=1e-5) -> typename std::enable_if<std::is_floating_point<ty>::value,Matrix<ty>>::type; // 逆行列を求める。
 
  	};
 
@@ -202,10 +202,10 @@ public:
 
 	InvalidMatrix() {}
 	
-	//メッセージを入力
+	// メッセージを入力
 	InvalidMatrix(const char* ArgMessage) : m_ErrorMessage(ArgMessage) {}
 
-	//エラーメッセージを返す。
+	// エラーメッセージを返す。
 	const char* what() const noexcept override {return m_ErrorMessage.c_str();}
 
 };
@@ -213,14 +213,14 @@ public:
 
 namespace Sanae {
 
-	//行列表示用
+	// 行列表示用
 	const static std::streamsize DefaultWeight = 4;
 	static       std::streamsize FontWeight = DefaultWeight;
 
 }
 
 
-//std::coutで出力
+// std::coutで出力
 template<typename CharT, typename Traits, typename MatrixType = double>
 std::basic_ostream<CharT, Traits>& operator <<
 (
