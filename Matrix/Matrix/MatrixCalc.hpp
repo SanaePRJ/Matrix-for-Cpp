@@ -58,6 +58,8 @@ inline void Sanae::Matrix<ty>::m_Calc
 
 	//1スレッド当たりのタスクを求める。
 	size_t OneTaskCount = AllTaskCount / this->thread;
+	if (OneTaskCount == 0)
+		OneTaskCount = 1;
 
 	//threadで分割するためのラムダ式
 	auto CalcThread = [&Row, &Column, &ArgMatrix1, &ArgMatrix2, &Func](size_t ArgFrom, size_t ArgTo) {
@@ -70,7 +72,7 @@ inline void Sanae::Matrix<ty>::m_Calc
 	for (size_t Position = 0; Position < AllTaskCount;)
 	{
 		size_t From = Position;
-		size_t To = Position + OneTaskCount;
+		size_t To   = Position + OneTaskCount;
 
 		//タスク数が超えた場合
 		if (To > AllTaskCount)
@@ -213,6 +215,8 @@ inline void Sanae::Matrix<ty>::m_Mul
 
 	//1スレッド当たりのタスクを求める。
 	size_t OneTaskCount = AllTaskCount / this->thread;
+	if (OneTaskCount == 0)
+		OneTaskCount = 1;
 
 	//threadで分割するためのラムダ式
 	auto MulThread = [&Row,&Column,&Result,&MulLambda](size_t ArgFrom,size_t ArgTo) {

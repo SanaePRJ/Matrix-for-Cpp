@@ -15,7 +15,7 @@
 
 
 
-//#define SANAE_MATRIX_NOTHREADS
+//#define _SANAE_MATRIX_NOTHREADS_
 #include <functional>
 #include <iostream>
 #include <random>
