@@ -277,7 +277,7 @@ inline Sanae::Matrix<ty> Sanae::Matrix<ty>::operator *
 #ifdef _SANAE_MATRIX_ENABLE_CUDA_
 
 	if (this->UseCUDA) {
-		this->m_ScalarMulGPU(Result, Arg.matrix);
+		this->m_ScalarMulGPU(Result, Arg);
 
 		return Result;
 	}
