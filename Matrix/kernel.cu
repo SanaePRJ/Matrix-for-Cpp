@@ -27,10 +27,10 @@
 
 
 int main() {
-    //MulTestCPU();
-    MulTestGPU();
-
     try {
+        MulTestCPU(10000, [](Sanae::Matrix<double>& arg1, Sanae::Matrix<double>& arg2) {return arg1 + arg2; });
+        MulTestGPU(10000, [](Sanae::Matrix<double>& arg1, Sanae::Matrix<double>& arg2) {return arg1 + arg2;});
+
         // コンストラクタによる初期化
         Sanae::Matrix<double> mat1{ {0.1, 0.2, 0.3}, {0.4, 0.5, 0.6}, {0.7, 0.8, 0.9} };
         std::cout << "行列 mat1:" << std::endl << mat1 << std::endl;

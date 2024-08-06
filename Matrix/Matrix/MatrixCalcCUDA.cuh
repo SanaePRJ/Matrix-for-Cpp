@@ -211,7 +211,7 @@ inline void Sanae::Matrix<ty>::m_CalcGPU(
 	FlatMatrix<ty> d_ArgData2 = { d_FlatData2, Row, Col };
 
 	// スレッドとブロックの設定
-	dim3 blocksPerGrid((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x, (Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y); // グリッド内のブロック数
+	dim3 blocksPerGrid(static_cast<unsigned int>((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x), static_cast<unsigned int>((Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y)); // グリッド内のブロック数
 	
 	// オペコードに基づきカーネル関数をコール
 	switch (OpeCode) {
@@ -316,7 +316,7 @@ const
 template<typename ty>
 inline void Sanae::Matrix<ty>::m_MulGPU
 (
-	Matrix_t<ty>& ArgData1, 
+	Matrix_t<ty>& ArgData1,
 	const Matrix_t<ty>& ArgData2
 )
 {
@@ -348,11 +348,11 @@ inline void Sanae::Matrix<ty>::m_MulGPU
 
 			throw std::runtime_error(Message + cudaGetErrorString(Code));
 		}
-	};
+		};
 
 	// 領域確保
-	CheckCUDAError(cudaMalloc((void**)&d_FlatData1 , FlatData1.size()  * sizeof(ty)));
-	CheckCUDAError(cudaMalloc((void**)&d_FlatData2 , FlatData2.size()  * sizeof(ty)));
+	CheckCUDAError(cudaMalloc((void**)&d_FlatData1, FlatData1.size() * sizeof(ty)));
+	CheckCUDAError(cudaMalloc((void**)&d_FlatData2, FlatData2.size() * sizeof(ty)));
 	CheckCUDAError(cudaMalloc((void**)&d_FlatResult, FlatResult.size() * sizeof(ty)));
 
 	// 確保領域へコピー
@@ -365,7 +365,7 @@ inline void Sanae::Matrix<ty>::m_MulGPU
 	FlatMatrix<ty> d_ArgStore = { d_FlatResult, Row, Col };
 
 	// スレッドとブロックの設定
-	dim3 blocksPerGrid((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x, (Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y);
+	dim3 blocksPerGrid(static_cast<unsigned int>((Col + ThreadsPerBlock.x - 1) / ThreadsPerBlock.x), static_cast<unsigned int>((Row + ThreadsPerBlock.y - 1) / ThreadsPerBlock.y));
 
 	MulKernel<ty> <<<blocksPerGrid, ThreadsPerBlock >>> (d_ArgStore, d_ArgData1, d_ArgData2);
 

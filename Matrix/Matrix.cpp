@@ -30,8 +30,9 @@
 
 
 int main() {
-    MulTestCPU();
     try {
+        MulTestCPU(10000, [](Sanae::Matrix<double>& arg1, Sanae::Matrix<double>& arg2) {return arg1 + arg2; });
+
         // コンストラクタによる初期化
         Sanae::Matrix<double> mat1{ {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
         std::cout << "行列 mat1:" << std::endl << mat1 << std::endl;
